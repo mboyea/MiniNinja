@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{e6d0bc8d-adcd-411c-a915-67824095a1d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Time">
+      <UniqueIdentifier>{a2d0c727-3a7f-44c7-93dc-a141922d485f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Window">
+      <UniqueIdentifier>{8eb9644b-91b9-49cb-9ad7-e41e3355a4d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Datatypes">
+      <UniqueIdentifier>{1d3ae5fd-d996-4a4d-93e9-62a6461b3683}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Input">
+      <UniqueIdentifier>{a2afe41c-ac91-46d0-ade2-f39d19ed674f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Experimental">
+      <UniqueIdentifier>{1e9ee318-1114-41fc-bb34-13124e70e3ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Scene">
+      <UniqueIdentifier>{e9c58268-ee78-4b97-9f44-c43371417db2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Scene\Entity">
+      <UniqueIdentifier>{5818f6dd-878a-43cb-ab47-da3fb1bd955d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Scene\Entity\Particle">
+      <UniqueIdentifier>{fde78234-ea42-4128-a54f-b8fd75e38762}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Scene\Entity\Tilemap">
+      <UniqueIdentifier>{df7ae44e-0142-4689-b36f-222c6b6ea5a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Scene\Entity\Sprite">
+      <UniqueIdentifier>{f264076e-d502-4b80-9a02-a767a0421408}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Scene\Entity\Collider">
+      <UniqueIdentifier>{8a7dd88c-933b-4675-9415-c59f4e776ad4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Scene\Camera">
+      <UniqueIdentifier>{22e2bba5-f9e9-418f-8f91-8d270b99cca2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Debug">
+      <UniqueIdentifier>{1b9cd14c-9c18-4318-9e29-1f850b00ba5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Files">
+      <UniqueIdentifier>{c366a404-5da7-4ff3-81b4-df7ef2eeb994}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{5d299bdf-9474-41cd-83d7-bb68d3573edd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Focus States">
+      <UniqueIdentifier>{63067eaf-7e3b-441a-b3a4-a56984b6ab3e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="FocusState.cpp">
+      <Filter>Game\Focus States</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Time.cpp">
+      <Filter>Engine\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>Engine\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Engine\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneFocus.cpp">
+      <Filter>Game\Focus States</Filter>
+    </ClCompile>
+    <ClCompile Include="PauseFocus.cpp">
+      <Filter>Game\Focus States</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugFocus.cpp">
+      <Filter>Game\Focus States</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorFocus.cpp">
+      <Filter>Game\Focus States</Filter>
+    </ClCompile>
+    <ClCompile Include="Event.cpp">
+      <Filter>Engine\Experimental</Filter>
+    </ClCompile>
+    <ClCompile Include="Draw.cpp">
+      <Filter>Engine\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Log.cpp">
+      <Filter>Engine\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Engine\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Engine\Scene\Entity\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Tilemap.cpp">
+      <Filter>Engine\Scene\Entity\Tilemap</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Engine\Scene\Entity\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.cpp">
+      <Filter>Engine\Scene\Entity\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Engine\Scene\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Engine\Scene\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Console.cpp">
+      <Filter>Engine\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Fonts.cpp">
+      <Filter>Engine\Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Textures.cpp">
+      <Filter>Engine\Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FocusState.h">
+      <Filter>Game\Focus States</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Time.h">
+      <Filter>Engine\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>Engine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Colors.h">
+      <Filter>Engine\Datatypes</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Engine\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneFocus.h">
+      <Filter>Game\Focus States</Filter>
+    </ClInclude>
+    <ClInclude Include="PauseFocus.h">
+      <Filter>Game\Focus States</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugFocus.h">
+      <Filter>Game\Focus States</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorFocus.h">
+      <Filter>Game\Focus States</Filter>
+    </ClInclude>
+    <ClInclude Include="FocusStates.h">
+      <Filter>Game\Focus States</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>Engine\Experimental</Filter>
+    </ClInclude>
+    <ClInclude Include="Draw.h">
+      <Filter>Engine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Log.h">
+      <Filter>Engine\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Engine\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Engine\Scene\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Engine\Scene\Entity\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Tilemap.h">
+      <Filter>Engine\Scene\Entity\Tilemap</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Engine\Scene\Entity\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>Engine\Scene\Entity\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Engine\Scene\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Console.h">
+      <Filter>Engine\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Fonts.h">
+      <Filter>Engine\Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Textures.h">
+      <Filter>Engine\Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
