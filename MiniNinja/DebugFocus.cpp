@@ -33,19 +33,12 @@ void UpdateDebug() {
 }
 
 void RenderDebug() {
-	// TODO: Remove Load Font
-	TTF_Font* font = TTF_OpenFont("Fonts/m5x7.ttf", 16);
-	if (!font) {
-		Log("Font unable to load: " + (std::string)TTF_GetError(), WARNING);
-		return;
-	}
-
 	GetCurrentScene()->Render();
 	// Draw Console Background
 	SetDrawColor(Colors::BLACK);
 	DrawFilledRect({ 0, GetViewportDim().y - CONSOLE_HEIGHT, GetViewportDim().x, CONSOLE_HEIGHT });
 	// Draw Console Input Text
-	DrawFilledText(*Game::consoleInput, { 4, GetViewportDim().y - CONSOLE_HEIGHT }, font);
+	DrawFilledText(*Game::consoleInput, { 4, GetViewportDim().y - CONSOLE_HEIGHT }, GetDefaultFont());
 	// Draw Console Border
 	SetDrawColor(Colors::WHITE);
 	DrawRect({ 0, GetViewportDim().y - CONSOLE_HEIGHT, GetViewportDim().x, CONSOLE_HEIGHT });
@@ -57,12 +50,8 @@ void RenderDebug() {
 		DrawFilledText(
 			log.AsText(),
 			{ 0, GetViewportDim().y - CONSOLE_HEIGHT - (int)(13 * i) },
-			//Game::fonts["m5x7_16"],
-			font,
+			GetDefaultFont(),
 			log.GetColor()
 		);
 	}
-
-	// TODO: Remove Unload Font
-	TTF_CloseFont(font);
 }

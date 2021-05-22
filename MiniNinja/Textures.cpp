@@ -1,6 +1,10 @@
 #include "Textures.h"
 #include "Window.h"
 #include "Draw.h"
+#include "Files.h"
+#include "Log.h"
+
+static SDL_Texture* defaultTexture = nullptr;
 
 void InitTextures() {
 	// enable .png loading
@@ -25,10 +29,14 @@ void InitTextures() {
 
 bool SetDefaultTexture(SDL_Texture* texture) {
 	if (texture) {
-		Game::defaultTexture = texture;
+		defaultTexture = texture;
 		return true;
 	}
 	return false;
+}
+
+SDL_Texture* GetDefaultTexture() {
+	return defaultTexture;
 }
 
 bool IsTexture(std::string key) {
@@ -36,12 +44,26 @@ bool IsTexture(std::string key) {
 }
 
 bool LoadTexture(std::string filePath) {
-	// TODO: LoadTexture
-    return false;
+	SDL_Surface* surf = IMG_Load(filePath.c_str());
+	if (surf == nullptr) {
+		Log("Image \"" + filePath + "\" unable to load: " + (std::string)IMG_GetError(), WARNING);
+		return false;
+	}
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(Game::renderer, surf);
+	if (texture == nullptr) {
+		Log("Texture unable to load: " + (std::string)SDL_GetError(), WARNING);
+		return false;
+	}
+	SDL_FreeSurface(surf);
+	Game::textures[RemoveFileExtension(RemoveFilePath(filePath))] = texture;
+    return true;
 }
 
 void LoadTexturesFromDirectory(std::string folderPath) {
-	// TODO: LoadTexturesFromDirectory
+	std::vector<std::string> files = GetFilesWithExtension(GetFilesInDirectory(folderPath), "png");
+	for (auto file : files) {
+		LoadTexture(file);
+	}
 }
 
 bool UnloadTexture(std::string key) {

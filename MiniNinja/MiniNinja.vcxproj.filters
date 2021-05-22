@@ -123,6 +123,9 @@
     <ClCompile Include="Textures.cpp">
       <Filter>Engine\Files</Filter>
     </ClCompile>
+    <ClCompile Include="Files.cpp">
+      <Filter>Engine\Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FocusState.h">
@@ -195,6 +198,9 @@
       <Filter>Engine\Files</Filter>
     </ClInclude>
     <ClInclude Include="Textures.h">
+      <Filter>Engine\Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Files.h">
       <Filter>Engine\Files</Filter>
     </ClInclude>
   </ItemGroup>
