@@ -49,7 +49,7 @@ void LimitFramerate(uint32_t targetFPS) {
 	else {
 		timeRemainder = 0;
 		// TODO: check the logic of this, it feels sketchy
-		Game::fps = std::ceil(1000.F / Game::dtms);
+		Game::fps = (int)std::ceil(1000.F / Game::dtms);
 	}
 
 	// update dt

@@ -5,7 +5,7 @@
 #include <cstdint>
 
 namespace Game {
-	inline unsigned int fps = 0.F;
+	inline unsigned int fps = 0U;
 	inline float dt = 0.F;
 	inline uint32_t dtms = 0U;
 }

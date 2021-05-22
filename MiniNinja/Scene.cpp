@@ -2,6 +2,7 @@
 #include "Window.h"
 #include "Draw.h"
 #include "Log.h"
+#include "Textures.h"
 
 Scene::~Scene() {
 	for (Entity* entity : entities) {

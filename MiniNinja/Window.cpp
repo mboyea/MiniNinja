@@ -5,6 +5,7 @@
 #include "Colors.h"
 #include "Log.h"
 #include "Draw.h"
+#include "Textures.h"
 
 static SDL_Point windowDim;
 static SDL_Point viewportDim;
@@ -46,11 +47,7 @@ void InitWindow(std::string windowName, SDL_Point dim) {
 		exit(1);
 	}
 
-	// Initialize Image Processing
-	// enable .png loading
-	IMG_Init(IMG_INIT_PNG);
-	// turn off texture blurring
-	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
+	InitTextures();
 
 	// TODO: InitFonts();
 	TTF_Init();
@@ -123,4 +120,8 @@ void SetRenderTarget(SDL_Texture* target) {
 
 SDL_Point GetViewportDim() {
 	return viewportDim;
+}
+
+SDL_Texture* GetRenderTarget() {
+	return renderTarget;
 }

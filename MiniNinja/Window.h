@@ -21,5 +21,6 @@ void SetWindowIcon(std::string filePath);
 void SetWindowSize(SDL_Point dimensions);
 void SetRenderTarget(SDL_Texture* target);
 SDL_Point GetViewportDim();
+SDL_Texture* GetRenderTarget();
 
 #endif // !WINDOW_H
