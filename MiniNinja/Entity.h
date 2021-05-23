@@ -7,12 +7,13 @@
 #include <vector>
 #include <iostream>
 #include "Collider.h"
+#include "Resource.h"
 
 class Entity {
 private:
 protected:
-	uint16_t typeID = __COUNTER__;
 public:
+	uint16_t typeID = __COUNTER__;
 	/* TRANSFORM */
 	SDL_Point pos;
 	SDL_Point lastPos;
@@ -21,9 +22,11 @@ public:
 	int8_t renderLayer;
 	/* COLLISION */
 	std::vector<Collider*> colliders;
+	/* SAVING */
+	bool saveAsModule;
 
-	Entity(SDL_Point pos = { 0, 0 }, int8_t renderLayer = 0)
-		: pos(pos), lastPos(pos), renderLayer(renderLayer) {}
+	Entity(SDL_Point pos = { 0, 0 }, int8_t renderLayer = 0, bool saveAsModule = false)
+		: pos(pos), lastPos(pos), renderLayer(renderLayer), saveAsModule(saveAsModule) {}
 
 	virtual void Update();
 	virtual void Render();
@@ -33,6 +36,7 @@ public:
 	template <typename T> bool IsType();
 	template <typename T> T* GetAsType();
 
+	virtual std::vector<Resource*> GetRequiredResources();
 	// Generate serialized text data for this entity into the stream
 	virtual std::ostream& Serialize(std::ostream& os);
 	// Populate this entity by deserializing text data from the stream

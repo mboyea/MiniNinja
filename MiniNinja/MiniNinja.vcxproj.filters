@@ -52,6 +52,9 @@
     <Filter Include="Game\Focus States">
       <UniqueIdentifier>{63067eaf-7e3b-441a-b3a4-a56984b6ab3e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Scene\Resource">
+      <UniqueIdentifier>{1da99fb5-eb24-4195-a3f7-21b2b23f65ab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FocusState.cpp">
@@ -125,6 +128,12 @@
     </ClCompile>
     <ClCompile Include="Files.cpp">
       <Filter>Engine\Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FileParameters.cpp">
+      <Filter>Engine\Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource.cpp">
+      <Filter>Engine\Scene\Resource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -202,6 +211,12 @@
     </ClInclude>
     <ClInclude Include="Files.h">
       <Filter>Engine\Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FileParameters.h">
+      <Filter>Engine\Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Engine\Scene\Resource</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

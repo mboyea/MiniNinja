@@ -4,6 +4,12 @@
 #include "Log.h"
 #include "Textures.h"
 #include <algorithm>
+#include "FileParameters.h"
+#include <fstream>
+#include "Files.h"
+
+static Scene* currentSavingScene = nullptr;
+static Scene* currentLoadingScene = nullptr;
 
 Scene::~Scene() {
 	for (Entity* entity : entities) {
@@ -77,7 +83,9 @@ void Scene::Render() {
 	if (Game::doRenderColliders) {
 		for (Entity* entity : entities) {
 			for (Collider* collider : entity->colliders) {
+				SetDrawColor(Colors::GREEN);
 				collider->RenderNarrowCollider();
+				SetDrawColor(Colors::LIGHT_GREY);
 				collider->RenderBroadCollider();
 			}
 		}
@@ -92,21 +100,85 @@ int Scene::EntityPointerToIndex(Entity* entity) {
 	return i - entities.begin();
 }
 
+std::vector<Resource*> Scene::GetRequiredResources() {
+	std::vector<Resource*> resources;
+	// TODO: outline required modules, fonts, textures, and animations
+	
+	//	std::vector<Resource*> baseResources = Entity::GetRequiredResources();
+	//	resources.reserve(resources.size() + baseResources.size());
+	//	resources.insert(resources.end(), baseResources.begin(), baseResources.end());
+	return resources;
+}
+
 std::ostream& Scene::Serialize(std::ostream& os) {
+	// Serialize Scene Version
+	// Serialize Scene Camera
+	// Serialize Required Resources
+	// Serialize Scene Modules (external & internal Entities)
 	return os;
 }
 
 std::istream& Scene::Deserialize(std::istream& is) {
+	// Switch Procedure Based Upon Scene Version
+	// Deserialize Scene Camera
+	// Deserialize Required Resources
+	// Deserialize Scene Modules (external & internal Entities)
 	return is;
 }
 
-bool SaveScene(const Scene& scene, std::string filePath) {
-	return false;
+Scene* GetCurrentSavingScene() {
+	if (!currentSavingScene) {
+		Log("No scene currently saving.", WARNING);
+	}
+	return currentSavingScene;
+}
+
+Scene* GetCurrentLoadingScene() {
+	if (!currentLoadingScene) {
+		Log("No scene currently loading.", WARNING);
+	}
+	return currentLoadingScene;
+}
+
+bool SaveScene(Scene& scene, std::string filePath) {
+	filePath = ForceFileExtension(filePath, "zscne");
+	Log("Saving Scene to \"" + filePath + "\"");
+
+	std::ofstream ofStream(filePath);
+	if (!ofStream) {
+		Log("Scene file \"" + filePath + "\" could not be opened.", WARNING);
+		Log("Scene save failed.", WARNING);
+		return false;
+	}
+
+	currentSavingScene = &scene;
+	scene.Serialize(ofStream);
+	currentSavingScene = nullptr;
+
+	ofStream.close();
+	Log("Scene saved.");
+	return true;
 }
 
 Scene* LoadScene(std::string filePath) {
-	Log("Failed to load scene \"" + filePath + "\"", WARNING);
-	return nullptr;
+	filePath = ForceFileExtension(filePath, "zscne");
+	Log("Loading Scene from \"" + filePath + "\" . . .");
+
+	std::ifstream ifStream(filePath);
+	if (!ifStream) {
+		Log("Scene file \"" + filePath + "\" could not be found.", WARNING);
+		Log("Scene load failed.", WARNING);
+		return nullptr;
+	}
+
+	Scene* scene = new Scene();
+	currentLoadingScene = scene;
+	scene->Deserialize(ifStream);
+	currentLoadingScene = nullptr;
+
+	ifStream.close();
+	Log("Scene loaded.");
+	return scene;
 }
 
 SDL_Point SceneToViewport(SDL_Point pos, Scene* scene) {

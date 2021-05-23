@@ -7,6 +7,7 @@
 
 bool IsFileExtension(std::string filePath, std::string extension);
 std::string GetFileExtension(std::string filePath);
+std::string ForceFileExtension(std::string filePath, std::string extension);
 std::string RemoveFileExtension(std::string filePath);
 std::string RemoveFilePath(std::string filePath);
 std::vector<std::string> GetFilesInDirectory(std::string folderPath);

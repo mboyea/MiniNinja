@@ -6,10 +6,6 @@
 #include <SDL_image.h>
 #include <unordered_map>
 
-namespace Game {
-	inline std::unordered_map<std::string, SDL_Texture*> textures;
-}
-
 void InitTextures();
 
 bool SetDefaultTexture(SDL_Texture* texture);
@@ -20,5 +16,8 @@ bool LoadTexture(std::string filePath);
 void LoadTexturesFromDirectory(std::string folderPath);
 bool UnloadTexture(std::string key);
 void UnloadAllTextures();
+SDL_Texture* GetTexture(std::string key);
+std::string GetKey(SDL_Texture* texture);
+
 
 #endif // !TEXTURES_H

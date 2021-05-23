@@ -5,6 +5,7 @@
 #include "Log.h"
 
 static SDL_Texture* defaultTexture = nullptr;
+static std::unordered_map<std::string, SDL_Texture*> textures;
 
 void InitTextures() {
 	// enable .png loading
@@ -30,6 +31,7 @@ void InitTextures() {
 bool SetDefaultTexture(SDL_Texture* texture) {
 	if (texture) {
 		defaultTexture = texture;
+		textures[""] = texture;
 		return true;
 	}
 	return false;
@@ -40,7 +42,7 @@ SDL_Texture* GetDefaultTexture() {
 }
 
 bool IsTexture(std::string key) {
-	return Game::textures.find(key) != Game::textures.end();
+	return textures.find(key) != textures.end();
 }
 
 bool LoadTexture(std::string filePath) {
@@ -55,7 +57,7 @@ bool LoadTexture(std::string filePath) {
 		return false;
 	}
 	SDL_FreeSurface(surf);
-	Game::textures[RemoveFileExtension(RemoveFilePath(filePath))] = texture;
+	textures[RemoveFileExtension(RemoveFilePath(filePath))] = texture;
     return true;
 }
 
@@ -67,17 +69,34 @@ void LoadTexturesFromDirectory(std::string folderPath) {
 }
 
 bool UnloadTexture(std::string key) {
-	if (IsTexture(key)) {
-		SDL_DestroyTexture(Game::textures[key]);
-		Game::textures.erase(key);
+	if (key != "" && IsTexture(key)) {
+		SDL_DestroyTexture(textures[key]);
+		textures.erase(key);
 		return true;
 	}
 	return false;
 }
 
 void UnloadAllTextures() {
-	for (std::pair<std::string, SDL_Texture*> texture : Game::textures) {
+	for (std::pair<std::string, SDL_Texture*> texture : textures) {
 		SDL_DestroyTexture(texture.second);
 	}
-	Game::textures.clear();
+	textures.clear();
+	textures[""] = defaultTexture;
+}
+
+SDL_Texture* GetTexture(std::string key) {
+	if (IsTexture(key)) {
+		return textures[key];
+	}
+	return nullptr;
+}
+
+std::string GetKey(SDL_Texture* texture) {
+	for (auto it = textures.begin(); it != textures.end(); it++) {
+		if (it->second == texture) {
+			return it->first;
+		}
+	}
+	return "";
 }

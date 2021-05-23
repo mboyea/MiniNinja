@@ -1,11 +1,2 @@
-﻿  Collider.cpp
-  DebugFocus.cpp
-  EditorFocus.cpp
-  Entity.cpp
-  Game.cpp
-  PauseFocus.cpp
-  Scene.cpp
-  SceneFocus.cpp
-  main.cpp
-  Generating Code...
+﻿  Scene.cpp
   MiniNinja.vcxproj -> P:\C++\2021\MiniNinja\Debug\MiniNinja.exe

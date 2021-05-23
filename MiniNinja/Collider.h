@@ -13,7 +13,6 @@ namespace Game {
 class Collider {
 private:
 protected:
-	uint16_t typeID = __COUNTER__;
 	SDL_Rect rect;
 
 	bool IsBroadPhaseColliding(Collider* collider);
@@ -21,6 +20,7 @@ protected:
 
 	virtual void RecalculateAABB();
 public:
+	uint16_t typeID = __COUNTER__;
 
 	Collider(SDL_Rect rect = { 0, 0, 1, 1 })
 		: rect(rect) {}

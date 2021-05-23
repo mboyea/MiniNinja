@@ -25,6 +25,17 @@ std::string GetFileExtension(std::string filePath) {
 	return filePath.substr(index);
 }
 
+std::string ForceFileExtension(std::string filePath, std::string extension) {
+	if (extension[0] == '.') {
+		extension.erase(extension.begin() + 0);
+	}
+	if (IsFileExtension(filePath, extension)) {
+		return filePath;
+	}
+	RemoveFileExtension(filePath);
+	return filePath + '.' + extension;
+}
+
 std::string RemoveFileExtension(std::string filePath) {
 	int index = -1;
 	for (auto it = filePath.crbegin(); it != filePath.crend(); it++) {

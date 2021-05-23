@@ -1,6 +1,7 @@
 #include "Collider.h"
 #include "Draw.h"
 #include "SceneFocus.h"
+#include "FileParameters.h"
 
 bool Collider::IsBroadPhaseColliding(Collider* collider) {
 	return rect.x < collider->rect.x + collider->rect.w
