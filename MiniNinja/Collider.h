@@ -6,6 +6,10 @@
 #include <cstdint>
 #include <iostream>
 
+namespace Game {
+	inline bool doRenderColliders = false;
+}
+
 class Collider {
 private:
 protected:
@@ -26,6 +30,7 @@ public:
 	void RenderBroadCollider();
 	virtual void RenderNarrowCollider();
 
+	void SetPosition(SDL_Point pos);
 	SDL_Point GetPosition();
 	SDL_Point GetBoundingDimensions();
 	SDL_Rect GetBoundingRect();

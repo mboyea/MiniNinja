@@ -77,7 +77,7 @@ void DrawTexture(SDL_Texture* texture, const SDL_Rect* rect) {
 	}
 }
 
-void DrawTexture(SDL_Texture* texture, const SDL_RendererFlip& flip, const SDL_Point* pivot, const double& angle, const SDL_Rect* rect) {
+void DrawTexture(SDL_Texture* texture, const SDL_RendererFlip& flip, const SDL_Rect* rect, const SDL_Point* pivot, const double& angle) {
 	if (SDL_RenderCopyEx(Game::renderer, texture, NULL, rect, angle, pivot, flip) < 0) {
 		Log("Failed to draw texture: " + (std::string)SDL_GetError(), FAULT);
 	}

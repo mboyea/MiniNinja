@@ -25,6 +25,11 @@ void Collider::RenderBroadCollider() {
 
 void Collider::RenderNarrowCollider() {}
 
+void Collider::SetPosition(SDL_Point pos) {
+	rect.x = pos.x;
+	rect.y = pos.y;
+}
+
 SDL_Point Collider::GetPosition() {
 	return { rect.x, rect.y };
 }

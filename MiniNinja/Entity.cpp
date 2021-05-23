@@ -20,3 +20,7 @@ std::ostream& Entity::Serialize(std::ostream& os) {
 std::istream& Entity::Deserialize(std::istream& is) {
 	return is;
 }
+
+bool Entity::operator<(const Entity& rhs) {
+	return renderLayer < rhs.renderLayer;
+}

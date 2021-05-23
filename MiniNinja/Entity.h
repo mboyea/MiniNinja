@@ -37,6 +37,8 @@ public:
 	virtual std::ostream& Serialize(std::ostream& os);
 	// Populate this entity by deserializing text data from the stream
 	virtual std::istream& Deserialize(std::istream& is);
+
+	bool operator<(const Entity& rhs);
 };
 
 #endif // !ENTITY_H

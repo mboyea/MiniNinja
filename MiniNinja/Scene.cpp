@@ -3,6 +3,7 @@
 #include "Draw.h"
 #include "Log.h"
 #include "Textures.h"
+#include <algorithm>
 
 Scene::~Scene() {
 	for (Entity* entity : entities) {
@@ -11,6 +12,49 @@ Scene::~Scene() {
 }
 
 void Scene::Update() {
+	// Updates
+	for (Entity* entity : entities) {
+		entity->lastPos = entity->pos;
+		entity->Update();
+	}
+
+	// Children
+	for (Entity* entity : entities) {
+		SDL_Point offset = { entity->pos.x - entity->lastPos.x, entity->pos.y - entity->lastPos.y };
+		if (offset.x != 0 || offset.y != 0) {
+			for (Entity* child : entity->children) {
+				child->pos.x += offset.x;
+				child->pos.y += offset.y;
+			}
+			for (Collider* collider : entity->colliders) {
+				collider->SetPosition(
+					{ collider->GetPosition().x + offset.x, collider->GetPosition().y + offset.y }
+				);
+			}
+		}
+	}
+
+	// Collisions
+	for (Entity* entity : entities) {
+		entity->lastPos = entity->pos;
+		// TODO: detect collisions
+	}
+
+	// Children
+	for (Entity* entity : entities) {
+		SDL_Point offset = { entity->pos.x - entity->lastPos.x, entity->pos.y - entity->lastPos.y };
+		if (offset.x != 0 || offset.y != 0) {
+			for (Entity* child : entity->children) {
+				child->pos.x += offset.x;
+				child->pos.y += offset.y;
+			}
+			for (Collider* collider : entity->colliders) {
+				collider->SetPosition(
+					{ collider->GetPosition().x + offset.x, collider->GetPosition().y + offset.y }
+				);
+			}
+		}
+	}
 }
 
 void Scene::Render() {
@@ -20,9 +64,24 @@ void Scene::Render() {
 	SDL_Texture* testTex = SDL_CreateTextureFromSurface(Game::renderer, testSurf);
 	SDL_FreeSurface(testSurf);
 	// draw img
-	DrawTexture(testTex, NULL);
+	DrawTexture(testTex);
 	SDL_DestroyTexture(testTex);
 	// End the test TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST
+
+	// sort entities by layer so that they render on top of eachother in the expected order
+	std::sort(entities.begin(), entities.end());
+
+	for (Entity* entity : entities) {
+		entity->Render();
+	}
+	if (Game::doRenderColliders) {
+		for (Entity* entity : entities) {
+			for (Collider* collider : entity->colliders) {
+				collider->RenderNarrowCollider();
+				collider->RenderBroadCollider();
+			}
+		}
+	}
 }
 
 int Scene::EntityPointerToIndex(Entity* entity) {
