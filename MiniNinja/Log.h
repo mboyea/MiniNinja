@@ -10,7 +10,8 @@
 enum LogType {
 	LOG = 0,
 	WARNING,
-	FAULT
+	FAULT,
+	SUCCESS
 };
 
 struct GameLog {

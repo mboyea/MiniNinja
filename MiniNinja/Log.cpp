@@ -18,6 +18,8 @@ SDL_Color GameLog::GetColor() {
 		return Colors::YELLOW;
 	case LogType::FAULT:
 		return Colors::RED;
+	case LogType::SUCCESS:
+		return Colors::LIME;
 	default:
 		return Colors::WHITE;
 	}

@@ -6,7 +6,7 @@ int main(int argc, char** argv) {
 		UpdateGame();
 		RenderGame();
 		PresentWindow();
-		LimitFramerate(60);
+		LimitFramerate(Game::targetFPS);
 	}
 	return 0;
 }

@@ -5,8 +5,6 @@
 #include "Colors.h"
 #include "Log.h"
 #include "Draw.h"
-#include "Textures.h"
-#include "Fonts.h"
 
 static SDL_Point windowDim;
 static SDL_Point viewportDim;
@@ -47,10 +45,6 @@ void InitWindow(std::string windowName, SDL_Point dim) {
 		// TODO: Log("Unable to create renderer: " + *SDL_GetError(), FAULT);
 		exit(1);
 	}
-
-	InitTextures();
-
-	InitFonts();
 }
 
 void HandleWindowEvents() {

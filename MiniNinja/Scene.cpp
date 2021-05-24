@@ -138,7 +138,7 @@ Scene* GetActiveScene() {
 
 bool SaveScene(Scene& scene, std::string filePath) {
 	filePath = ForceFileExtension(filePath, "zscne");
-	Log("Saving Scene to \"" + filePath + "\"");
+	Log("Saving Scene to \"" + filePath + "\" . . .");
 
 	std::ofstream ofStream(filePath);
 	if (!ofStream) {
@@ -152,7 +152,7 @@ bool SaveScene(Scene& scene, std::string filePath) {
 	activeScene = nullptr;
 
 	ofStream.close();
-	Log("Scene saved.");
+	Log("Scene saved.", SUCCESS);
 	return true;
 }
 
@@ -173,7 +173,7 @@ Scene* LoadScene(std::string filePath) {
 	activeScene = nullptr;
 
 	ifStream.close();
-	Log("Scene loaded.");
+	Log("Scene loaded.", SUCCESS);
 	return scene;
 }
 

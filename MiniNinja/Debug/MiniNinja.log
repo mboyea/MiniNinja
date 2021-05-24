@@ -1,4 +1,5 @@
-﻿  Console.cpp
-  Input.cpp
+﻿  Game.cpp
+  Time.cpp
+  main.cpp
   Generating Code...
   MiniNinja.vcxproj -> P:\C++\2021\MiniNinja\Debug\MiniNinja.exe

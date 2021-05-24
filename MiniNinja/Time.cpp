@@ -44,12 +44,12 @@ void LimitFramerate(uint32_t targetFPS) {
 
 		timeFrameEnd += timeToWait;
 		Game::dtms += timeToWait + (uint32_t)std::floor(timeRemainder);
-		Game::fps = targetFPS;
+		Game::currentFPS = targetFPS;
 	}
 	else {
 		timeRemainder = 0;
 		// TODO: check the logic of this, it feels sketchy
-		Game::fps = (int)std::ceil(1000.F / Game::dtms);
+		Game::currentFPS = (int)std::ceil(1000.F / Game::dtms);
 	}
 
 	// update dt
