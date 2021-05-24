@@ -14,5 +14,7 @@ bool IsKeyPressed(SDL_Scancode key);
 // TODO: MouseToWindowPos() & MouseToScenePos()
 // TODO: IsMouseDown(mouseButton) & IsMousePressed(int mouseButton)
 // TODO: MouseScrollWheelState()
+bool HasTextInputUpdated();
+void SetTextInputUpdated(bool textUpdated);
 
 #endif // !INPUT_H

@@ -7,6 +7,7 @@ const unsigned short MAX_SCANCODE = 285U;
 typedef std::array<bool, MAX_SCANCODE> KeyboardState;
 
 static std::string* ioTextTarget = nullptr;
+static bool hasTextUpdated = false;
 static char ignoreCharacter = '\n';
 static KeyboardState currentKeyState;
 static KeyboardState lastKeyState;
@@ -41,6 +42,7 @@ void StartTextInput(std::string* target, char ignoreChar) {
 	ClearInputBufferText();
 	ioTextTarget = target;
 	ignoreCharacter = ignoreChar;
+	hasTextUpdated = true;
 }
 
 void StopTextInput() {
@@ -78,20 +80,24 @@ void HandleInputEvents() {
 			case SDL_KEYDOWN:
 				// Backspace
 				if (event.key.keysym.sym == SDLK_BACKSPACE && ioTextTarget->size() > 0) {
+					hasTextUpdated = true;
 					ioTextTarget->pop_back();
 				}
 				// Copy Buffer Interactions
 				else if (SDL_GetModState() & KMOD_CTRL) {
 					// Copy
 					if (event.key.keysym.sym == SDLK_c) {
+						hasTextUpdated = true;
 						SDL_SetClipboardText(ioTextTarget->c_str());
 					}
 					// Paste
 					else if (event.key.keysym.sym == SDLK_v) {
+						hasTextUpdated = true;
 						*ioTextTarget += SDL_GetClipboardText();
 					}
 					// Cut
 					else if (event.key.keysym.sym == SDLK_x) {
+						hasTextUpdated = true;
 						SDL_SetClipboardText(ioTextTarget->c_str());
 						ioTextTarget->erase();
 					}
@@ -104,6 +110,7 @@ void HandleInputEvents() {
 			case SDL_TEXTINPUT:
 				// Text Input
 				if (!(event.text.text[0] == ignoreCharacter || SDL_GetModState() & KMOD_CTRL && (event.text.text[0] == 'c' || event.text.text[0] == 'C' || event.text.text[0] == 'v' || event.text.text[0] == 'V'))) {
+					hasTextUpdated = true;
 					*ioTextTarget += event.text.text;
 				}
 				break;
@@ -125,4 +132,12 @@ bool IsKeyDown(SDL_Scancode key) {
 
 bool IsKeyPressed(SDL_Scancode key) {
 	return currentKeyState[key] && !lastKeyState[key];
+}
+
+bool HasTextInputUpdated() {
+	return hasTextUpdated;
+}
+
+void SetTextInputUpdated(bool textUpdated) {
+	hasTextUpdated = textUpdated;
 }

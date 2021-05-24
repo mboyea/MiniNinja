@@ -33,25 +33,29 @@ void UpdateDebug() {
 }
 
 void RenderDebug() {
-	GetCurrentScene()->Render();
-	// Draw Console Background
-	SetDrawColor(Colors::BLACK);
-	DrawFilledRect({ 0, GetViewportDim().y - CONSOLE_HEIGHT, GetViewportDim().x, CONSOLE_HEIGHT });
-	// Draw Console Input Text
-	DrawFilledText(*Game::consoleInput, { 4, GetViewportDim().y - CONSOLE_HEIGHT }, GetDefaultFont());
-	// Draw Console Border
-	SetDrawColor(Colors::WHITE);
-	DrawRect({ 0, GetViewportDim().y - CONSOLE_HEIGHT, GetViewportDim().x, CONSOLE_HEIGHT });
-	// Draw Recent Logs
-	unsigned int logsToRender = (GetViewportDim().y - CONSOLE_HEIGHT) / 13;
-	for (unsigned int i = 1; i <= Game::logs.size() && i <= logsToRender; i++) {
-		GameLog& log = Game::logs[Game::logs.size() - i];
+	if (HasTextInputUpdated() || HasLogUpdated()) {
+		GetCurrentScene()->Render();
+		// Draw Console Background
+		SetDrawColor(Colors::BLACK);
+		DrawFilledRect({ 0, GetViewportDim().y - CONSOLE_HEIGHT, GetViewportDim().x, CONSOLE_HEIGHT });
+		// Draw Console Input Text
+		DrawFilledText(*Game::consoleInput, { 4, GetViewportDim().y - CONSOLE_HEIGHT }, GetDefaultFont());
+		// Draw Console Border
+		SetDrawColor(Colors::WHITE);
+		DrawRect({ 0, GetViewportDim().y - CONSOLE_HEIGHT, GetViewportDim().x, CONSOLE_HEIGHT });
+		// Draw Recent Logs
+		unsigned int logsToRender = (GetViewportDim().y - CONSOLE_HEIGHT) / 13;
+		for (unsigned int i = 1; i <= Game::logs.size() && i <= logsToRender; i++) {
+			GameLog& log = Game::logs[Game::logs.size() - i];
 
-		DrawFilledText(
-			log.AsText(),
-			{ 0, GetViewportDim().y - CONSOLE_HEIGHT - (int)(13 * i) },
-			GetDefaultFont(),
-			log.GetColor()
-		);
+			DrawFilledText(
+				log.AsText(),
+				{ 0, GetViewportDim().y - CONSOLE_HEIGHT - (int)(13 * i) },
+				GetDefaultFont(),
+				log.GetColor()
+			);
+		}
+		SetTextInputUpdated(false);
+		SetLogUpdated(false);
 	}
 }

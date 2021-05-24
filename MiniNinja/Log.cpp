@@ -1,5 +1,7 @@
 #include "Log.h"
 
+static bool hasUpdated = false;
+
 GameLog::GameLog(std::string text, LogType logType) : text(text), logType(logType) {
 	time = SDL_GetTicks();
 }
@@ -23,8 +25,17 @@ SDL_Color GameLog::GetColor() {
 
 void Log(std::string text, LogType logType) {
 	Game::logs.push_back(GameLog(text, logType));
+	hasUpdated = true;
 }
 
 void LogToFile(std::vector<GameLog> logs) {
 	// TODO: save the game log to a file
+}
+
+bool HasLogUpdated() {
+	return hasUpdated;
+}
+
+void SetLogUpdated(bool logUpdated) {
+	hasUpdated = logUpdated;
 }

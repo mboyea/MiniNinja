@@ -31,5 +31,7 @@ namespace Game {
 
 void Log(std::string text, LogType logType = LogType::LOG);
 void LogToFile(std::vector<GameLog> logs);
+bool HasLogUpdated();
+void SetLogUpdated(bool logUpdated);
 
 #endif // !LOG_H
