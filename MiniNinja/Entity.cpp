@@ -24,12 +24,12 @@ std::vector<Resource*> Entity::GetRequiredResources() {
 }
 
 std::ostream& Entity::Serialize(std::ostream& os) {
-	os << typeID << ' ' << pos.x << ' ' << pos.y << ' ' << renderLayer << ' ';
+	os << typeID << ' ' << std::to_string(pos.x) << ' ' << std::to_string(pos.y) << ' ' << renderLayer << ' ';
 	// Serialize Children
 	os << LIST_START << ' ';
-	if (GetCurrentSavingScene()) {
+	if (GetActiveScene()) {
 		for (unsigned int i = 0; i < children.size(); i++) {
-			os << std::to_string(GetCurrentSavingScene()->EntityPointerToIndex(children[i]));
+			os << std::to_string(GetActiveScene()->EntityPointerToIndex(children[i]));
 			os << ' ';
 			if (i < children.size() - 1) {
 				os << LIST_ITEM_END << ' ';
@@ -56,7 +56,7 @@ std::istream& Entity::Deserialize(std::istream& is) {
 	std::string throwaway = "";
 	is >> throwaway >> pos.x >> pos.y >> renderLayer;
 	// Deserialize Children
-
+	// TODO: store a list of indexes for each Entity within the active scene and once every Entity is loaded, set each Entity's children to the correct Entity* from the list of indexes
 	// Deserialize Colliders
 
 	return is;

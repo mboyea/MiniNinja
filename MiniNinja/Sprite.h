@@ -9,13 +9,18 @@
 class Sprite : public Entity {
 private:
 protected:
+	SDL_Point dim;
 public:
 	SDL_Texture* texture;
 
-	Sprite(SDL_Point pos = { 0, 0 }, int8_t renderLayer = 0, bool saveAsModule = false, std::string textureKey = "")
+	Sprite(SDL_Point pos = { 0, 0 }, int8_t renderLayer = 0, bool saveAsModule = false, std::string textureKey = "", SDL_Point dim = { 0, 0 })
 		: Entity(pos, renderLayer, saveAsModule), texture(GetTexture(textureKey)) {
 		typeID = __COUNTER__;
+		SetDimensions(dim);
 	};
+
+	void SetDimensionsByTexture();
+	void SetDimensions(SDL_Point dimensions);
 
 	virtual void Update() override;
 	virtual void Render() override;

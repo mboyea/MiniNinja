@@ -25,8 +25,7 @@ struct Scene {
 	std::istream& Deserialize(std::istream& is);
 };
 
-Scene* GetCurrentSavingScene();
-Scene* GetCurrentLoadingScene();
+Scene* GetActiveScene();
 bool SaveScene(Scene& scene, std::string filePath);
 Scene* LoadScene(std::string filePath);
 

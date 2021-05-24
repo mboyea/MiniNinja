@@ -8,8 +8,7 @@
 #include <fstream>
 #include "Files.h"
 
-static Scene* currentSavingScene = nullptr;
-static Scene* currentLoadingScene = nullptr;
+static Scene* activeScene = nullptr;
 
 Scene::~Scene() {
 	for (Entity* entity : entities) {
@@ -18,6 +17,7 @@ Scene::~Scene() {
 }
 
 void Scene::Update() {
+	activeScene = this;
 	// Updates
 	for (Entity* entity : entities) {
 		entity->lastPos = entity->pos;
@@ -61,6 +61,7 @@ void Scene::Update() {
 			}
 		}
 	}
+	activeScene = nullptr;
 }
 
 void Scene::Render() {
@@ -77,6 +78,7 @@ void Scene::Render() {
 	// sort entities by layer so that they render on top of eachother in the expected order
 	std::sort(entities.begin(), entities.end());
 
+	activeScene = this;
 	for (Entity* entity : entities) {
 		entity->Render();
 	}
@@ -90,6 +92,7 @@ void Scene::Render() {
 			}
 		}
 	}
+	activeScene = nullptr;
 }
 
 int Scene::EntityPointerToIndex(Entity* entity) {
@@ -126,18 +129,11 @@ std::istream& Scene::Deserialize(std::istream& is) {
 	return is;
 }
 
-Scene* GetCurrentSavingScene() {
-	if (!currentSavingScene) {
-		Log("No scene currently saving.", WARNING);
+Scene* GetActiveScene() {
+	if (!activeScene) {
+		Log("No active scene.", WARNING);
 	}
-	return currentSavingScene;
-}
-
-Scene* GetCurrentLoadingScene() {
-	if (!currentLoadingScene) {
-		Log("No scene currently loading.", WARNING);
-	}
-	return currentLoadingScene;
+	return activeScene;
 }
 
 bool SaveScene(Scene& scene, std::string filePath) {
@@ -151,9 +147,9 @@ bool SaveScene(Scene& scene, std::string filePath) {
 		return false;
 	}
 
-	currentSavingScene = &scene;
+	activeScene = &scene;
 	scene.Serialize(ofStream);
-	currentSavingScene = nullptr;
+	activeScene = nullptr;
 
 	ofStream.close();
 	Log("Scene saved.");
@@ -172,9 +168,9 @@ Scene* LoadScene(std::string filePath) {
 	}
 
 	Scene* scene = new Scene();
-	currentLoadingScene = scene;
+	activeScene = scene;
 	scene->Deserialize(ifStream);
-	currentLoadingScene = nullptr;
+	activeScene = nullptr;
 
 	ifStream.close();
 	Log("Scene loaded.");
