@@ -5,8 +5,8 @@
 #include "Window.h"
 #include "Log.h"
 
-static Scene emptyScene = Scene();
-static Scene* currentScene = &emptyScene;
+static Scene* emptyScene = new Scene();
+static Scene* currentScene = emptyScene;
 
 void HandleSwitchScene() {
 	if (IsKeyPressed(SDL_SCANCODE_ESCAPE)) {
@@ -33,7 +33,7 @@ void RenderScene() {
 	currentScene->Render();
 }
 
-bool SetCurrentScene(Scene* scene) {
+bool SetFocusScene(Scene* scene) {
 	if (!scene) {
 		Log("Failed to change active scene.", WARNING);
 		return false;
@@ -43,6 +43,6 @@ bool SetCurrentScene(Scene* scene) {
 	return true;
 }
 
-Scene* GetCurrentScene() {
+Scene* GetFocusScene() {
 	return currentScene;
 }

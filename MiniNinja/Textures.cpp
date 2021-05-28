@@ -57,7 +57,7 @@ bool LoadTexture(std::string filePath) {
 		return false;
 	}
 	SDL_FreeSurface(surf);
-	textures[RemoveFileExtension(RemoveFilePath(filePath))] = texture;
+	textures[GetFileName(filePath)] = texture;
     return true;
 }
 
@@ -89,7 +89,7 @@ SDL_Texture* GetTexture(std::string key) {
 	if (IsTexture(key)) {
 		return textures[key];
 	}
-	return nullptr;
+	return defaultTexture;
 }
 
 std::string GetKey(SDL_Texture* texture) {

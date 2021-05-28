@@ -17,14 +17,18 @@ template <typename T> T* Entity::GetAsType() {
 	return dynamic_cast<T*>(this);
 }
 
-std::vector<Resource*> Entity::GetRequiredResources() {
-	std::vector<Resource*> resources;
-	// TODO: outline required modules, fonts, textures, and animations
-	return resources;
+std::vector<Resource>& Entity::GetRequiredResources(std::vector<Resource>& resourcesOut) {
+	if (saveAsModule) {
+		resourcesOut.push_back(Resource(name, RESOURCE_MODULE));
+	}
+	return resourcesOut;
 }
 
 std::ostream& Entity::Serialize(std::ostream& os) {
-	os << typeID << ' ' << std::to_string(pos.x) << ' ' << std::to_string(pos.y) << ' ' << renderLayer << ' ';
+	if (saveAsModule) {
+		return os << MakeSerializable(name);
+	}
+	os << MakeSerializable(name) << ' ' << typeID << ' ' << std::to_string(pos.x) << ' ' << std::to_string(pos.y) << ' ' << std::to_string(renderLayer) << ' ';
 	// Serialize Children
 	os << LIST_START << ' ';
 	if (GetActiveScene()) {
@@ -54,7 +58,7 @@ std::ostream& Entity::Serialize(std::ostream& os) {
 }
 std::istream& Entity::Deserialize(std::istream& is) {
 	std::string throwaway = "";
-	is >> throwaway >> pos.x >> pos.y >> renderLayer;
+	is >> throwaway >> name >> pos.x >> pos.y >> renderLayer;
 	// Deserialize Children
 	// TODO: store a list of indexes for each Entity within the active scene and once every Entity is loaded, set each Entity's children to the correct Entity* from the list of indexes
 	// Deserialize Colliders

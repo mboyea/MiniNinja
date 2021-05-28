@@ -11,11 +11,11 @@ void HandleSwitchPause() {
 }
 
 void UpdatePause() {
-	GetCurrentScene()->Update();
+	GetFocusScene()->Update();
 }
 
 void RenderPause() {
-	GetCurrentScene()->Render();
+	GetFocusScene()->Render();
 	SetDrawColor({ 255, 0, 0 });
 	DrawLine({ 10, 10 }, { 50, 50 });
 	DrawLine({ 50, 10 }, { 10, 50 });

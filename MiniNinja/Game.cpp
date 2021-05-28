@@ -1,6 +1,40 @@
 #include "Game.h"
 #include "FocusStates.h"
 
+void SetGameFunctions();
+
+#include "Sprite.h"
+
+void InitGame() {
+	InitWindow("MiniNinja");
+	InitTextures();
+	InitFonts();
+	InitConsole();
+	if (!SetFocusScene(LoadScene("Scenes/scene"))) {
+		SetFocusScene(new Scene);
+	}
+	SetFocus(FOCUS_SCENE);
+	SetGameFunctions();
+	Log("Type \"help()\" for a list of functions.");
+
+	// TEST TEST TEST:
+	Sprite* sprite = new Sprite("", { 2, 2 });
+	GetFocusScene()->entities.push_back(sprite);
+	GetFocusScene()->camera.SetPos({ 0, 0 });
+}
+
+void UpdateGame() {
+	HandleWindowEvents();
+	HandleInputEvents();
+
+	HandleFocusSwitching();
+	UpdateFocus();
+}
+
+void RenderGame() {
+	RenderFocus();
+}
+
 void SetGameFunctions() {
 	SetFunction([](std::vector<std::string> args) {
 		if (args.size() == 1 && IsInteger(args[0])) {
@@ -22,29 +56,4 @@ void SetGameFunctions() {
 		return false;
 		}, "setwindowtitle"
 	);
-}
-
-void InitGame() {
-	InitWindow("MiniNinja");
-	InitTextures();
-	InitFonts();
-	InitConsole();
-	if (!SetCurrentScene(LoadScene("Scenes/scene"))) {
-		SetCurrentScene(new Scene);
-	}
-	SetFocus(FOCUS_SCENE);
-	Log("Type \"help()\" for a list of functions.");
-	SetGameFunctions();
-}
-
-void UpdateGame() {
-	HandleWindowEvents();
-	HandleInputEvents();
-
-	HandleFocusSwitching();
-	UpdateFocus();
-}
-
-void RenderGame() {
-	RenderFocus();
 }

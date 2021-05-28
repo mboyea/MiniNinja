@@ -13,8 +13,8 @@ protected:
 public:
 	SDL_Texture* texture;
 
-	Sprite(SDL_Point pos = { 0, 0 }, int8_t renderLayer = 0, bool saveAsModule = false, std::string textureKey = "", SDL_Point dim = { 0, 0 })
-		: Entity(pos, renderLayer, saveAsModule), texture(GetTexture(textureKey)) {
+	Sprite(std::string name, SDL_Point pos = { 0, 0 }, int8_t renderLayer = 0, bool saveAsModule = false, std::string textureKey = "", SDL_Point dim = { 0, 0 })
+		: Entity(name, pos, renderLayer, saveAsModule), texture(GetTexture(textureKey)) {
 		typeID = __COUNTER__;
 		SetDimensions(dim);
 	};
@@ -26,7 +26,7 @@ public:
 	virtual void Render() override;
 	virtual void OnCollision(Entity* collisionEntity) override;
 
-	virtual std::vector<Resource*> GetRequiredResources() override;
+	virtual std::vector<Resource>& GetRequiredResources(std::vector<Resource>& resourcesOut) override;
 	// Generate serialized text data for this entity into the stream
 	virtual std::ostream& Serialize(std::ostream& os) override;
 	// Populate this entity by deserializing text data from the stream

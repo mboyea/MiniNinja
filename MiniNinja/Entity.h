@@ -24,9 +24,10 @@ public:
 	std::vector<Collider*> colliders;
 	/* SAVING */
 	bool saveAsModule;
+	std::string name;
 
-	Entity(SDL_Point pos = { 0, 0 }, int8_t renderLayer = 0, bool saveAsModule = false)
-		: pos(pos), lastPos(pos), renderLayer(renderLayer), saveAsModule(saveAsModule) {}
+	Entity(std::string name, SDL_Point pos = { 0, 0 }, int8_t renderLayer = 0, bool saveAsModule = false)
+		: name(name), pos(pos), lastPos(pos), renderLayer(renderLayer), saveAsModule(saveAsModule) {}
 
 	virtual void Update();
 	virtual void Render();
@@ -36,12 +37,11 @@ public:
 	template <typename T> bool IsType();
 	template <typename T> T* GetAsType();
 
-	virtual std::vector<Resource*> GetRequiredResources();
+	virtual std::vector<Resource>& GetRequiredResources(std::vector<Resource>& resourcesOut);
 	// Generate serialized text data for this entity into the stream
 	virtual std::ostream& Serialize(std::ostream& os);
 	// Populate this entity by deserializing text data from the stream
 	virtual std::istream& Deserialize(std::istream& is);
-
 	bool operator<(const Entity& rhs);
 };
 

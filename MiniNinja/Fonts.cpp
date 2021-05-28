@@ -29,7 +29,7 @@ bool LoadFont(std::string filePath, int size) {
 		Log("Font \"" + filePath + "\" at size " + std::to_string(size) + " unable to load: " + (std::string)TTF_GetError(), WARNING);
 		return false;
 	}
-	Game::fonts[RemoveFileExtension(RemoveFilePath(filePath)) + '_' + std::to_string(size)] = font;
+	Game::fonts[GetFileName(filePath) + '_' + std::to_string(size)] = font;
 	return true;
 }
 

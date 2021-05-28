@@ -1,7 +1,7 @@
 #include "Collider.h"
 #include "Draw.h"
-#include "SceneFocus.h"
 #include "FileParameters.h"
+#include "Scene.h"
 
 bool Collider::IsBroadPhaseColliding(Collider* collider) {
 	return rect.x < collider->rect.x + collider->rect.w
@@ -21,7 +21,7 @@ bool Collider::IsColliding(Collider* collider) {
 }
 
 void Collider::RenderBroadCollider() {
-	DrawRect(SceneToViewport(rect, GetCurrentScene()));
+	DrawRect(SceneToViewport(rect, GetActiveScene()));
 }
 
 void Collider::RenderNarrowCollider() {}

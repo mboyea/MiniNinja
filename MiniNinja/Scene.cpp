@@ -8,6 +8,8 @@
 #include <fstream>
 #include "Files.h"
 
+#include "Sprite.h"
+
 static Scene* activeScene = nullptr;
 
 Scene::~Scene() {
@@ -65,9 +67,11 @@ void Scene::Update() {
 }
 
 void Scene::Render() {
+	activeScene = this;
+
 	// TODO: remove test image TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST
 	// get img
-	SDL_Surface* testSurf = IMG_Load("Textures/320x240.png");
+	SDL_Surface* testSurf = IMG_Load("Resources/Textures/320x240.png");
 	SDL_Texture* testTex = SDL_CreateTextureFromSurface(Game::renderer, testSurf);
 	SDL_FreeSurface(testSurf);
 	// draw img
@@ -78,7 +82,6 @@ void Scene::Render() {
 	// sort entities by layer so that they render on top of eachother in the expected order
 	std::sort(entities.begin(), entities.end());
 
-	activeScene = this;
 	for (Entity* entity : entities) {
 		entity->Render();
 	}
@@ -103,30 +106,83 @@ int Scene::EntityPointerToIndex(Entity* entity) {
 	return i - entities.begin();
 }
 
-std::vector<Resource*> Scene::GetRequiredResources() {
-	std::vector<Resource*> resources;
-	// TODO: outline required modules, fonts, textures, and animations
-	
-	//	std::vector<Resource*> baseResources = Entity::GetRequiredResources();
-	//	resources.reserve(resources.size() + baseResources.size());
-	//	resources.insert(resources.end(), baseResources.begin(), baseResources.end());
+std::vector<Resource> Scene::GetRequiredResources() {
+	std::vector<Resource> resources;
+	for (Entity* entity : entities) {
+		entity->GetRequiredResources(resources);
+	}
+	std::sort(resources.begin(), resources.end());
 	return resources;
 }
 
-std::ostream& Scene::Serialize(std::ostream& os) {
+std::ostream& Scene::Serialize(std::ostream& os, std::string moduleFolderPath) {
 	// Serialize Scene Version
+	os << SCENE_VERSION << '\n';
 	// Serialize Scene Camera
-	// Serialize Required Resources
-	// Serialize Scene Modules (external & internal Entities)
+	camera.Serialize(os) << '\n';
+	{ // Serialize Required Resources
+		int type = 0;
+		for (Resource resource : GetRequiredResources()) {
+			while (resource.type > type) {
+				type++;
+				os << '\n';
+			}
+			os << MakeSerializable(resource.name) << ' ';
+			if (type == RESOURCE_MODULE) {
+				// TODO: open file and store entity as module
+			}
+		}
+		os << '\n';
+	}
+	// Serialize Scene Entities
+	for (Entity* entity : entities) {
+		entity->Serialize(os);
+		os << '\n';
+	}
 	return os;
 }
 
-std::istream& Scene::Deserialize(std::istream& is) {
+bool Scene::Deserialize(std::istream& is, std::string moduleFolderPath, std::string textureFolderPath, std::string animationFolderPath, std::string fontFolderPath) {
+	//TODO: SWITCH TO GETLINE SWITCH TO GETLINE SWITCH TO GETLINE SWITCH TO GETLINE SWITCH TO GETLINE SWITCH TO GETLINE SWITCH TO GETLINE SWITCH TO GETLINE SWITCH TO GETLINE SWITCH TO GETLINE SWITCH TO GETLINE SWITCH TO GETLINE SWITCH TO GETLINE
 	// Switch Procedure Based Upon Scene Version
-	// Deserialize Scene Camera
-	// Deserialize Required Resources
-	// Deserialize Scene Modules (external & internal Entities)
-	return is;
+	std::string version;
+	is >> version;
+	if (version == SCENE_VERSION) {
+		// Deserialize Scene Camera
+		camera.Deserialize(is);
+		// Deserialize Required Resources
+		// Deserialize Scene Modules (external & internal Entities)
+		
+		//return true;
+	}
+	Log("Scene version unsupported.", WARNING);
+	return false;
+	/* REFERENCE FOR HOW TO LOOP AND DO SPECIFIC FOLDER ACCESS:
+	unsigned int type = 0;
+	std::string folder;
+	for (Resource resource : GetRequiredResources()) {
+		while (resource.type > type) {
+			type++;
+			os << '\n';
+			if (type == RESOURCE_MODULE) {
+				folder = moduleFolderPath;
+			}
+			else if (type == RESOURCE_TEXTURE) {
+				folder = textureFolderPath;
+			}
+			else if (type == RESOURCE_ANIMATION) {
+				folder = animationFolderPath;
+			}
+			else if (type == RESOURCE_FONT) {
+				folder = fontFolderPath;
+			}
+			else {
+				folder = "Error";
+			}
+		}
+		os << MakeSerializable(resource.name) << ' ';
+	}
+	os << '\n';*/
 }
 
 Scene* GetActiveScene() {
@@ -136,9 +192,11 @@ Scene* GetActiveScene() {
 	return activeScene;
 }
 
-bool SaveScene(Scene& scene, std::string filePath) {
+bool SaveScene(Scene& scene, std::string filePath, std::string moduleFolderPath) {
 	filePath = ForceFileExtension(filePath, "zscne");
 	Log("Saving Scene to \"" + filePath + "\" . . .");
+
+	// TODO: Ensure directory exists (std::filesystem)
 
 	std::ofstream ofStream(filePath);
 	if (!ofStream) {
@@ -148,7 +206,7 @@ bool SaveScene(Scene& scene, std::string filePath) {
 	}
 
 	activeScene = &scene;
-	scene.Serialize(ofStream);
+	scene.Serialize(ofStream, moduleFolderPath);
 	activeScene = nullptr;
 
 	ofStream.close();
@@ -156,7 +214,7 @@ bool SaveScene(Scene& scene, std::string filePath) {
 	return true;
 }
 
-Scene* LoadScene(std::string filePath) {
+Scene* LoadScene(std::string filePath, std::string moduleFolderPath, std::string textureFolderPath, std::string animationFolderPath, std::string fontFolderPath) {
 	filePath = ForceFileExtension(filePath, "zscne");
 	Log("Loading Scene from \"" + filePath + "\" . . .");
 
@@ -169,11 +227,12 @@ Scene* LoadScene(std::string filePath) {
 
 	Scene* scene = new Scene();
 	activeScene = scene;
-	scene->Deserialize(ifStream);
+	bool didSucceed = scene->Deserialize(ifStream, moduleFolderPath, textureFolderPath, animationFolderPath, fontFolderPath);
 	activeScene = nullptr;
 
 	ifStream.close();
-	Log("Scene loaded.", SUCCESS);
+	if (didSucceed) Log("Scene loaded.", SUCCESS);
+	else Log("Scene load failed.", WARNING);
 	return scene;
 }
 

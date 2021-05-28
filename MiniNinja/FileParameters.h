@@ -12,9 +12,6 @@ const char LIST_START = '[';
 const char LIST_END = ']';
 const char LIST_ITEM_END = ';';
 
-const char MODULE_END = '\n';
-const std::string FILE_END = "EOF";
-
 std::string MakeSerializable(std::string str);
 std::string DeserializeString(std::istream& is);
 

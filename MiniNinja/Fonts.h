@@ -10,7 +10,7 @@ namespace Game {
 	inline std::unordered_map<std::string, TTF_Font*> fonts;
 }
 
-bool InitFonts(std::string filePathDefault = "Fonts/m5x7.ttf", int sizeDefault = 16);
+bool InitFonts(std::string filePathDefault = "Resources/Fonts/m5x7.ttf", int sizeDefault = 16);
 
 TTF_Font* GetDefaultFont();
 bool LoadFont(std::string filePath, int size);

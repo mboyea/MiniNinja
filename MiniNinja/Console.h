@@ -20,6 +20,7 @@ void SetFunction(std::function<std::string(std::vector<std::string>)> func, std:
 void SetHelpPageSize(int lineCount);
 bool IsInteger(const std::string& str);
 bool ToBool(const std::string& str);
+std::string BoolToString(const bool& boolean);
 void InterpretConsoleInput(std::string* text = Game::consoleInput);
 
 #endif // !CONSOLE_H

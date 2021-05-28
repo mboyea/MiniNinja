@@ -34,7 +34,7 @@ void UpdateDebug() {
 
 void RenderDebug() {
 	if (HasTextInputUpdated() || HasLogUpdated()) {
-		GetCurrentScene()->Render();
+		GetFocusScene()->Render();
 		// Draw Console Background
 		SetDrawColor(Colors::BLACK);
 		DrawFilledRect({ 0, GetViewportDim().y - CONSOLE_HEIGHT, GetViewportDim().x, CONSOLE_HEIGHT });

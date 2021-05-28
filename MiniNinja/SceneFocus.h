@@ -9,7 +9,7 @@ void UpdateScene();
 void RenderScene();
 inline const FocusState* FOCUS_SCENE = new FocusState(UpdateScene, RenderScene, HandleSwitchScene);
 
-bool SetCurrentScene(Scene* scene);
-Scene* GetCurrentScene();
+bool SetFocusScene(Scene* scene);
+Scene* GetFocusScene();
 
 #endif // !SCENE_FOCUS_H

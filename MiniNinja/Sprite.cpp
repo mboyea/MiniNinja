@@ -29,13 +29,10 @@ void Sprite::Render() {
 
 void Sprite::OnCollision(Entity* collisionEntity) {}
 
-std::vector<Resource*> Sprite::GetRequiredResources() {
-	std::vector<Resource*> resources;
-	// TODO: outline required modules, fonts, textures, and animations
-	std::vector<Resource*> baseResources = Entity::GetRequiredResources();
-	resources.reserve(resources.size() + baseResources.size());
-	resources.insert(resources.end(), baseResources.begin(), baseResources.end());
-	return resources;
+std::vector<Resource>& Sprite::GetRequiredResources(std::vector<Resource>& resourcesOut) {
+	Entity::GetRequiredResources(resourcesOut);
+	resourcesOut.push_back(Resource(GetKey(texture), RESOURCE_TEXTURE));
+	return resourcesOut;
 }
 
 std::ostream& Sprite::Serialize(std::ostream& os) {

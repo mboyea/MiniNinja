@@ -2,6 +2,7 @@
 #include "Log.h"
 #include <unordered_map>
 #include <algorithm>
+#include "Collider.h"
 
 static uint8_t pageSize = 10;
 static std::unordered_map<std::string, std::function<bool(std::vector<std::string>)>> voidFuncs;
@@ -36,6 +37,18 @@ void InitConsole() {
 		}
 		return false;
 		}, "setlogconsoletofile"
+	);
+	SetFunction([](std::vector<std::string> args) {
+		if (args.size() == 1) {
+			Game::doRenderColliders = ToBool(args[0]);
+			return true;
+		}
+		return false;
+		}, "setdorendercolliders"
+	);
+	SetFunction([](std::vector<std::string> args) {
+		return BoolToString(Game::doRenderColliders);
+		}, "getdorendercolliders"
 	);
 }
 
@@ -113,6 +126,16 @@ bool ToBool(const std::string& str) {
 		return std::stoi(str);
 	}
 	return false;
+}
+
+std::string BoolToString(const bool& boolean) {
+	switch (boolean) {
+	case true:
+		return "True";
+	case false:
+		return "False";
+	}
+	return "BoolToString Failed";
 }
 
 std::vector<std::string> GetArgList(std::string& args) {

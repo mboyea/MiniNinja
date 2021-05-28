@@ -3,31 +3,25 @@
 #pragma once
 
 #include <iostream>
+#include <string>
 
-class Resource {
-private:
-protected:
-public:
-	// Generate serialized text data for this resource into the stream
-	virtual std::ostream& Serialize(std::ostream& os);
-	// Populate this resource by deserializing text data from the stream
-	virtual std::istream& Deserialize(std::istream& is);
+enum ResourceType {
+	RESOURCE_MODULE,
+	RESOURCE_TEXTURE,
+	RESOURCE_ANIMATION,
+	RESOURCE_FONT,
+	MAX_RESOURCE_TYPES
 };
 
-class ResourceModule : public Resource {
+struct Resource {
+	std::string name;
+	ResourceType type;
 
-};
+	Resource(std::string name, ResourceType type) : name(name), type(type) {}
 
-class ResourceTexture : public Resource {
-
-};
-
-class ResourceAnimation : public Resource {
-
-};
-
-class ResourceFont : public Resource {
-
+	friend std::ostream& operator<<(std::ostream& os, const Resource& rhs);
+	friend std::istream& operator>>(std::istream& is, Resource& rhs);
+	bool operator<(const Resource& rhs);
 };
 
 #endif // !RESOURCE_H
