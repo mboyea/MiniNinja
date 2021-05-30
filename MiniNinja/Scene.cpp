@@ -7,6 +7,7 @@
 #include "FileParameters.h"
 #include <fstream>
 #include "Files.h"
+#include <sstream>
 
 #include "Sprite.h"
 
@@ -134,10 +135,10 @@ std::ostream& Scene::Serialize(std::ostream& os, std::string moduleFolderPath) {
 		int type = 0;
 		for (Resource resource : GetRequiredResources()) {
 			while (type < resource.type) {
-				type++;
 				os << '\n';
+				type++;
 			}
-			os << MakeSerializable(resource.name) << ' ';
+			os << resource << ' ';
 		}
 		while (type < MAX_RESOURCE_TYPES - 1) {
 			type++;
@@ -174,46 +175,72 @@ std::ostream& Scene::Serialize(std::ostream& os, std::string moduleFolderPath) {
 }
 
 bool Scene::Deserialize(std::istream& is, std::string moduleFolderPath, std::string textureFolderPath, std::string animationFolderPath, std::string fontFolderPath) {
-	//TODO: SWITCH TO GETLINE SWITCH TO GETLINE SWITCH TO GETLINE SWITCH TO GETLINE SWITCH TO GETLINE SWITCH TO GETLINE SWITCH TO GETLINE SWITCH TO GETLINE SWITCH TO GETLINE SWITCH TO GETLINE SWITCH TO GETLINE SWITCH TO GETLINE SWITCH TO GETLINE
 	// Switch Procedure Based Upon Scene Version
-	std::string version;
-	is >> version;
-	if (version == SCENE_VERSION) {
-		// Deserialize Scene Camera
-		camera.Deserialize(is);
-		// Deserialize Required Resources
-		// Deserialize Scene Modules (external & internal Entities)
-		
-		//return true;
-	}
-	Log("Scene version unsupported.", WARNING);
-	return false;
-	/* REFERENCE FOR HOW TO LOOP AND DO SPECIFIC FOLDER ACCESS:
-	unsigned int type = 0;
-	std::string folder;
-	for (Resource resource : GetRequiredResources()) {
-		while (resource.type > type) {
-			type++;
-			os << '\n';
-			if (type == RESOURCE_MODULE) {
-				folder = moduleFolderPath;
+	std::string line;
+	std::getline(is, line);
+	if (line == SCENE_VERSION) {
+		{ // Deserialize Scene Camera
+			std::getline(is, line);
+			std::istringstream iStringStream(line);
+			camera.Deserialize(iStringStream);
+		}
+		{ // Deserialize Required Resources
+			std::set<Resource> resources;
+			for (int type = 0; type < MAX_RESOURCE_TYPES; type++) {
+				std::getline(is, line);
+				std::istringstream iStringStream(line);
+				Resource resource("", (ResourceType)type);
+				while (iStringStream >> resource) {
+					resources.insert(resource);
+				}
 			}
-			else if (type == RESOURCE_TEXTURE) {
-				folder = textureFolderPath;
-			}
-			else if (type == RESOURCE_ANIMATION) {
-				folder = animationFolderPath;
-			}
-			else if (type == RESOURCE_FONT) {
-				folder = fontFolderPath;
-			}
-			else {
-				folder = "Error";
+			if (!LoadResources(resources, moduleFolderPath, textureFolderPath, animationFolderPath, fontFolderPath)) {
+				Log("Some Scene resources failed to load.", FAULT);
 			}
 		}
-		os << MakeSerializable(resource.name) << ' ';
+		// Deserialize Scene Entities
+		// TODO: deserialize scene entities
+		Log("TODO: deserialize scene entities . . .", FAULT);
+		return true;
 	}
-	os << '\n';*/
+	else {
+		Log("Scene version unsupported.", WARNING);
+		return false;
+	}
+}
+
+bool Scene::LoadModule(std::string filePath) {
+	Log("Loading Module from \"" + filePath + "\" . . .");
+	// Ensure File Exists
+	if (!DoesPathExist(filePath)) {
+		Log("File does not exist.", WARNING);
+		Log("Module load failed.", FAULT);
+		return false;
+	}
+	// Open File
+	std::ifstream ifStream(filePath);
+	if (!ifStream) {
+		Log("File could not be opened.", WARNING);
+		Log("Module load failed.", FAULT);
+		return false;
+	}
+
+	// TODO: Load Entity from Module
+
+	/*
+	// Load Entity
+	std::string line;
+	std::getline(ifStream, line);
+	std::istringstream iStringStream(line);
+	// TODO: Get the entitiy ID and create the correct Enttiy from it
+	Entity* entity = new Entity("");
+	entity->Deserialize(iStringStream);
+	if (!entity) {
+		// TODO: log error
+		break;
+	}
+	GetActiveScene()->entities.push_back(entity);
+	*/
 }
 
 Scene* GetActiveScene() {
@@ -234,14 +261,14 @@ bool SaveScene(Scene* scene, std::string filePath, std::string moduleFolderPath)
 		}
 		else {
 			Log("Directory could not be created.", WARNING);
-			Log("Scene save failed.", WARNING);
+			Log("Scene save failed.", FAULT);
 		}
 	}
 
 	std::ofstream ofStream(filePath);
 	if (!ofStream) {
 		Log("Scene file could not be opened.", WARNING);
-		Log("Scene save failed.", WARNING);
+		Log("Scene save failed.", FAULT);
 		return false;
 	}
 
@@ -261,7 +288,7 @@ Scene* LoadScene(std::string filePath, std::string moduleFolderPath, std::string
 	std::ifstream ifStream(filePath);
 	if (!ifStream) {
 		Log("Scene file \"" + filePath + "\" could not be found.", WARNING);
-		Log("Scene load failed.", WARNING);
+		Log("Scene load failed.", FAULT);
 		return nullptr;
 	}
 
@@ -270,7 +297,7 @@ Scene* LoadScene(std::string filePath, std::string moduleFolderPath, std::string
 	if (scene->Deserialize(ifStream, moduleFolderPath, textureFolderPath, animationFolderPath, fontFolderPath)) {
 		Log("Scene loaded.", SUCCESS);
 	}
-	else Log("Scene load failed.", WARNING);
+	else Log("Scene load failed.", FAULT);
 	activeScene = nullptr;
 
 	ifStream.close();

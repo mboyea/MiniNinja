@@ -52,7 +52,7 @@
     <Filter Include="Game\Focus States">
       <UniqueIdentifier>{63067eaf-7e3b-441a-b3a4-a56984b6ab3e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Scene\Resource">
+    <Filter Include="Engine\Scene\Resources">
       <UniqueIdentifier>{1da99fb5-eb24-4195-a3f7-21b2b23f65ab}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -120,12 +120,6 @@
     <ClCompile Include="Console.cpp">
       <Filter>Engine\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="Fonts.cpp">
-      <Filter>Engine\Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Textures.cpp">
-      <Filter>Engine\Files</Filter>
-    </ClCompile>
     <ClCompile Include="Files.cpp">
       <Filter>Engine\Files</Filter>
     </ClCompile>
@@ -133,7 +127,13 @@
       <Filter>Engine\Files</Filter>
     </ClCompile>
     <ClCompile Include="Resource.cpp">
-      <Filter>Engine\Scene\Resource</Filter>
+      <Filter>Engine\Scene\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Fonts.cpp">
+      <Filter>Engine\Scene\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Textures.cpp">
+      <Filter>Engine\Scene\Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -203,12 +203,6 @@
     <ClInclude Include="Console.h">
       <Filter>Engine\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="Fonts.h">
-      <Filter>Engine\Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Textures.h">
-      <Filter>Engine\Files</Filter>
-    </ClInclude>
     <ClInclude Include="Files.h">
       <Filter>Engine\Files</Filter>
     </ClInclude>
@@ -216,7 +210,13 @@
       <Filter>Engine\Files</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>Engine\Scene\Resource</Filter>
+      <Filter>Engine\Scene\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Textures.h">
+      <Filter>Engine\Scene\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Fonts.h">
+      <Filter>Engine\Scene\Resources</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

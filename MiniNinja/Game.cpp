@@ -19,9 +19,9 @@ void InitGame() {
 	Log("Type \"help()\" for a list of functions.");
 
 	// TEST TEST TEST:
-	Sprite* sprite = new Sprite("spriteName", { 5, 5 });
-	GetFocusScene()->entities.push_back(sprite);
-	GetFocusScene()->camera.SetPos({ 0, 0 });
+	//	Sprite* sprite = new Sprite("player", { 5, 5 });
+	//	GetFocusScene()->entities.push_back(sprite);
+	//	GetFocusScene()->camera.SetPos({ 0, 0 });
 }
 
 void UpdateGame() {
@@ -48,6 +48,18 @@ void SetGameFunctions() {
 	SetFunction([](std::vector<std::string> args) {
 		return std::to_string(Game::targetFPS);
 		}, "getfps"
+	);
+	SetFunction([](std::vector<std::string> args) {
+		return std::to_string(GetWindowSize().x) + ", " + std::to_string(GetWindowSize().y);
+		}, "getwindowsize"
+	);
+	SetFunction([](std::vector<std::string> args) {
+		if (args.size() == 2 && IsInteger(args[0]) && IsInteger(args[1])) {
+			SetWindowSize({ std::stoi(args[0]), std::stoi(args[1]) });
+			return true;
+		}
+		return false;
+		}, "setwindowsize"
 	);
 	SetFunction([](std::vector<std::string> args) {
 		if (args.size() == 1) {

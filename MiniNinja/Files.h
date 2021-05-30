@@ -3,7 +3,7 @@
 #pragma once
 
 #include <string>
-#include <vector>
+#include <set>
 
 bool IsFileExtension(std::string filePath, std::string extension);
 std::string GetFileExtension(std::string filePath);
@@ -19,8 +19,8 @@ std::string ForceFilePath(std::string fileName, std::string directory, std::stri
 bool DoesPathExist(std::string folderPath);
 // return true if the directory had to be created; otherwise, return false
 bool ForceDirectoryExistence(std::string folderPath);
-std::vector<std::string> GetFilesInDirectory(std::string folderPath);
-std::vector<std::string> GetFilesWithExtension(std::string folderPath, std::string extension);
-std::vector<std::string> GetFilesWithExtension(std::vector<std::string> filePaths, std::string extension);
+std::set<std::string> GetFilesInDirectory(std::string folderPath);
+std::set<std::string> GetFilesWithExtension(std::string folderPath, std::string extension);
+std::set<std::string> GetFilesWithExtension(std::set<std::string> filePaths, std::string extension);
 
 #endif // !FILES_H

@@ -3,6 +3,7 @@
 #include "Draw.h"
 #include "Files.h"
 #include "Log.h"
+#include <set>
 
 static SDL_Texture* defaultTexture = nullptr;
 static std::unordered_map<std::string, SDL_Texture*> textures;
@@ -62,8 +63,8 @@ bool LoadTexture(std::string filePath) {
 }
 
 void LoadTexturesFromDirectory(std::string folderPath) {
-	std::vector<std::string> files = GetFilesWithExtension(GetFilesInDirectory(folderPath), "png");
-	for (auto file : files) {
+	std::set<std::string> files = GetFilesWithExtension(GetFilesInDirectory(folderPath), "png");
+	for (std::string file : files) {
 		LoadTexture(file);
 	}
 }

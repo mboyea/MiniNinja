@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <string>
+#include <set>
 
 enum ResourceType {
 	RESOURCE_MODULE,
@@ -21,8 +22,11 @@ struct Resource {
 
 	friend std::ostream& operator<<(std::ostream& os, const Resource& rhs);
 	friend std::istream& operator>>(std::istream& is, Resource& rhs);
+	std::string GetType();
+	std::string GetFilePath(std::string moduleFolderPath, std::string textureFolderPath, std::string animationFolderPath, std::string fontFolderPath);
 };
-
 bool operator<(const Resource& lhs, const Resource& rhs);
+bool LoadResource(Resource resource, std::string moduleFolderPath = "Resources/Modules", std::string textureFolderPath = "Resource/Textures", std::string animationFolderPath = "Resources/Animations", std::string fontFolderPath = "Resources/Fonts");
+bool LoadResources(std::set<Resource> resources, std::string moduleFolderPath = "Resources/Modules", std::string textureFolderPath = "Resource/Textures", std::string animationFolderPath = "Resources/Animations", std::string fontFolderPath = "Resources/Fonts");
 
 #endif // !RESOURCE_H

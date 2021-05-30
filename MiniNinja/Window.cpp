@@ -59,6 +59,7 @@ void HandleWindowEvents() {
 			if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
 				windowDim = { event.window.data1, event.window.data2 };
 				RecalculateViewportRect();
+				// TODO: paint letterbox color & re-render window
 			}
 			break;
 		default:
@@ -101,9 +102,11 @@ void SetWindowIcon(std::string filePath) {
 }
 
 void SetWindowSize(SDL_Point dimensions) {
-	windowDim = dimensions;
 	SDL_SetWindowSize(Game::window, dimensions.x, dimensions.y);
-	// TODO: paint letterbox color
+}
+
+SDL_Point GetWindowSize() {
+	return windowDim;
 }
 
 void SetRenderTarget(SDL_Texture* target) {

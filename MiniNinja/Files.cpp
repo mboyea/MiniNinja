@@ -122,23 +122,23 @@ bool ForceDirectoryExistence(std::string folderPath) {
 	return std::filesystem::create_directory(folderPath);
 }
 
-std::vector<std::string> GetFilesInDirectory(std::string folderPath) {
-	std::vector<std::string> files;
+std::set<std::string> GetFilesInDirectory(std::string folderPath) {
+	std::set<std::string> files;
 	for (const auto& file : std::filesystem::directory_iterator(folderPath)) {
-		files.push_back(file.path().string());
+		files.insert(file.path().string());
 	}
 	return files;
 }
 
-std::vector<std::string> GetFilesWithExtension(std::string folderPath, std::string extension) {
+std::set<std::string> GetFilesWithExtension(std::string folderPath, std::string extension) {
 	return GetFilesWithExtension(GetFilesInDirectory(folderPath), extension);
 }
 
-std::vector<std::string> GetFilesWithExtension(std::vector<std::string> files, std::string extension) {
-	std::vector<std::string> extensionFiles;
+std::set<std::string> GetFilesWithExtension(std::set<std::string> files, std::string extension) {
+	std::set<std::string> extensionFiles;
 	for (std::string file : files) {
 		if (IsFileExtension(file, extension)) {
-			extensionFiles.push_back(file);
+			extensionFiles.insert(file);
 		}
 	}
 	return extensionFiles;
