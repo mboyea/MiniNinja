@@ -3,6 +3,7 @@
 #include "Draw.h"
 #include "Scene.h"
 #include "Log.h"
+#include "Input.h"
 
 void Sprite::SetDimensionsByTexture() {
 	SDL_Point dimensions = { 0, 0 };
@@ -20,7 +21,20 @@ void Sprite::SetDimensions(SDL_Point dimensions) {
 	dim = dimensions;
 }
 
-void Sprite::Update() {}
+void Sprite::Update() {
+	if (IsKeyDown(SDL_SCANCODE_W)) {
+		pos.y = pos.y - 1;
+	}
+	if (IsKeyDown(SDL_SCANCODE_S)) {
+		pos.y = pos.y + 1;
+	}
+	if (IsKeyDown(SDL_SCANCODE_A)) {
+		pos.x = pos.x - 1;
+	}
+	if (IsKeyDown(SDL_SCANCODE_D)) {
+		pos.x = pos.x + 1;
+	}
+}
 
 void Sprite::Render() {
 	SDL_Rect rect = SceneToViewport({ pos.x, pos.y, dim.x, dim.y }, GetActiveScene());
@@ -29,15 +43,18 @@ void Sprite::Render() {
 
 void Sprite::OnCollision(Entity* collisionEntity) {}
 
-std::vector<Resource>& Sprite::GetRequiredResources(std::vector<Resource>& resourcesOut) {
+std::set<Resource>& Sprite::GetRequiredResources(std::set<Resource>& resourcesOut) {
 	Entity::GetRequiredResources(resourcesOut);
-	resourcesOut.push_back(Resource(GetKey(texture), RESOURCE_TEXTURE));
+	std::string key = GetKey(texture);
+	if (key != "") {
+		resourcesOut.insert(Resource(key, RESOURCE_TEXTURE));
+	}
 	return resourcesOut;
 }
 
 std::ostream& Sprite::Serialize(std::ostream& os) {
 	Entity::Serialize(os);
-	os << ' ' << MakeSerializable(GetKey(texture)) << ' ' << std::to_string(dim.x) << ' ' << std::to_string(dim.y);
+	os << ' ' << MakeSerializable(GetKey(texture)) << ' ' << dim.x << ' ' << dim.y;
 	return os;
 }
 

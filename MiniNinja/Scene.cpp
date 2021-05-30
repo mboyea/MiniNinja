@@ -106,16 +106,26 @@ int Scene::EntityPointerToIndex(Entity* entity) {
 	return i - entities.begin();
 }
 
-std::vector<Resource> Scene::GetRequiredResources() {
-	std::vector<Resource> resources;
+std::set<Resource> Scene::GetRequiredResources() {
+	std::set<Resource> resources;
 	for (Entity* entity : entities) {
 		entity->GetRequiredResources(resources);
 	}
-	std::sort(resources.begin(), resources.end());
 	return resources;
 }
 
 std::ostream& Scene::Serialize(std::ostream& os, std::string moduleFolderPath) {
+	// Initialize
+	if (!DoesPathExist(moduleFolderPath)) {
+		Log("Directory \"" + moduleFolderPath + " does not exist.", WARNING);
+		if (ForceDirectoryExistence(moduleFolderPath)) {
+			Log("Directory Created");
+		}
+		else {
+			Log("Directory could not be created.", WARNING);
+			Log("Modules will be saved within the scene.", WARNING);
+		}
+	}
 	// Serialize Scene Version
 	os << SCENE_VERSION << '\n';
 	// Serialize Scene Camera
@@ -123,20 +133,41 @@ std::ostream& Scene::Serialize(std::ostream& os, std::string moduleFolderPath) {
 	{ // Serialize Required Resources
 		int type = 0;
 		for (Resource resource : GetRequiredResources()) {
-			while (resource.type > type) {
+			while (type < resource.type) {
 				type++;
 				os << '\n';
 			}
 			os << MakeSerializable(resource.name) << ' ';
-			if (type == RESOURCE_MODULE) {
-				// TODO: open file and store entity as module
-			}
+		}
+		while (type < MAX_RESOURCE_TYPES - 1) {
+			type++;
+			os << '\n';
 		}
 		os << '\n';
 	}
 	// Serialize Scene Entities
 	for (Entity* entity : entities) {
-		entity->Serialize(os);
+		if (entity->saveAsModule) {
+			os << MakeSerializable(entity->name);
+
+			std::string filePath = ForceFilePath(entity->name, moduleFolderPath, "zmdle");
+			Log("Saving Module to \"" + filePath + "\" . . .");
+			std::ofstream ofStream(filePath);
+			if (!ofStream) {
+				Log("Module file could not be opened.", WARNING);
+				Log("Entity data saved after module name.", WARNING);
+				os << ' ';
+				entity->Serialize(os);
+				os << '\n';
+				continue;
+			}
+
+			entity->Serialize(ofStream);
+
+			ofStream.close();
+			Log("Module saved.", SUCCESS);
+		}
+		else entity->Serialize(os);
 		os << '\n';
 	}
 	return os;
@@ -192,21 +223,30 @@ Scene* GetActiveScene() {
 	return activeScene;
 }
 
-bool SaveScene(Scene& scene, std::string filePath, std::string moduleFolderPath) {
+bool SaveScene(Scene* scene, std::string filePath, std::string moduleFolderPath) {
 	filePath = ForceFileExtension(filePath, "zscne");
 	Log("Saving Scene to \"" + filePath + "\" . . .");
 
-	// TODO: Ensure directory exists (std::filesystem)
+	if (!DoesPathExist(GetFileDirectory(filePath))) {
+		Log("Directory \"" + GetFileDirectory(filePath) + "\" does not exist.", WARNING);
+		if (ForceDirectoryExistence(GetFileDirectory(filePath))) {
+			Log("Directory created.");
+		}
+		else {
+			Log("Directory could not be created.", WARNING);
+			Log("Scene save failed.", WARNING);
+		}
+	}
 
 	std::ofstream ofStream(filePath);
 	if (!ofStream) {
-		Log("Scene file \"" + filePath + "\" could not be opened.", WARNING);
+		Log("Scene file could not be opened.", WARNING);
 		Log("Scene save failed.", WARNING);
 		return false;
 	}
 
-	activeScene = &scene;
-	scene.Serialize(ofStream, moduleFolderPath);
+	activeScene = scene;
+	scene->Serialize(ofStream, moduleFolderPath);
 	activeScene = nullptr;
 
 	ofStream.close();
@@ -227,12 +267,13 @@ Scene* LoadScene(std::string filePath, std::string moduleFolderPath, std::string
 
 	Scene* scene = new Scene();
 	activeScene = scene;
-	bool didSucceed = scene->Deserialize(ifStream, moduleFolderPath, textureFolderPath, animationFolderPath, fontFolderPath);
+	if (scene->Deserialize(ifStream, moduleFolderPath, textureFolderPath, animationFolderPath, fontFolderPath)) {
+		Log("Scene loaded.", SUCCESS);
+	}
+	else Log("Scene load failed.", WARNING);
 	activeScene = nullptr;
 
 	ifStream.close();
-	if (didSucceed) Log("Scene loaded.", SUCCESS);
-	else Log("Scene load failed.", WARNING);
 	return scene;
 }
 

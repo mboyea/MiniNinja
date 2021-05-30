@@ -8,6 +8,6 @@ std::istream& operator>>(std::istream& is, Resource& rhs) {
 	return is >> rhs.name;
 }
 
-bool Resource::operator<(const Resource& rhs) {
-	return type < rhs.type;
+bool operator<(const Resource& lhs, const Resource& rhs) {
+	return lhs.type < rhs.type;
 }

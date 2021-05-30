@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "FocusStates.h"
+#include "Files.h"
 
 void SetGameFunctions();
 
@@ -18,7 +19,7 @@ void InitGame() {
 	Log("Type \"help()\" for a list of functions.");
 
 	// TEST TEST TEST:
-	Sprite* sprite = new Sprite("", { 2, 2 });
+	Sprite* sprite = new Sprite("spriteName", { 5, 5 });
 	GetFocusScene()->entities.push_back(sprite);
 	GetFocusScene()->camera.SetPos({ 0, 0 });
 }
@@ -55,5 +56,23 @@ void SetGameFunctions() {
 		}
 		return false;
 		}, "setwindowtitle"
+	);
+	SetFunction([](std::vector<std::string> args) {
+		if (args.size() == 1) {
+			return SaveScene(GetFocusScene(), ForceFileDirectory(args[0], "Scenes"));
+		}
+		return false;
+		}, "savescene"
+	);
+	SetFunction([](std::vector<std::string> args) {
+		if (args.size() == 1) {
+			Scene* oldScene = GetFocusScene();
+			if (SetFocusScene(LoadScene(ForceFileDirectory(args[0], "Scenes")))) {
+				delete oldScene;
+				return true;
+			}
+		}
+		return false;
+		}, "loadscene"
 	);
 }

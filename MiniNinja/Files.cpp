@@ -29,7 +29,7 @@ std::string ForceFileExtension(std::string filePath, std::string extension) {
 	if (extension[0] == '.') {
 		extension.erase(extension.begin() + 0);
 	}
-	RemoveFileExtension(filePath);
+	filePath = RemoveFileExtension(filePath);
 	return filePath + '.' + extension;
 }
 
@@ -110,9 +110,16 @@ std::string GetFileName(std::string filePath) {
 	return RemoveFileExtension(RemoveFileDirectory(filePath));
 }
 
+std::string ForceFilePath(std::string fileName, std::string directory, std::string extension) {
+	return ForceFileExtension(ForceFileDirectory(fileName, directory), extension);
+}
+
+bool DoesPathExist(std::string folderPath) {
+	return std::filesystem::exists(folderPath);
+}
+
 bool ForceDirectoryExistence(std::string folderPath) {
-	// TOOD: use std::filesystem to force ensure the existence of a folder
-	return false;
+	return std::filesystem::create_directory(folderPath);
 }
 
 std::vector<std::string> GetFilesInDirectory(std::string folderPath) {

@@ -21,7 +21,8 @@ struct Resource {
 
 	friend std::ostream& operator<<(std::ostream& os, const Resource& rhs);
 	friend std::istream& operator>>(std::istream& is, Resource& rhs);
-	bool operator<(const Resource& rhs);
 };
+
+bool operator<(const Resource& lhs, const Resource& rhs);
 
 #endif // !RESOURCE_H

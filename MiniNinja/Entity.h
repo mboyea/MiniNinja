@@ -5,6 +5,7 @@
 #include <SDL.h>
 #include <cstdint>
 #include <vector>
+#include <set>
 #include <iostream>
 #include "Collider.h"
 #include "Resource.h"
@@ -37,7 +38,7 @@ public:
 	template <typename T> bool IsType();
 	template <typename T> T* GetAsType();
 
-	virtual std::vector<Resource>& GetRequiredResources(std::vector<Resource>& resourcesOut);
+	virtual std::set<Resource>& GetRequiredResources(std::set<Resource>& resourcesOut);
 	// Generate serialized text data for this entity into the stream
 	virtual std::ostream& Serialize(std::ostream& os);
 	// Populate this entity by deserializing text data from the stream

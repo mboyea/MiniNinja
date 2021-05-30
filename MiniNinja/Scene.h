@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <vector>
+#include <set>
 #include "Entity.h"
 #include "Camera.h"
 #include "Resource.h"
@@ -22,7 +23,7 @@ struct Scene {
 	void Render();
 	int EntityPointerToIndex(Entity* entity);
 
-	std::vector<Resource> GetRequiredResources();
+	std::set<Resource> GetRequiredResources();
 	// Generate serialized text data for this scene into the stream
 	std::ostream& Serialize(std::ostream& os, std::string moduleFolderPath = "Resources/Modules");
 	// Populate this scene by deserializing text data from the stream
@@ -31,7 +32,7 @@ struct Scene {
 
 // Return the Scene which is currently calling Update(), Render(), SaveScene(), or LoadScene(); otherwise, return nullptr.
 Scene* GetActiveScene();
-bool SaveScene(Scene& scene, std::string filePath, std::string moduleFolderPath = "Resources/Modules");
+bool SaveScene(Scene* scene, std::string filePath, std::string moduleFolderPath = "Resources/Modules");
 Scene* LoadScene(std::string filePath, std::string moduleFolderPath = "Resources/Modules", std::string textureFolderPath = "Resource/Textures", std::string animationFolderPath = "Resources/Animations", std::string fontFolderPath = "Resources/Fonts");
 
 SDL_Point SceneToViewport(SDL_Point pos, Scene* scene);
