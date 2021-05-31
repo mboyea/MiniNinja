@@ -24,7 +24,7 @@ struct Scene {
 	int EntityPointerToIndex(Entity* entity);
 
 	std::set<Resource> GetRequiredResources();
-	bool LoadModule(std::string filePath);
+	bool LoadModule(std::string filePath, std::string moduleFolderPath = "Resources/Modules");
 	// Generate serialized text data for this scene into the stream
 	std::ostream& Serialize(std::ostream& os, std::string moduleFolderPath = "Resources/Modules");
 	// Populate this scene by deserializing text data from the stream

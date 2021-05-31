@@ -28,17 +28,12 @@ std::ostream& Entity::Serialize(std::ostream& os) {
 	os << typeID << ' ' << pos.x << ' ' << pos.y << ' ' << std::to_string(renderLayer) << ' ';
 	// Serialize Children
 	os << LIST_START << ' ';
-	if (GetActiveScene()) {
-		for (unsigned int i = 0; i < children.size(); i++) {
-			os << std::to_string(GetActiveScene()->EntityPointerToIndex(children[i]));
-			os << ' ';
-			if (i < children.size() - 1) {
-				os << LIST_ITEM_END << ' ';
-			}
+	for (unsigned int i = 0; i < children.size(); i++) {
+		os << std::to_string(GetActiveScene()->EntityPointerToIndex(children[i]));
+		os << ' ';
+		if (i < children.size() - 1) {
+			os << LIST_ITEM_END << ' ';
 		}
-	}
-	else {
-		Log("Entity children could not be saved.", FAULT);
 	}
 	os << LIST_END << ' ';
 	// Serialize Colliders
@@ -54,12 +49,62 @@ std::ostream& Entity::Serialize(std::ostream& os) {
 	return os;
 }
 std::istream& Entity::Deserialize(std::istream& is) {
-	std::string throwaway = "";
-	is >> throwaway >> pos.x >> pos.y >> renderLayer;
+	std::string str = "";
+	is >> str >> pos.x >> pos.y >> str;
+	renderLayer = std::stoi(str);
 	// Deserialize Children
-	// TODO: store a list of indexes for each Entity within the active scene and once every Entity is loaded, set each Entity's children to the correct Entity* from the list of indexes
+	char listStart;
+	is >> listStart;
+	if (listStart != LIST_START) {
+		Log("Tried to deserialize data into a vector that did not begin with " + LIST_START, WARNING);
+		return is;
+	}
+	bool isParsingList = true;
+	while (isParsingList) {
+		std::string element;
+		while (true) {
+			std::string elementItem;
+			is >> elementItem;
+			if (elementItem[0] == LIST_END || is.eof()) {
+				isParsingList = false;
+				break;
+			}
+			if (elementItem[0] == LIST_ITEM_END) {
+				break;
+			}
+			if (element != "") {
+				element += ' ';
+			}
+			element += elementItem;
+		}
+		if (element != "") {
+			// TODO: store a list of indexes for each Entity within the active scene and once every Entity is loaded, set each Entity's children to the correct Entity* from the list of indexes
+		}
+	}
 	// Deserialize Colliders
-
+	isParsingList = true;
+	while (isParsingList) {
+		std::string element;
+		while (true) {
+			std::string elementItem;
+			is >> elementItem;
+			if (elementItem[0] == LIST_END || is.eof()) {
+				isParsingList = false;
+				break;
+			}
+			if (elementItem[0] == LIST_ITEM_END) {
+				break;
+			}
+			if (element != "") {
+				element += ' ';
+			}
+			element += elementItem;
+		}
+		if (element != "") {
+			// TODO: Collider* collider = DeserializeLineToCollider(element);
+			// TODO: colliders.push_back(collider);
+		}
+	}
 	return is;
 }
 

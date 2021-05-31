@@ -14,5 +14,6 @@ const char LIST_ITEM_END = ';';
 
 std::string MakeSerializable(std::string str);
 std::string DeserializeString(std::istream& is);
+std::string DeserializeString(std::string str);
 
 #endif // !FILE_PARAMETERS_H

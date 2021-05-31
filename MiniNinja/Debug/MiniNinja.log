@@ -1,13 +1,2 @@
-﻿  Camera.cpp
-  DebugFocus.cpp
-  Draw.cpp
-  Game.cpp
-  Scene.cpp
-  SceneFocus.cpp
-  Textures.cpp
-  Time.cpp
-  Window.cpp
-  main.cpp
-  Generating Code...
-P:\C++\2021\MiniNinja\MiniNinja\Scene.cpp(244): warning C4715: 'Scene::LoadModule': not all control paths return a value
+﻿  Entity.cpp
   MiniNinja.vcxproj -> P:\C++\2021\MiniNinja\Debug\MiniNinja.exe

@@ -8,8 +8,7 @@
 #include <fstream>
 #include "Files.h"
 #include <sstream>
-
-#include "Sprite.h"
+#include "Entities.h"
 
 static Scene* activeScene = nullptr;
 
@@ -124,7 +123,7 @@ std::ostream& Scene::Serialize(std::ostream& os, std::string moduleFolderPath) {
 		}
 		else {
 			Log("Directory could not be created.", WARNING);
-			Log("Modules will be saved within the scene.", WARNING);
+			Log("Modules will not be saved.", FAULT);
 		}
 	}
 	// Serialize Scene Version
@@ -149,17 +148,12 @@ std::ostream& Scene::Serialize(std::ostream& os, std::string moduleFolderPath) {
 	// Serialize Scene Entities
 	for (Entity* entity : entities) {
 		if (entity->saveAsModule) {
-			os << MakeSerializable(entity->name);
-
 			std::string filePath = ForceFilePath(entity->name, moduleFolderPath, "zmdle");
 			Log("Saving Module to \"" + filePath + "\" . . .");
 			std::ofstream ofStream(filePath);
 			if (!ofStream) {
 				Log("Module file could not be opened.", WARNING);
-				Log("Entity data saved after module name.", WARNING);
-				os << ' ';
-				entity->Serialize(os);
-				os << '\n';
+				Log("Module Entity data lost.", FAULT);
 				continue;
 			}
 
@@ -168,8 +162,10 @@ std::ostream& Scene::Serialize(std::ostream& os, std::string moduleFolderPath) {
 			ofStream.close();
 			Log("Module saved.", SUCCESS);
 		}
-		else entity->Serialize(os);
-		os << '\n';
+		else {
+			entity->Serialize(os);
+			os << '\n';
+		}
 	}
 	return os;
 }
@@ -198,9 +194,11 @@ bool Scene::Deserialize(std::istream& is, std::string moduleFolderPath, std::str
 				Log("Some Scene resources failed to load.", FAULT);
 			}
 		}
-		// Deserialize Scene Entities
-		// TODO: deserialize scene entities
-		Log("TODO: deserialize scene entities . . .", FAULT);
+		{ // Deserialize Scene Entities
+			while (std::getline(is, line)) {
+				GetActiveScene()->entities.push_back(DeserializeLineToEntity(line));
+			}
+		}
 		return true;
 	}
 	else {
@@ -209,7 +207,8 @@ bool Scene::Deserialize(std::istream& is, std::string moduleFolderPath, std::str
 	}
 }
 
-bool Scene::LoadModule(std::string filePath) {
+bool Scene::LoadModule(std::string name, std::string moduleFolderPath) {
+	std::string filePath = ForceFilePath(name, moduleFolderPath, ".zmdle");
 	Log("Loading Module from \"" + filePath + "\" . . .");
 	// Ensure File Exists
 	if (!DoesPathExist(filePath)) {
@@ -224,23 +223,10 @@ bool Scene::LoadModule(std::string filePath) {
 		Log("Module load failed.", FAULT);
 		return false;
 	}
-
-	// TODO: Load Entity from Module
-
-	/*
-	// Load Entity
+	// Load Entity From Module
 	std::string line;
 	std::getline(ifStream, line);
-	std::istringstream iStringStream(line);
-	// TODO: Get the entitiy ID and create the correct Enttiy from it
-	Entity* entity = new Entity("");
-	entity->Deserialize(iStringStream);
-	if (!entity) {
-		// TODO: log error
-		break;
-	}
-	GetActiveScene()->entities.push_back(entity);
-	*/
+	GetActiveScene()->entities.push_back(DeserializeLineToEntity(line));
 }
 
 Scene* GetActiveScene() {

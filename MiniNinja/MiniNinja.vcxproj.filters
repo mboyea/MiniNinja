@@ -135,6 +135,9 @@
     <ClCompile Include="Textures.cpp">
       <Filter>Engine\Scene\Resources</Filter>
     </ClCompile>
+    <ClCompile Include="Entities.cpp">
+      <Filter>Engine\Scene\Entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FocusState.h">
@@ -217,6 +220,9 @@
     </ClInclude>
     <ClInclude Include="Fonts.h">
       <Filter>Engine\Scene\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities.h">
+      <Filter>Engine\Scene\Entity</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

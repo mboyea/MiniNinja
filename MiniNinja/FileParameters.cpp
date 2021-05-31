@@ -21,3 +21,18 @@ std::string DeserializeString(std::istream& is) {
 	}
 	return str.substr(1, str.size() - 2);
 }
+
+std::string DeserializeString(std::string str) {
+	if (str[0] != TEXT_START) {
+		Log("Deserialized text not wrapped between TEXT_START & TEXT_END: " + str, WARNING);
+		return str;
+	}
+	if (str.back() == TEXT_END) {
+		return str.substr(1, str.size() - 2);
+	}
+	for (auto it = str.crbegin(); it != str.crend(); it++) {
+		if (*it == TEXT_END) {
+			return str.substr(1, str.size() - (it - str.crbegin()) - 1);
+		}
+	}
+}
