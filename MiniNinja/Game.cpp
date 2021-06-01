@@ -19,9 +19,8 @@ void InitGame() {
 	Log("Type \"help()\" for a list of functions.");
 
 	// TEST TEST TEST:
-	//	Sprite* sprite = new Sprite("player", { 5, 5 });
-	//	GetFocusScene()->entities.push_back(sprite);
-	//	GetFocusScene()->camera.SetPos({ 0, 0 });
+	Sprite* sprite = new Sprite("player", { 5, 5 }, 0, true);
+	GetFocusScene()->entities.push_back(sprite);
 }
 
 void UpdateGame() {

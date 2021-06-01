@@ -18,9 +18,6 @@ template <typename T> T* Entity::GetAsType() {
 }
 
 std::set<Resource>& Entity::GetRequiredResources(std::set<Resource>& resourcesOut) {
-	if (saveAsModule) {
-		resourcesOut.insert(Resource(name, RESOURCE_MODULE));
-	}
 	return resourcesOut;
 }
 

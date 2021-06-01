@@ -27,7 +27,7 @@ EventLink* GetEventLocation(EventLink* prev, size_t timeOf) {
 	if (prev->next->timeOf >= timeOf) {
 		return prev;
 	}
-	GetEventLocation(prev->next, timeOf);
+	return GetEventLocation(prev->next, timeOf);
 }
 void PushEvent(void (*Function)(), size_t msDifference) {
 	size_t timeOf = SDL_GetTicks() + msDifference;

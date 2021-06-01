@@ -132,12 +132,19 @@ std::ostream& Scene::Serialize(std::ostream& os, std::string moduleFolderPath) {
 	camera.Serialize(os) << '\n';
 	{ // Serialize Required Resources
 		int type = 0;
-		for (Resource resource : GetRequiredResources()) {
+		std::set<Resource> resources = GetRequiredResources();
+		int index = 0;
+		int indexCount = resources.size() - 1;
+		for (Resource resource : resources) {
 			while (type < resource.type) {
 				os << '\n';
 				type++;
 			}
-			os << resource << ' ';
+			os << resource;
+			if (index < indexCount) {
+				os << ' ';
+			}
+			index++;
 		}
 		while (type < MAX_RESOURCE_TYPES - 1) {
 			type++;
@@ -156,15 +163,13 @@ std::ostream& Scene::Serialize(std::ostream& os, std::string moduleFolderPath) {
 				Log("Module Entity data lost.", FAULT);
 				continue;
 			}
-
 			entity->Serialize(ofStream);
-
 			ofStream.close();
+			os << MakeSerializable(entity->name) << '\n';
 			Log("Module saved.", SUCCESS);
 		}
 		else {
-			entity->Serialize(os);
-			os << '\n';
+			entity->Serialize(os) << '\n';
 		}
 	}
 	return os;
@@ -184,19 +189,30 @@ bool Scene::Deserialize(std::istream& is, std::string moduleFolderPath, std::str
 			std::set<Resource> resources;
 			for (int type = 0; type < MAX_RESOURCE_TYPES; type++) {
 				std::getline(is, line);
+				if (line.size() < 1) {
+					continue;
+				}
 				std::istringstream iStringStream(line);
 				Resource resource("", (ResourceType)type);
-				while (iStringStream >> resource) {
+				while (iStringStream.rdbuf()->in_avail() > 0 && iStringStream >> resource) {
 					resources.insert(resource);
 				}
 			}
-			if (!LoadResources(resources, moduleFolderPath, textureFolderPath, animationFolderPath, fontFolderPath)) {
+			if (!LoadResources(resources, textureFolderPath, animationFolderPath, fontFolderPath)) {
 				Log("Some Scene resources failed to load.", FAULT);
 			}
 		}
 		{ // Deserialize Scene Entities
 			while (std::getline(is, line)) {
-				GetActiveScene()->entities.push_back(DeserializeLineToEntity(line));
+				if (line[0] == TEXT_START) {
+					LoadModule(DeserializeString(line), moduleFolderPath);
+				}
+				else {
+					Entity* entity = DeserializeLineToEntity(line);
+					if (entity) {
+						entities.push_back(entity);
+					}
+				}
 			}
 		}
 		return true;
@@ -226,7 +242,16 @@ bool Scene::LoadModule(std::string name, std::string moduleFolderPath) {
 	// Load Entity From Module
 	std::string line;
 	std::getline(ifStream, line);
-	GetActiveScene()->entities.push_back(DeserializeLineToEntity(line));
+	Entity* entity = DeserializeLineToEntity(line);
+	if (!entity) {
+		Log("Line could not deserialize to an Entity.", WARNING);
+		Log("Line: " + line);
+		return false;
+	}
+	entity->saveAsModule = true;
+	entity->name = name;
+	entities.push_back(entity);
+	return true;
 }
 
 Scene* GetActiveScene() {

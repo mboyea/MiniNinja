@@ -35,4 +35,5 @@ std::string DeserializeString(std::string str) {
 			return str.substr(1, str.size() - (it - str.crbegin()) - 1);
 		}
 	}
+	return str;
 }

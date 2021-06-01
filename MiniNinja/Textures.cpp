@@ -10,7 +10,7 @@ static std::unordered_map<std::string, SDL_Texture*> textures;
 
 void InitTextures() {
 	// enable .png loading
-	IMG_Init(IMG_INIT_PNG);
+	IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
 
 	// turn off texture blurring
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
@@ -47,6 +47,12 @@ bool IsTexture(std::string key) {
 }
 
 bool LoadTexture(std::string filePath) {
+	// Ensure File Exists
+	if (!DoesPathExist(filePath)) {
+		Log("File \"" + filePath + "\" does not exist.", WARNING);
+		Log("Texture load failed.", FAULT);
+		return false;
+	}
 	SDL_Surface* surf = IMG_Load(filePath.c_str());
 	if (surf == nullptr) {
 		Log("Image \"" + filePath + "\" unable to load: " + (std::string)IMG_GetError(), WARNING);

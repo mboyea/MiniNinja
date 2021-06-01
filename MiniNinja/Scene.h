@@ -28,13 +28,13 @@ struct Scene {
 	// Generate serialized text data for this scene into the stream
 	std::ostream& Serialize(std::ostream& os, std::string moduleFolderPath = "Resources/Modules");
 	// Populate this scene by deserializing text data from the stream
-	bool Deserialize(std::istream& is, std::string moduleFolderPath = "Resources/Modules", std::string textureFolderPath = "Resource/Textures", std::string animationFolderPath = "Resources/Animations", std::string fontFolderPath = "Resources/Fonts");
+	bool Deserialize(std::istream& is, std::string moduleFolderPath = "Resources/Modules", std::string textureFolderPath = "Resources/Textures", std::string animationFolderPath = "Resources/Animations", std::string fontFolderPath = "Resources/Fonts");
 };
 
 // Return the Scene which is currently calling Update(), Render(), SaveScene(), or LoadScene(); otherwise, return nullptr.
 Scene* GetActiveScene();
 bool SaveScene(Scene* scene, std::string filePath, std::string moduleFolderPath = "Resources/Modules");
-Scene* LoadScene(std::string filePath, std::string moduleFolderPath = "Resources/Modules", std::string textureFolderPath = "Resource/Textures", std::string animationFolderPath = "Resources/Animations", std::string fontFolderPath = "Resources/Fonts");
+Scene* LoadScene(std::string filePath, std::string moduleFolderPath = "Resources/Modules", std::string textureFolderPath = "Resources/Textures", std::string animationFolderPath = "Resources/Animations", std::string fontFolderPath = "Resources/Fonts");
 
 SDL_Point SceneToViewport(SDL_Point pos, Scene* scene);
 SDL_Rect SceneToViewport(SDL_Rect rect, Scene* scene);
