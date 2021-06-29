@@ -1,15 +1,12 @@
 #include "FocusState.h"
-#include "DebugFocus.h"
-#include "Console.h"
-#include "Input.h"
 
 static const FocusState* currentFocus = nullptr;
 
 void SetFocus(const FocusState* focus) {
-	if (focus == FOCUS_DEBUG) {
-		StartTextInput(Game::consoleInput, '`');
+	if (focus) {
+		currentFocus = focus;
+		currentFocus->OnSwitch();
 	}
-	currentFocus = focus;
 }
 
 const FocusState* GetFocus() {

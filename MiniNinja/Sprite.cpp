@@ -5,34 +5,39 @@
 #include "Log.h"
 #include "Input.h"
 
-void Sprite::SetDimensionsByTexture() {
+SDL_Point Sprite::GetTextureDimensions() {
 	SDL_Point dimensions = { 0, 0 };
 	if (SDL_QueryTexture(texture, NULL, NULL, &dimensions.x, &dimensions.y) < 0) {
 		Log("Failed to query texture: " + (std::string)SDL_GetError(), WARNING);
 	}
-	dim = dimensions;
+	return dimensions;
+}
+
+void Sprite::SetDimensionsByTexture() {
+	dim = GetTextureDimensions();
 }
 
 void Sprite::SetDimensions(SDL_Point dimensions) {
-	if (dimensions.x == 0 || dimensions.y == 0) {
-		SetDimensionsByTexture();
-		return;
-	}
 	dim = dimensions;
 }
 
 void Sprite::Update() {
 	if (IsKeyDown(SDL_SCANCODE_W)) {
-		pos.y = pos.y - 1;
+		pos.y--;
 	}
 	if (IsKeyDown(SDL_SCANCODE_S)) {
-		pos.y = pos.y + 1;
+		pos.y++;
 	}
 	if (IsKeyDown(SDL_SCANCODE_A)) {
-		pos.x = pos.x - 1;
+		pos.x--;
 	}
 	if (IsKeyDown(SDL_SCANCODE_D)) {
-		pos.x = pos.x + 1;
+		pos.x++;
+	}
+	if (IsKeyPressed(SDL_SCANCODE_SPACE)) {
+		Log(GetKey(texture));
+		colliders.push_back(new AABBCollider({ 0, 0, 12, 12 }));
+		Log(GetKey(texture));
 	}
 }
 

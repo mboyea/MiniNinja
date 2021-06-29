@@ -7,11 +7,12 @@
 #include <vector>
 #include <set>
 #include <iostream>
-#include "Collider.h"
+#include "Colliders.h"
 #include "Resource.h"
 
 class Entity {
 private:
+	std::vector<Entity*> entitiesCollided = {};
 protected:
 public:
 	uint16_t typeID = __COUNTER__;
@@ -33,6 +34,8 @@ public:
 	virtual void Update();
 	virtual void Render();
 	virtual void OnCollision(Entity* collisionEntity);
+	void FlagEntitiesDidCollisionDetection(Entity* collisionEntity);
+	bool DidCollisionDetection(Entity* collisionEntity);
 
 	bool IsType(uint16_t typeID);
 	template <typename T> bool IsType();
@@ -43,7 +46,6 @@ public:
 	virtual std::ostream& Serialize(std::ostream& os);
 	// Populate this entity by deserializing text data from the stream
 	virtual std::istream& Deserialize(std::istream& is);
-	bool operator<(const Entity& rhs);
 };
 
 #endif // !ENTITY_H

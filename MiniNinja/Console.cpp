@@ -196,7 +196,7 @@ void InterpretFunction(const std::string& call, std::string& args) {
 	Log("Unsupported function.", WARNING);
 }
 
-void InterpretConsoleInput(std::string* text) {
+void InterpretConsoleCommand(std::string* text) {
 	if (text->size() < 1) {
 		return;
 	}

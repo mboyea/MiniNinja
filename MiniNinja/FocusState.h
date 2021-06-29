@@ -3,12 +3,13 @@
 #pragma once
 
 struct FocusState {
+	void (*OnSwitch)();
 	void (*Update)();
 	void (*Render)();
 	void (*HandleSwitch)();
 
-	FocusState(void (*UpdateFunction)(), void (*RenderFunction)(), void (*HandleSwitchFunction)())
-		: Update(UpdateFunction), Render(RenderFunction), HandleSwitch(HandleSwitchFunction) {}
+	FocusState(void (*OnSwitchFunction)(), void (*UpdateFunction)(), void (*RenderFunction)(), void (*HandleSwitchFunction)())
+		: OnSwitch(OnSwitchFunction), Update(UpdateFunction), Render(RenderFunction), HandleSwitch(HandleSwitchFunction) {}
 };
 
 void SetFocus(const FocusState* focus);

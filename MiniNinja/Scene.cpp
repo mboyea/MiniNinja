@@ -10,12 +10,14 @@
 #include <sstream>
 #include "Entities.h"
 
+static Scene* const defaultScene = new Scene();
 static Scene* activeScene = nullptr;
 
 Scene::~Scene() {
 	for (Entity* entity : entities) {
 		delete entity;
 	}
+	// TODO: get scene resources (textures, etc) and delete them
 }
 
 void Scene::Update() {
@@ -44,8 +46,23 @@ void Scene::Update() {
 
 	// Collisions
 	for (Entity* entity : entities) {
-		entity->lastPos = entity->pos;
-		// TODO: detect collisions
+		if (!entity->colliders.empty()) {
+			for (Entity* e : entities) {
+				if (entity != e && !entity->DidCollisionDetection(e)) {
+					entity->FlagEntitiesDidCollisionDetection(e);
+					e->FlagEntitiesDidCollisionDetection(entity);
+					for (Collider* c : e->colliders) {
+						for (Collider* collider : entity->colliders) {
+							if (collider->IsColliding(c)) {
+								entity->OnCollision(e);
+								e->OnCollision(entity);
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 
 	// Children
@@ -69,18 +86,8 @@ void Scene::Update() {
 void Scene::Render() {
 	activeScene = this;
 
-	// TODO: remove test image TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST
-	// get img
-	SDL_Surface* testSurf = IMG_Load("Resources/Textures/320x240.png");
-	SDL_Texture* testTex = SDL_CreateTextureFromSurface(Game::renderer, testSurf);
-	SDL_FreeSurface(testSurf);
-	// draw img
-	DrawTexture(testTex);
-	SDL_DestroyTexture(testTex);
-	// End the test TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST
-
 	// sort entities by layer so that they render on top of eachother in the expected order
-	std::sort(entities.begin(), entities.end());
+	std::sort(entities.begin(), entities.end(), [](Entity* lhs, Entity* rhs) { return lhs->renderLayer < rhs->renderLayer; });
 
 	for (Entity* entity : entities) {
 		entity->Render();
@@ -321,4 +328,8 @@ SDL_Point SceneToViewport(SDL_Point pos, Scene* scene) {
 
 SDL_Rect SceneToViewport(SDL_Rect rect, Scene* scene) {
 	return { rect.x - scene->camera.GetPos().x, rect.y - scene->camera.GetPos().y, rect.w, rect.h };
+}
+
+Scene* GetDefaultScene() {
+	return defaultScene;
 }

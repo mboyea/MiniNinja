@@ -17,7 +17,7 @@ bool Collider::IsNarrowPhaseColliding(Collider* collider) {
 void Collider::RecalculateAABB() {}
 
 bool Collider::IsColliding(Collider* collider) {
-	return IsBroadPhaseColliding(collider) && IsNarrowPhaseColliding(collider);
+	return false;
 }
 
 void Collider::RenderBroadCollider() {
@@ -56,9 +56,11 @@ template<typename T> T* Collider::GetAsType() {
 }
 
 std::ostream& Collider::Serialize(std::ostream& os) {
-	return os;
+	return os << typeID << ' ' << rect.x << ' ' << rect.y << ' ' << rect.w << ' ' << rect.h;
 }
 
 std::istream& Collider::Deserialize(std::istream& is) {
+	std::string throwaway = "";
+	is >> throwaway >> rect.x >> rect.y >> rect.w >> rect.h;
 	return is;
 }

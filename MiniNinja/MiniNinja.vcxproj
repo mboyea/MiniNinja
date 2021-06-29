@@ -149,8 +149,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AABBCollider.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="Colliders.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="DebugFocus.cpp" />
     <ClCompile Include="Draw.cpp" />
@@ -178,8 +180,10 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AABBCollider.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collider.h" />
+    <ClInclude Include="Colliders.h" />
     <ClInclude Include="Colors.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="DebugFocus.h" />

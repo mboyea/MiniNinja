@@ -8,15 +8,18 @@
 #include "Entity.h"
 #include "Camera.h"
 #include "Resource.h"
+#include <SDL.h>
+#include "Colors.h"
 
 #define SCENE_VERSION "0.0.0"
 
 struct Scene {
 	std::vector<Entity*> entities;
 	Camera camera;
+	SDL_Color backgroundColor;
 
 	Scene()
-		: entities({}), camera(Camera()) {}
+		: entities({}), camera(Camera()), backgroundColor(Colors::CYAN) {}
 	~Scene();
 
 	void Update();
@@ -33,6 +36,7 @@ struct Scene {
 
 // Return the Scene which is currently calling Update(), Render(), SaveScene(), or LoadScene(); otherwise, return nullptr.
 Scene* GetActiveScene();
+Scene* GetDefaultScene();
 bool SaveScene(Scene* scene, std::string filePath, std::string moduleFolderPath = "Resources/Modules");
 Scene* LoadScene(std::string filePath, std::string moduleFolderPath = "Resources/Modules", std::string textureFolderPath = "Resources/Textures", std::string animationFolderPath = "Resources/Animations", std::string fontFolderPath = "Resources/Fonts");
 

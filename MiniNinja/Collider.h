@@ -7,7 +7,7 @@
 #include <iostream>
 
 namespace Game {
-	inline bool doRenderColliders = false;
+	inline bool doRenderColliders = true;
 }
 
 class Collider {

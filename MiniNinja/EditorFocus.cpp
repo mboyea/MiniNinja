@@ -16,6 +16,8 @@ void HandleSwitchEditor() {
 	}
 }
 
+void OnSwitchEditor() {}
+
 void UpdateEditor() {}
 
 void RenderEditor() {}

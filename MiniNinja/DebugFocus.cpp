@@ -15,7 +15,7 @@ void HandleSwitchDebug() {
 		return;
 	}
 	else if (IsKeyPressed(SDL_SCANCODE_GRAVE)) {
-		if (IsKeyPressed(SDL_SCANCODE_LSHIFT)) {
+		if (IsKeyDown(SDL_SCANCODE_LSHIFT)) {
 			StopTextInput();
 			SetFocus(FOCUS_EDITOR);
 			return;
@@ -26,9 +26,13 @@ void HandleSwitchDebug() {
 	}
 }
 
+void OnSwitchDebug() {
+	StartTextInput(Game::consoleInput, '`');
+}
+
 void UpdateDebug() {
 	if (IsKeyPressed(SDL_SCANCODE_RETURN)) {
-		InterpretConsoleInput();
+		InterpretConsoleCommand();
 	}
 }
 

@@ -5,8 +5,7 @@
 #include "Window.h"
 #include "Log.h"
 
-static Scene* emptyScene = new Scene();
-static Scene* currentScene = emptyScene;
+static Scene* currentScene = GetDefaultScene();
 
 void HandleSwitchScene() {
 	if (IsKeyPressed(SDL_SCANCODE_ESCAPE)) {
@@ -23,12 +22,18 @@ void HandleSwitchScene() {
 	}
 }
 
+void OnSwitchScene() {
+	if (!currentScene) {
+		currentScene = GetDefaultScene();
+	}
+}
+
 void UpdateScene() {
 	currentScene->Update();
 }
 
 void RenderScene() {
-	SetDrawColor(Colors::CYAN);
+	SetDrawColor(currentScene->backgroundColor);
 	Paint();
 	currentScene->Render();
 }

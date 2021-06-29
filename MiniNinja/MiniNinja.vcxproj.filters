@@ -138,6 +138,12 @@
     <ClCompile Include="Entities.cpp">
       <Filter>Engine\Scene\Entity</Filter>
     </ClCompile>
+    <ClCompile Include="Colliders.cpp">
+      <Filter>Engine\Scene\Entity\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="AABBCollider.cpp">
+      <Filter>Engine\Scene\Entity\Collider</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FocusState.h">
@@ -223,6 +229,12 @@
     </ClInclude>
     <ClInclude Include="Entities.h">
       <Filter>Engine\Scene\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Colliders.h">
+      <Filter>Engine\Scene\Entity\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="AABBCollider.h">
+      <Filter>Engine\Scene\Entity\Collider</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

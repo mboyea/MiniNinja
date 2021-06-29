@@ -7,6 +7,17 @@ void Entity::Update() {}
 void Entity::Render() {}
 void Entity::OnCollision(Entity* collisionEntity) {}
 
+void Entity::FlagEntitiesDidCollisionDetection(Entity* collisionEntity) {
+	entitiesCollided.push_back(collisionEntity);
+}
+
+bool Entity::DidCollisionDetection(Entity* collisionEntity) {
+	for (Entity* entity : entitiesCollided) {
+		if (collisionEntity == entity) return true;
+	}
+	return false;
+}
+
 bool Entity::IsType(uint16_t typeID) {
 	return this->typeID == typeID;
 }
@@ -49,62 +60,71 @@ std::istream& Entity::Deserialize(std::istream& is) {
 	std::string str = "";
 	is >> str >> pos.x >> pos.y >> str;
 	renderLayer = std::stoi(str);
-	// Deserialize Children
-	char listStart;
-	is >> listStart;
-	if (listStart != LIST_START) {
-		Log("Tried to deserialize data into a vector that did not begin with " + LIST_START, WARNING);
-		return is;
-	}
-	bool isParsingList = true;
-	while (isParsingList) {
-		std::string element;
-		while (true) {
-			std::string elementItem;
-			is >> elementItem;
-			if (elementItem[0] == LIST_END || is.eof()) {
-				isParsingList = false;
-				break;
-			}
-			if (elementItem[0] == LIST_ITEM_END) {
-				break;
+	{ // Deserialize Children
+		char listStart;
+		is >> listStart;
+		if (listStart != LIST_START) {
+			Log("Tried to deserialize data into a vector that did not begin with " + LIST_START, WARNING);
+			return is;
+		}
+		bool isParsingList = true;
+		while (isParsingList) {
+			std::string element;
+			while (true) {
+				std::string elementItem;
+				is >> elementItem;
+				if (elementItem[0] == LIST_END || is.eof()) {
+					isParsingList = false;
+					break;
+				}
+				if (elementItem[0] == LIST_ITEM_END) {
+					break;
+				}
+				if (element != "") {
+					element += ' ';
+				}
+				element += elementItem;
 			}
 			if (element != "") {
-				element += ' ';
+				// TODO: store a list of indexes for each Entity within the active scene and once every Entity is loaded, set each Entity's children to the correct Entity* from the list of indexes
 			}
-			element += elementItem;
-		}
-		if (element != "") {
-			// TODO: store a list of indexes for each Entity within the active scene and once every Entity is loaded, set each Entity's children to the correct Entity* from the list of indexes
 		}
 	}
-	// Deserialize Colliders
-	isParsingList = true;
-	while (isParsingList) {
-		std::string element;
-		while (true) {
-			std::string elementItem;
-			is >> elementItem;
-			if (elementItem[0] == LIST_END || is.eof()) {
-				isParsingList = false;
-				break;
-			}
-			if (elementItem[0] == LIST_ITEM_END) {
-				break;
+	{ // Deserialize Colliders
+		char listStart;
+		is >> listStart;
+		if (listStart != LIST_START) {
+			Log("Tried to deserialize data into a vector that did not begin with " + LIST_START, WARNING);
+			return is;
+		}
+		bool isParsingList = true;
+		while (isParsingList) {
+			std::string element;
+			while (true) {
+				std::string subElement;
+				is >> subElement;
+				if (subElement[0] == LIST_END || is.eof()) {
+					isParsingList = false;
+					break;
+				}
+				if (subElement[0] == LIST_ITEM_END) {
+					break;
+				}
+				if (element != "") {
+					element += ' ';
+				}
+				element += subElement;
 			}
 			if (element != "") {
-				element += ' ';
+				Collider* collider = DeserializeLineToCollider(element);
+				if (collider) {
+					colliders.push_back(collider);
+				}
+				else {
+					Log("Collider failed to deserialize.", FAULT);
+				}
 			}
-			element += elementItem;
-		}
-		if (element != "") {
-			// TODO: Collider* collider = DeserializeLineToCollider(element);
-			// TODO: colliders.push_back(collider);
 		}
 	}
 	return is;
-}
-
-bool Entity::operator<(const Entity& rhs) {
-	return renderLayer < rhs.renderLayer;
 }

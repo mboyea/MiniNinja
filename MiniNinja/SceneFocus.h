@@ -5,9 +5,10 @@
 #include "Scene.h"
 
 void HandleSwitchScene();
+void OnSwitchScene();
 void UpdateScene();
 void RenderScene();
-inline const FocusState* FOCUS_SCENE = new FocusState(UpdateScene, RenderScene, HandleSwitchScene);
+inline const FocusState* FOCUS_SCENE = new FocusState(OnSwitchScene, UpdateScene, RenderScene, HandleSwitchScene);
 
 bool SetFocusScene(Scene* scene);
 Scene* GetFocusScene();

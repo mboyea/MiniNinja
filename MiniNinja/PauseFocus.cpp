@@ -2,6 +2,9 @@
 #include "Input.h"
 #include "Draw.h"
 #include "Scene.h"
+#include "Log.h"
+
+static Scene* currentScene = GetDefaultScene();
 
 void HandleSwitchPause() {
 	if (IsKeyPressed(SDL_SCANCODE_ESCAPE)) {
@@ -10,15 +13,35 @@ void HandleSwitchPause() {
 	}
 }
 
+void OnSwitchPause() {
+	if (!currentScene) {
+		currentScene = GetDefaultScene();
+	}
+}
+
 void UpdatePause() {
-	GetFocusScene()->Update();
+	currentScene->Update();
 }
 
 void RenderPause() {
+	SetDrawColor(GetFocusScene()->backgroundColor);
+	Paint();
 	GetFocusScene()->Render();
-	SetDrawColor({ 255, 0, 0 });
-	DrawLine({ 10, 10 }, { 50, 50 });
-	DrawLine({ 50, 10 }, { 10, 50 });
-	SetDrawColor({ 0, 0, 255 });
-	DrawRect({ 10, 10, 41, 41 });
+	SetDrawColor(currentScene->backgroundColor);
+	PaintAlpha();
+	currentScene->Render();
+}
+
+bool SetPauseScene(Scene* scene) {
+	if (!scene) {
+		Log("Failed to change active scene.", WARNING);
+		return false;
+	}
+	currentScene = scene;
+	currentScene->camera = GetFocusScene()->camera;
+	return true;
+}
+
+Scene* GetPauseScene() {
+	return currentScene;
 }

@@ -2,6 +2,7 @@
 #include "FileParameters.h"
 #include <sstream>
 
+#include "Entity.h"
 #include "Sprite.h"
 #include "Particle.h"
 #include "Tilemap.h"
@@ -17,7 +18,6 @@ Entity* GetEntityOfType(uint16_t typeID) {
 		return sprite;
 	}
 	delete sprite;
-
 	return nullptr;
 }
 

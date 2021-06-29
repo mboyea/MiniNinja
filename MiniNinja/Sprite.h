@@ -16,9 +16,12 @@ public:
 	Sprite(std::string name, SDL_Point pos = { 0, 0 }, int8_t renderLayer = 0, bool saveAsModule = false, std::string textureKey = "", SDL_Point dim = { 0, 0 })
 		: Entity(name, pos, renderLayer, saveAsModule), texture(GetTexture(textureKey)) {
 		typeID = __COUNTER__;
-		SetDimensions(dim);
+		if (dim.x == 0 || dim.y == 0) {
+			SetDimensionsByTexture();
+		} else SetDimensions(dim);
 	};
 
+	SDL_Point GetTextureDimensions();
 	void SetDimensionsByTexture();
 	void SetDimensions(SDL_Point dimensions);
 
