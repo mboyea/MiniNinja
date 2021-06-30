@@ -14,10 +14,6 @@ void InitGame() {
 	if (!SetFocusScene(LoadScene("Scenes/asdf"))) {
 		Log("Default scene failed to load.", FAULT);
 	}
-	SaveScene(GetFocusScene(), "Scenes/save.zscne");
-	// TODO: bugfix: this LoadScene call destroys the ability to serialize textures; if LoadScene is called again, the issue is fixed; but when this pause screen is loaded, it messes up the SDL_Renderer & overwrites Textures' std::set.
-	// I assume that this is an issue because the Renderer is the same between the two scenes and overwrites the Textures std::set with new textures.
-	// The Focus Scene is still able to hold onto the textures it has - they're not deleted - but the named references to them are overwritten.
 	if (!SetPauseScene(LoadScene("Scenes/pausescreen"))) {
 		Log("Pause scene failed to load.", FAULT);
 	}

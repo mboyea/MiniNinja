@@ -56,6 +56,9 @@ bool LoadResource(Resource resource, std::string textureFolderPath, std::string 
 	// Load Resource
 	switch (resource.type) {
 	case RESOURCE_TEXTURE:
+		if (IsTexture(resource.name)) {
+			return true;
+		}
 		return LoadTexture(filePath);
 	case RESOURCE_ANIMATION:
 		break; // TODO: return LoadAnimation(filePath)
