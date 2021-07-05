@@ -18,6 +18,10 @@ bool Entity::DidCollisionDetection(Entity* collisionEntity) {
 	return false;
 }
 
+void Entity::ResetDidCollisionFlags() {
+	entitiesCollided.clear();
+}
+
 bool Entity::IsType(uint16_t typeID) {
 	return this->typeID == typeID;
 }

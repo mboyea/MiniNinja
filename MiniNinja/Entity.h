@@ -36,6 +36,7 @@ public:
 	virtual void OnCollision(Entity* collisionEntity);
 	void FlagEntitiesDidCollisionDetection(Entity* collisionEntity);
 	bool DidCollisionDetection(Entity* collisionEntity);
+	void ResetDidCollisionFlags();
 
 	bool IsType(uint16_t typeID);
 	template <typename T> bool IsType();

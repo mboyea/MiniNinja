@@ -22,22 +22,36 @@ void Sprite::SetDimensions(SDL_Point dimensions) {
 }
 
 void Sprite::Update() {
-	if (IsKeyDown(SDL_SCANCODE_W)) {
-		pos.y--;
+	if (name == "player") {
+		if (IsKeyDown(SDL_SCANCODE_W)) {
+			pos.y--;
+		}
+		if (IsKeyDown(SDL_SCANCODE_S)) {
+			pos.y++;
+		}
+		if (IsKeyDown(SDL_SCANCODE_A)) {
+			pos.x--;
+		}
+		if (IsKeyDown(SDL_SCANCODE_D)) {
+			pos.x++;
+		}
 	}
-	if (IsKeyDown(SDL_SCANCODE_S)) {
-		pos.y++;
-	}
-	if (IsKeyDown(SDL_SCANCODE_A)) {
-		pos.x--;
-	}
-	if (IsKeyDown(SDL_SCANCODE_D)) {
-		pos.x++;
+	else {
+		if (IsKeyDown(SDL_SCANCODE_UP)) {
+			pos.y--;
+		}
+		if (IsKeyDown(SDL_SCANCODE_DOWN)) {
+			pos.y++;
+		}
+		if (IsKeyDown(SDL_SCANCODE_LEFT)) {
+			pos.x--;
+		}
+		if (IsKeyDown(SDL_SCANCODE_RIGHT)) {
+			pos.x++;
+		}
 	}
 	if (IsKeyPressed(SDL_SCANCODE_SPACE)) {
-		Log(GetKey(texture));
-		colliders.push_back(new AABBCollider({ 0, 0, 12, 12 }));
-		Log(GetKey(texture));
+		colliders.push_back(new AABBCollider({ pos.x, pos.y, 12, 12 }));
 	}
 }
 
@@ -46,7 +60,9 @@ void Sprite::Render() {
 	DrawTexture(texture, &rect);
 }
 
-void Sprite::OnCollision(Entity* collisionEntity) {}
+void Sprite::OnCollision(Entity* collisionEntity) {
+	pos.x++;
+}
 
 std::set<Resource>& Sprite::GetRequiredResources(std::set<Resource>& resourcesOut) {
 	Entity::GetRequiredResources(resourcesOut);

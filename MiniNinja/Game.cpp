@@ -11,7 +11,7 @@ void InitGame() {
 	InitTextures();
 	InitFonts();
 	InitConsole();
-	if (!SetFocusScene(LoadScene("Scenes/asdf"))) {
+	if (!SetFocusScene(LoadScene("Scenes/asdf-old"))) {
 		Log("Default scene failed to load.", FAULT);
 	}
 	if (!SetPauseScene(LoadScene("Scenes/pausescreen"))) {

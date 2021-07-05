@@ -46,6 +46,9 @@ void Scene::Update() {
 
 	// Collisions
 	for (Entity* entity : entities) {
+		entity->ResetDidCollisionFlags();
+	}
+	for (Entity* entity : entities) {
 		if (!entity->colliders.empty()) {
 			for (Entity* e : entities) {
 				if (entity != e && !entity->DidCollisionDetection(e)) {
@@ -65,21 +68,7 @@ void Scene::Update() {
 		}
 	}
 
-	// Children
-	for (Entity* entity : entities) {
-		SDL_Point offset = { entity->pos.x - entity->lastPos.x, entity->pos.y - entity->lastPos.y };
-		if (offset.x != 0 || offset.y != 0) {
-			for (Entity* child : entity->children) {
-				child->pos.x += offset.x;
-				child->pos.y += offset.y;
-			}
-			for (Collider* collider : entity->colliders) {
-				collider->SetPosition(
-					{ collider->GetPosition().x + offset.x, collider->GetPosition().y + offset.y }
-				);
-			}
-		}
-	}
+	//TODO: update collider position after entity->OnCollision
 	activeScene = nullptr;
 }
 
@@ -95,10 +84,10 @@ void Scene::Render() {
 	if (Game::doRenderColliders) {
 		for (Entity* entity : entities) {
 			for (Collider* collider : entity->colliders) {
-				SetDrawColor(Colors::GREEN);
-				collider->RenderNarrowCollider();
 				SetDrawColor(Colors::LIGHT_GREY);
 				collider->RenderBroadCollider();
+				SetDrawColor(Colors::GREEN);
+				collider->RenderNarrowCollider();
 			}
 		}
 	}

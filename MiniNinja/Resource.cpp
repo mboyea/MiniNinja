@@ -75,6 +75,9 @@ bool LoadResource(Resource resource, std::string textureFolderPath, std::string 
 		if (index > 0) {
 			fontSize = std::stoi(resource.name.substr(index));
 		}
+		if (IsFont(filePath, fontSize)) {
+			return true;
+		}
 		return LoadFont(filePath, fontSize);
 	}
 	default:
