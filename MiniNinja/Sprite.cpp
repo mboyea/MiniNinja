@@ -50,9 +50,11 @@ void Sprite::Update() {
 			pos.x++;
 		}
 	}
-	if (IsKeyPressed(SDL_SCANCODE_SPACE)) {
-		colliders.push_back(new AABBCollider({ pos.x, pos.y, 12, 12 }));
-	}
+	//	if (IsKeyPressed(SDL_SCANCODE_SPACE)) {
+	//		Sprite* s = new Sprite("", { pos.x + 20, pos.y + 20 }, 10, false, GetKey(texture), { dim.x, dim.y });
+	//		GetActiveScene()->entities.push_back(s);
+	//		children.push_back(s);
+	//	}
 }
 
 void Sprite::Render() {
@@ -60,9 +62,7 @@ void Sprite::Render() {
 	DrawTexture(texture, &rect);
 }
 
-void Sprite::OnCollision(Entity* collisionEntity) {
-	pos.x++;
-}
+void Sprite::OnCollision(Entity* collisionEntity) {}
 
 std::set<Resource>& Sprite::GetRequiredResources(std::set<Resource>& resourcesOut) {
 	Entity::GetRequiredResources(resourcesOut);

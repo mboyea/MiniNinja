@@ -46,6 +46,7 @@ void Scene::Update() {
 
 	// Collisions
 	for (Entity* entity : entities) {
+		entity->stepPos = entity->pos;
 		entity->ResetDidCollisionFlags();
 	}
 	for (Entity* entity : entities) {
@@ -64,6 +65,22 @@ void Scene::Update() {
 						}
 					}
 				}
+			}
+		}
+	}
+
+	// Children
+	for (Entity* entity : entities) {
+		SDL_Point offset = { entity->pos.x - entity->stepPos.x, entity->pos.y - entity->stepPos.y };
+		if (offset.x != 0 || offset.y != 0) {
+			for (Entity* child : entity->children) {
+				child->pos.x += offset.x;
+				child->pos.y += offset.y;
+			}
+			for (Collider* collider : entity->colliders) {
+				collider->SetPosition(
+					{ collider->GetPosition().x + offset.x, collider->GetPosition().y + offset.y }
+				);
 			}
 		}
 	}

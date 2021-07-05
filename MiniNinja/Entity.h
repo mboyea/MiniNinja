@@ -18,6 +18,7 @@ public:
 	uint16_t typeID = __COUNTER__;
 	/* TRANSFORM */
 	SDL_Point pos;
+	SDL_Point stepPos;
 	SDL_Point lastPos;
 	std::vector<Entity*> children;
 	/* RENDERING */
@@ -29,7 +30,7 @@ public:
 	std::string name;
 
 	Entity(std::string name, SDL_Point pos = { 0, 0 }, int8_t renderLayer = 0, bool saveAsModule = false)
-		: name(name), pos(pos), lastPos(pos), renderLayer(renderLayer), saveAsModule(saveAsModule) {}
+		: name(name), pos(pos), stepPos(pos), lastPos(pos), renderLayer(renderLayer), saveAsModule(saveAsModule) {}
 
 	virtual void Update();
 	virtual void Render();
