@@ -40,11 +40,35 @@ std::ostream& Entity::Serialize(std::ostream& os) {
 	os << typeID << ' ' << pos.x << ' ' << pos.y << ' ' << std::to_string(renderLayer) << ' ';
 	// Serialize Children
 	os << LIST_START << ' ';
-	for (unsigned int i = 0; i < children.size(); i++) {
-		os << std::to_string(GetActiveScene()->EntityPointerToIndex(children[i]));
-		os << ' ';
-		if (i < children.size() - 1) {
-			os << LIST_ITEM_END << ' ';
+	// if is module
+	if (saveAsModule) {
+		// for each child
+		for (int i = 0; i < children.size(); i++) {
+			// if the child is a module
+			if (children[i]->saveAsModule) {
+				// state the name of the module
+				os << MakeSerializable(children[i]->name) << ' ';
+				// TOOD: fix bug where if the next child is not a module, it ruins the rest of the save file.
+				// it's casued by outputting LIST_ITEM_END + ' ' when the next element is the last child in the array and the next element is not a module (it isn't valid)
+				if (i < children.size() - 1) {
+					os << LIST_ITEM_END << ' ';
+				}
+			}
+			// otherwise the child is not a module & cannot be serialized
+			else {
+				Log("Module child not a module, failed to save child.", WARNING);
+				Log("Due to a bug, this made the save file invalid - fix this bug.", FAULT);
+			}
+		}
+	}
+	else {
+		// state the children by index in the scene
+		for (unsigned int i = 0; i < children.size(); i++) {
+			os << std::to_string(GetActiveScene()->EntityPointerToIndex(children[i]));
+			os << ' ';
+			if (i < children.size() - 1) {
+				os << LIST_ITEM_END << ' ';
+			}
 		}
 	}
 	os << LIST_END << ' ';

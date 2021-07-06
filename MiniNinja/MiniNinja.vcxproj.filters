@@ -37,9 +37,6 @@
     <Filter Include="Engine\Scene\Entity\Collider">
       <UniqueIdentifier>{8a7dd88c-933b-4675-9415-c59f4e776ad4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Scene\Camera">
-      <UniqueIdentifier>{22e2bba5-f9e9-418f-8f91-8d270b99cca2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Debug">
       <UniqueIdentifier>{1b9cd14c-9c18-4318-9e29-1f850b00ba5b}</UniqueIdentifier>
     </Filter>
@@ -54,6 +51,9 @@
     </Filter>
     <Filter Include="Engine\Scene\Resources">
       <UniqueIdentifier>{1da99fb5-eb24-4195-a3f7-21b2b23f65ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Input\Camera">
+      <UniqueIdentifier>{22e2bba5-f9e9-418f-8f91-8d270b99cca2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -115,7 +115,7 @@
       <Filter>Engine\Scene\Entity</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>Engine\Scene\Camera</Filter>
+      <Filter>Engine\Input\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Console.cpp">
       <Filter>Engine\Debug</Filter>
@@ -207,7 +207,7 @@
       <Filter>Engine\Scene\Entity\Collider</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>Engine\Scene\Camera</Filter>
+      <Filter>Engine\Input\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Console.h">
       <Filter>Engine\Debug</Filter>
