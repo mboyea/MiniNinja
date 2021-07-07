@@ -12,6 +12,7 @@
 
 class Entity {
 private:
+	std::vector<std::string> loadChildren = {};
 	std::vector<Entity*> entitiesCollided = {};
 protected:
 public:
@@ -48,6 +49,7 @@ public:
 	virtual std::ostream& Serialize(std::ostream& os);
 	// Populate this entity by deserializing text data from the stream
 	virtual std::istream& Deserialize(std::istream& is);
+	virtual void LateDeserialize();
 };
 
 #endif // !ENTITY_H

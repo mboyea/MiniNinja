@@ -4,5 +4,5 @@
 
 
 {background}
-{player}
 3 270 72 0 [ ] [ 1 270 72 12 12 ; 1 273 75 15 15 ] {broken} 32 32
+{player}

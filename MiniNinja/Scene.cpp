@@ -27,8 +27,7 @@ void Scene::Update() {
 		entity->lastPos = entity->pos;
 		entity->Update();
 	}
-
-	// Children
+	// Children Positions
 	for (Entity* entity : entities) {
 		SDL_Point offset = { entity->pos.x - entity->lastPos.x, entity->pos.y - entity->lastPos.y };
 		if (offset.x != 0 || offset.y != 0) {
@@ -36,6 +35,12 @@ void Scene::Update() {
 				child->pos.x += offset.x;
 				child->pos.y += offset.y;
 			}
+		}
+	}
+	// Collider Positions
+	for (Entity* entity : entities) {
+		SDL_Point offset = { entity->pos.x - entity->lastPos.x, entity->pos.y - entity->lastPos.y };
+		if (offset.x != 0 || offset.y != 0) {
 			for (Collider* collider : entity->colliders) {
 				collider->SetPosition(
 					{ collider->GetPosition().x + offset.x, collider->GetPosition().y + offset.y }
@@ -43,7 +48,6 @@ void Scene::Update() {
 			}
 		}
 	}
-
 	// Collisions
 	for (Entity* entity : entities) {
 		entity->stepPos = entity->pos;
@@ -68,8 +72,7 @@ void Scene::Update() {
 			}
 		}
 	}
-
-	// Children
+	// Children Positions
 	for (Entity* entity : entities) {
 		SDL_Point offset = { entity->pos.x - entity->stepPos.x, entity->pos.y - entity->stepPos.y };
 		if (offset.x != 0 || offset.y != 0) {
@@ -77,6 +80,12 @@ void Scene::Update() {
 				child->pos.x += offset.x;
 				child->pos.y += offset.y;
 			}
+		}
+	}
+	// Collider Positions
+	for (Entity* entity : entities) {
+		SDL_Point offset = { entity->pos.x - entity->stepPos.x, entity->pos.y - entity->stepPos.y };
+		if (offset.x != 0 || offset.y != 0) {
 			for (Collider* collider : entity->colliders) {
 				collider->SetPosition(
 					{ collider->GetPosition().x + offset.x, collider->GetPosition().y + offset.y }
@@ -85,7 +94,6 @@ void Scene::Update() {
 		}
 	}
 
-	//TODO: update collider position after entity->OnCollision
 	activeScene = nullptr;
 }
 
@@ -226,6 +234,9 @@ bool Scene::Deserialize(std::istream& is, std::string moduleFolderPath, std::str
 						entities.push_back(entity);
 					}
 				}
+			}
+			for (Entity* entity : entities) {
+				entity->LateDeserialize();
 			}
 		}
 		return true;

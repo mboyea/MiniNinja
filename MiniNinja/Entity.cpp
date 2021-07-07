@@ -43,7 +43,7 @@ std::ostream& Entity::Serialize(std::ostream& os) {
 	// if is module
 	if (saveAsModule) {
 		// for each child
-		for (int i = 0; i < children.size(); i++) {
+		for (unsigned int i = 0; i < children.size(); i++) {
 			// if the child is a module
 			if (children[i]->saveAsModule) {
 				// state the name of the module
@@ -114,7 +114,8 @@ std::istream& Entity::Deserialize(std::istream& is) {
 				element += elementItem;
 			}
 			if (element != "") {
-				// TODO: store a list of indexes for each Entity within the active scene and once every Entity is loaded, set each Entity's children to the correct Entity* from the list of indexes
+				// add the element to the loadChildren list, which will be converted into Entity* in LateDeserialize
+				loadChildren.push_back(element);
 			}
 		}
 	}
@@ -155,4 +156,26 @@ std::istream& Entity::Deserialize(std::istream& is) {
 		}
 	}
 	return is;
+}
+
+void Entity::LateDeserialize() {
+	// Load Children
+	for (std::string childName : loadChildren) {
+		if (childName[0] == '{') {
+			bool found = false;
+			for (Entity* entity : GetActiveScene()->entities) {
+				if (entity->saveAsModule && entity->name == DeserializeString(childName)) {
+					children.push_back(entity);
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
+				Log("Child module " + DeserializeString(childName) + " was not found in the scene.");
+			}
+		}
+		else children.push_back(GetActiveScene()->entities[std::stoi(childName)]);
+	}
+	loadChildren.clear();
+	loadChildren.shrink_to_fit();
 }
