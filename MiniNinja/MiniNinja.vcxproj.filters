@@ -144,6 +144,9 @@
     <ClCompile Include="AABBCollider.cpp">
       <Filter>Engine\Scene\Entity\Collider</Filter>
     </ClCompile>
+    <ClCompile Include="Audio.cpp">
+      <Filter>Engine\Scene\Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FocusState.h">
@@ -235,6 +238,9 @@
     </ClInclude>
     <ClInclude Include="AABBCollider.h">
       <Filter>Engine\Scene\Entity\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio.h">
+      <Filter>Engine\Scene\Resources</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

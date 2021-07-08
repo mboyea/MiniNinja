@@ -1,8 +1,12 @@
+#include <SDL.h>
 #include "Fonts.h"
 #include "Files.h"
 #include "Log.h"
+#include <unordered_map>
+#include <unordered_set>
 
 TTF_Font* defaultFont = nullptr;
+inline std::unordered_map<std::string, TTF_Font*> fonts;
 
 bool SetDefaultFont(TTF_Font* font) {
 	if (!font) {
@@ -24,21 +28,33 @@ TTF_Font* GetDefaultFont() {
 }
 
 bool LoadFont(std::string filePath, int size) {
+	if (!DoesPathExist(filePath)) {
+		Log("File \"" + filePath + "\" does not exist.", WARNING);
+		Log("Font load failed.", FAULT);
+		return false;
+	}
 	TTF_Font* font = TTF_OpenFont(filePath.c_str(), size);
 	if (!font) {
 		Log("Font \"" + filePath + "\" at size " + std::to_string(size) + " unable to load: " + (std::string)TTF_GetError(), WARNING);
 		return false;
 	}
-	Game::fonts[GetFileName(filePath) + '_' + std::to_string(size)] = font;
+	fonts[GetFileName(filePath) + '_' + std::to_string(size)] = font;
 	return true;
+}
+
+void LoadFontsFromDirectory(std::string folderPath, int size) {
+	std::set<std::string> files = GetFilesWithExtension(GetFilesInDirectory(folderPath), "ttf");
+	for (std::string file : files) {
+		LoadFont(file, size);
+	}
 }
 
 bool UnloadFont(std::string key) {
 	if (!IsFont(key)) {
 		return false;
 	}
-	TTF_CloseFont(Game::fonts[key]);
-	Game::fonts.erase(key);
+	TTF_CloseFont(fonts[key]);
+	fonts.erase(key);
 	return true;
 }
 
@@ -47,16 +63,36 @@ bool UnloadFont(std::string key, int size) {
 }
 
 void UnloadAllFonts() {
-	for (std::pair<std::string, TTF_Font*> font : Game::fonts) {
+	for (std::pair<std::string, TTF_Font*> font : fonts) {
 		TTF_CloseFont(font.second);
 	}
-	Game::fonts.clear();
+	fonts.clear();
 }
 
 bool IsFont(std::string key) {
-	return Game::fonts.find(key) != Game::fonts.end();
+	return fonts.find(key) != fonts.end();
 }
 
 bool IsFont(std::string key, int size) {
 	return IsFont(key + '_' + std::to_string(size));
+}
+
+TTF_Font* GetFont(std::string key) {
+	if (IsFont(key)) {
+		return fonts[key];
+	}
+	return defaultFont;
+}
+
+TTF_Font* GetFont(std::string key, int size) {
+	return GetFont(key + '_' + std::to_string(size));
+}
+
+std::string GetKey(TTF_Font* font) {
+	for (auto it = fonts.begin(); it != fonts.end(); it++) {
+		if (it->second == font) {
+			return it->first;
+		}
+	}
+	return "";
 }

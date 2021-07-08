@@ -2,22 +2,18 @@
 #define TEXTURES_H
 #pragma once
 
-#include <SDL.h>
 #include <SDL_image.h>
-#include <unordered_map>
+#include <string>
 
-void InitTextures();
+void InitTextures(std::string filePathDefault = "");
 
-bool SetDefaultTexture(SDL_Texture* texture);
 SDL_Texture* GetDefaultTexture();
-
-bool IsTexture(std::string key);
 bool LoadTexture(std::string filePath);
 void LoadTexturesFromDirectory(std::string folderPath);
 bool UnloadTexture(std::string key);
 void UnloadAllTextures();
+bool IsTexture(std::string key);
 SDL_Texture* GetTexture(std::string key);
 std::string GetKey(SDL_Texture* texture);
-
 
 #endif // !TEXTURES_H

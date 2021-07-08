@@ -1,4 +1,8 @@
-﻿  Entity.cpp
-  Scene.cpp
+﻿  DebugFocus.cpp
+  Fonts.cpp
+  Game.cpp
+  Resource.cpp
+  Textures.cpp
+  main.cpp
   Generating Code...
-  MiniNinja.vcxproj -> P:\C++\MiniNinja\Debug\MiniNinja.exe
+  MiniNinja.vcxproj -> P:\C++\2021\MiniNinja\Debug\MiniNinja.exe

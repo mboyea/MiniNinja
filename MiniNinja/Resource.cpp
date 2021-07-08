@@ -29,6 +29,8 @@ std::string Resource::GetType() {
 		return "Animation";
 	case RESOURCE_FONT:
 		return "Font";
+	case RESOURCE_AUDIO:
+		return "Audio";
 	case MAX_RESOURCE_TYPES:
 		return "MAX_RESOURCE_TYPES";
 	default:
@@ -36,7 +38,7 @@ std::string Resource::GetType() {
 	}
 }
 
-std::string Resource::GetFilePath(std::string textureFolderPath, std::string animationFolderPath, std::string fontFolderPath) {
+std::string Resource::GetFilePath(std::string textureFolderPath, std::string animationFolderPath, std::string fontFolderPath, std::string audioFolderPath) {
 	switch (type) {
 	case RESOURCE_TEXTURE:
 		return ForceFilePath(name, textureFolderPath, "png");
@@ -44,6 +46,8 @@ std::string Resource::GetFilePath(std::string textureFolderPath, std::string ani
 		return ForceFilePath(name, animationFolderPath, "zanim");
 	case RESOURCE_FONT:
 		return ForceFilePath(name, fontFolderPath, "ttf");
+	case RESOURCE_AUDIO:
+		return ForceFilePath(name, audioFolderPath, "mp3");
 	case MAX_RESOURCE_TYPES:
 		return ForceFilePath(name, "Error", "resourceerror");
 	default:
@@ -51,8 +55,8 @@ std::string Resource::GetFilePath(std::string textureFolderPath, std::string ani
 	}
 }
 
-bool LoadResource(Resource resource, std::string textureFolderPath, std::string animationFolderPath, std::string fontFolderPath) {
-	std::string filePath = resource.GetFilePath(textureFolderPath, animationFolderPath, fontFolderPath);
+bool LoadResource(Resource resource, std::string textureFolderPath, std::string animationFolderPath, std::string fontFolderPath, std::string audioFolderPath) {
+	std::string filePath = resource.GetFilePath(textureFolderPath, animationFolderPath, fontFolderPath, audioFolderPath);
 	// Load Resource
 	switch (resource.type) {
 	case RESOURCE_TEXTURE:
@@ -86,10 +90,10 @@ bool LoadResource(Resource resource, std::string textureFolderPath, std::string 
 	return false;
 }
 
-bool LoadResources(std::set<Resource> resources, std::string textureFolderPath, std::string animationFolderPath, std::string fontFolderPath) {
+bool LoadResources(std::set<Resource> resources, std::string textureFolderPath, std::string animationFolderPath, std::string fontFolderPath, std::string audioFolderPath) {
 	bool didSucceed = true;
 	for (Resource resource : resources) {
-		didSucceed = didSucceed && LoadResource(resource, textureFolderPath, animationFolderPath, fontFolderPath);
+		didSucceed = didSucceed && LoadResource(resource, textureFolderPath, animationFolderPath, fontFolderPath, std::string audioFolderPath);
 	}
 	return didSucceed;
 }

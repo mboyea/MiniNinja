@@ -4,8 +4,6 @@
 
 void SetGameFunctions();
 
-#include "Sprite.h"
-
 void InitGame() {
 	InitWindow("MiniNinja");
 	InitTextures();
