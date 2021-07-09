@@ -196,7 +196,7 @@ std::ostream& Scene::Serialize(std::ostream& os, std::string moduleFolderPath) {
 	return os;
 }
 
-bool Scene::Deserialize(std::istream& is, std::string moduleFolderPath, std::string textureFolderPath, std::string animationFolderPath, std::string fontFolderPath) {
+bool Scene::Deserialize(std::istream& is, std::string moduleFolderPath, std::string textureFolderPath, std::string animationFolderPath, std::string fontFolderPath, std::string audioFolderPath) {
 	// Switch Procedure Based Upon Scene Version
 	std::string line;
 	std::getline(is, line);
@@ -219,7 +219,7 @@ bool Scene::Deserialize(std::istream& is, std::string moduleFolderPath, std::str
 					resources.insert(resource);
 				}
 			}
-			if (!LoadResources(resources, textureFolderPath, animationFolderPath, fontFolderPath)) {
+			if (!LoadResources(resources, textureFolderPath, animationFolderPath, fontFolderPath, audioFolderPath)) {
 				Log("Some Scene resources failed to load.", FAULT);
 			}
 		}
@@ -316,7 +316,7 @@ bool SaveScene(Scene* scene, std::string filePath, std::string moduleFolderPath)
 	return true;
 }
 
-Scene* LoadScene(std::string filePath, std::string moduleFolderPath, std::string textureFolderPath, std::string animationFolderPath, std::string fontFolderPath) {
+Scene* LoadScene(std::string filePath, std::string moduleFolderPath, std::string textureFolderPath, std::string animationFolderPath, std::string fontFolderPath, std::string audioFolderPath) {
 	filePath = ForceFileExtension(filePath, "zscne");
 	Log("Loading Scene from \"" + filePath + "\" . . .");
 
@@ -329,7 +329,7 @@ Scene* LoadScene(std::string filePath, std::string moduleFolderPath, std::string
 
 	Scene* scene = new Scene();
 	activeScene = scene;
-	if (scene->Deserialize(ifStream, moduleFolderPath, textureFolderPath, animationFolderPath, fontFolderPath)) {
+	if (scene->Deserialize(ifStream, moduleFolderPath, textureFolderPath, animationFolderPath, fontFolderPath, audioFolderPath)) {
 		Log("Scene loaded.", SUCCESS);
 	}
 	else Log("Scene load failed.", FAULT);

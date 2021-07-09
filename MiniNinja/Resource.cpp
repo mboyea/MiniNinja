@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include "Log.h"
+#include "Audio.h"
 #include "Textures.h"
 #include "Fonts.h"
 
@@ -84,6 +85,8 @@ bool LoadResource(Resource resource, std::string textureFolderPath, std::string 
 		}
 		return LoadFont(filePath, fontSize);
 	}
+	case RESOURCE_AUDIO:
+		return LoadAudio(filePath);
 	default:
 		return false;
 	}
@@ -93,7 +96,7 @@ bool LoadResource(Resource resource, std::string textureFolderPath, std::string 
 bool LoadResources(std::set<Resource> resources, std::string textureFolderPath, std::string animationFolderPath, std::string fontFolderPath, std::string audioFolderPath) {
 	bool didSucceed = true;
 	for (Resource resource : resources) {
-		didSucceed = didSucceed && LoadResource(resource, textureFolderPath, animationFolderPath, fontFolderPath, std::string audioFolderPath);
+		didSucceed = didSucceed && LoadResource(resource, textureFolderPath, animationFolderPath, fontFolderPath, audioFolderPath);
 	}
 	return didSucceed;
 }

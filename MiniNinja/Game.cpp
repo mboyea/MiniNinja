@@ -7,6 +7,7 @@ void SetGameFunctions();
 void InitGame() {
 	InitWindow("MiniNinja");
 	InitTextures();
+	InitAudio();
 	InitFonts();
 	InitConsole();
 	if (!SetFocusScene(LoadScene("Scenes/asdf"))) {

@@ -22,6 +22,7 @@ void Sprite::SetDimensions(SDL_Point dimensions) {
 }
 
 void Sprite::Update() {
+	// TODO: remove test
 	if (name == "player") {
 		if (IsKeyDown(SDL_SCANCODE_W)) {
 			pos.y--;
@@ -50,11 +51,9 @@ void Sprite::Update() {
 			pos.x++;
 		}
 	}
-	//	if (IsKeyPressed(SDL_SCANCODE_SPACE)) {
-	//		Sprite* s = new Sprite("", { pos.x + 20, pos.y + 20 }, 10, false, GetKey(texture), { dim.x, dim.y });
-	//		GetActiveScene()->entities.push_back(s);
-	//		children.push_back(s);
-	//	}
+	if (IsKeyPressed(SDL_SCANCODE_SPACE) && name == "player") {
+		PlayAudio("test");
+	}
 }
 
 void Sprite::Render() {
@@ -70,6 +69,8 @@ std::set<Resource>& Sprite::GetRequiredResources(std::set<Resource>& resourcesOu
 	if (key != "") {
 		resourcesOut.insert(Resource(key, RESOURCE_TEXTURE));
 	}
+	// TODO: remove test
+	resourcesOut.insert(Resource("test", RESOURCE_AUDIO));
 	return resourcesOut;
 }
 
