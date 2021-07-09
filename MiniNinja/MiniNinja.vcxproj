@@ -72,8 +72,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>P:\C++\#Libraries\SDL\SDL2_image-2.0.5\include;P:\C++\#Libraries\SDL\SDL2-2.0.14\include;P:\C++\#Libraries\SDL\SDL2_ttf-2.0.15\include;$(IncludePath)</IncludePath>
-    <LibraryPath>P:\C++\#Libraries\SDL\SDL2_image-2.0.5\lib\x86;P:\C++\#Libraries\SDL\SDL2-2.0.14\lib\x86;P:\C++\#Libraries\SDL\SDL2_ttf-2.0.15\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>P:\C++\#Libraries\SDL\SDL2_image-2.0.5\include;P:\C++\#Libraries\SDL\SDL2-2.0.14\include;P:\C++\#Libraries\SDL\SDL2_ttf-2.0.15\include;P:\C++\#Libraries\SDL\SDL2_mixer-2.0.4\include;$(IncludePath)</IncludePath>
+    <LibraryPath>P:\C++\#Libraries\SDL\SDL2_image-2.0.5\lib\x86;P:\C++\#Libraries\SDL\SDL2-2.0.14\lib\x86;P:\C++\#Libraries\SDL\SDL2_ttf-2.0.15\lib\x86;P:\C++\#Libraries\SDL\SDL2_mixer-2.0.4\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -97,7 +97,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>

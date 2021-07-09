@@ -10,7 +10,7 @@ void InitAudio(std::string filePathDefault, int rate, uint16_t format, int chann
 	SDL_Init(SDL_INIT_AUDIO);
 
 	if (Mix_OpenAudio(rate, format, channels, buffers) < 0) {
-		Log("Unable to open audio: " + Mix_GetError()), WARNING);
+		Log("Unable to open audio: " + (std::string)Mix_GetError(), WARNING);
 	}
 }
 
@@ -20,7 +20,7 @@ bool LoadAudio(std::string filePath) {
 		Log("Audio load failed.", FAULT);
 		return false;
 	}
-	Mix_Chunk* audio = Mix_LoadWAV(filePath);
+	Mix_Chunk* audio = Mix_LoadWAV(filePath.c_str());
 	if (audio == nullptr) {
 		Log("Audio unable to load: " + (std::string)Mix_GetError(), WARNING);
 		return false;
@@ -46,8 +46,8 @@ bool UnloadAudio(std::string key) {
 }
 
 void UnloadAllAudio() {
-	for (std::pair<std::string, SDL_Texture*> audio : audios) {
-		SDL_DestroyTexture(audio.second);
+	for (std::pair<std::string, Mix_Chunk*> audio : audios) {
+		delete audio.second;
 	}
 	audios.clear();
 }
