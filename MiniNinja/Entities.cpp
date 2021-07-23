@@ -4,8 +4,8 @@
 
 #include "Entity.h"
 #include "Sprite.h"
-#include "Particle.h"
 #include "Tilemap.h"
+#include "Particle.h"
 
 Entity* GetEntityOfType(uint16_t typeID) {
 	Entity* entity = new Entity("");
@@ -18,6 +18,11 @@ Entity* GetEntityOfType(uint16_t typeID) {
 		return sprite;
 	}
 	delete sprite;
+	Tilemap* tilemap = new Tilemap("");
+	if (tilemap->IsType(typeID)) {
+		return tilemap;
+	}
+	delete tilemap;
 	return nullptr;
 }
 

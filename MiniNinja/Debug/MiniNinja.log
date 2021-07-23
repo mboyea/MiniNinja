@@ -1,2 +1,4 @@
-﻿  Sprite.cpp
+﻿  Entities.cpp
+  Tilemap.cpp
+  Generating Code...
   MiniNinja.vcxproj -> P:\C++\2021\MiniNinja\Debug\MiniNinja.exe

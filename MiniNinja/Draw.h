@@ -24,9 +24,9 @@ void DrawFilledRect(const SDL_Rect& rectangle);
 // Draw a circle on the current render target
 void DrawCircle(const SDL_Point& pos, const int& radius);
 // Draw a texture on the current render target
-void DrawTexture(SDL_Texture* texture, const SDL_Rect* rect = NULL);
+void DrawTexture(SDL_Texture* texture, const SDL_Rect* rect = NULL, const SDL_Rect* textureRect = NULL);
 // Draw a texture on the current render target
-void DrawTexture(SDL_Texture* texture, const SDL_RendererFlip& flip, const SDL_Rect* rect = NULL, const SDL_Point* pivot = NULL, const double& angle = 0);
+void DrawTexture(SDL_Texture* texture, const SDL_RendererFlip& flip, const SDL_Rect* rect = NULL, const SDL_Rect* textureRect = NULL, const SDL_Point* pivot = NULL, const double& angle = 0);
 // Draw text with a transparent background on the current render target
 void DrawText(std::string text, SDL_Point pos, TTF_Font* font, SDL_Color textColor = Colors::WHITE);
 // Draw text with an opaque background on the current render target

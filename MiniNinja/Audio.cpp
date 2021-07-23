@@ -80,5 +80,5 @@ void PlayAudio(std::string key) {
 	if (IsAudio(key)) {
 		PlayAudio(audios[key]);
 	}
-	else Log("Tried to play audio " + key + " which was not found.");
+	else Log("Tried to play audio \"" + key + "\" which was not found.");
 }

@@ -45,6 +45,7 @@ public:
 	template <typename T> bool IsType();
 	template <typename T> T* GetAsType();
 
+	// Push a list of required resources into resourcesOut
 	virtual std::set<Resource>& GetRequiredResources(std::set<Resource>& resourcesOut);
 	// Generate serialized text data for this entity into the stream
 	virtual std::ostream& Serialize(std::ostream& os);
