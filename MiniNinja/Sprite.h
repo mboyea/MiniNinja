@@ -12,9 +12,8 @@ public:
 	SDL_Texture* texture;
 	SDL_Point dim;
 
-	Sprite(std::string name, SDL_Point pos = { 0, 0 }, int8_t renderLayer = 0, bool saveAsModule = false, std::string textureKey = "", SDL_Point dim = { 0, 0 })
+	Sprite(std::string name = "", SDL_Point pos = { 0, 0 }, int8_t renderLayer = 0, bool saveAsModule = false, std::string textureKey = "", SDL_Point dim = { 0, 0 })
 		: Entity(name, pos, renderLayer, saveAsModule), texture(GetTexture(textureKey)) {
-		typeID = __COUNTER__;
 		if (dim.x == 0 || dim.y == 0) {
 			this->dim = GetTextureDimensions();
 		} else this->dim = dim;

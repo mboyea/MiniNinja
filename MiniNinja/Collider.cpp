@@ -1,4 +1,5 @@
 #include "Collider.h"
+#include "Colliders.h"
 #include "Draw.h"
 #include "FileParameters.h"
 #include "Scene.h"
@@ -43,20 +44,8 @@ SDL_Rect Collider::GetBoundingRect() {
 	return rect;
 }
 
-bool Collider::IsType(uint16_t typeID) {
-	return this->typeID == typeID;
-}
-
-template<typename T> bool Collider::IsType() {
-	return dynamic_cast<T*>(this) != nullptr;
-}
-
-template<typename T> T* Collider::GetAsType() {
-	return dynamic_cast<T*>(this);
-}
-
 std::ostream& Collider::Serialize(std::ostream& os) {
-	return os << typeID << ' ' << rect.x << ' ' << rect.y << ' ' << rect.w << ' ' << rect.h;
+	return os << GetColliderTypeID(this) << ' ' << rect.x << ' ' << rect.y << ' ' << rect.w << ' ' << rect.h;
 }
 
 std::istream& Collider::Deserialize(std::istream& is) {

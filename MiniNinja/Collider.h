@@ -20,8 +20,6 @@ protected:
 
 	virtual void RecalculateAABB();
 public:
-	uint16_t typeID = __COUNTER__;
-
 	Collider(SDL_Rect rect = { 0, 0, 1, 1 })
 		: rect(rect) {}
 
@@ -34,10 +32,6 @@ public:
 	SDL_Point GetPosition();
 	SDL_Point GetBoundingDimensions();
 	SDL_Rect GetBoundingRect();
-
-	bool IsType(uint16_t typeID);
-	template <typename T> bool IsType();
-	template <typename T> T* GetAsType();
 
 	// Generate serialized text data for this collider into the stream
 	virtual std::ostream& Serialize(std::ostream& os);

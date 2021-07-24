@@ -2,13 +2,12 @@
 #define COLLIDERS_H
 #pragma once
 
-#include <sstream>
+#include <string>
 #include "Collider.h"
-#include "AABBCollider.h"
-//	#include "OBBCollider.h"
-//	#include "CircleCollider"
 
-Collider* GetColliderOfType(uint16_t typeID);
+unsigned int GetColliderTypeID(Collider* collider);
+Collider* GetColliderByTypeID(unsigned int typeID);
+bool IsColliderOfTypeID(Collider* collider, unsigned int typeID);
 Collider* DeserializeLineToCollider(std::string line);
 
 #endif // !COLLIDERS_H

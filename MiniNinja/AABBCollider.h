@@ -10,9 +10,7 @@ protected:
 	virtual bool IsNarrowPhaseColliding(Collider* collider) override;
 public:
 	AABBCollider(SDL_Rect rect = { 0, 0, 1, 1 })
-		: Collider(rect) {
-		typeID = __COUNTER__;
-	}
+		: Collider(rect) {}
 	virtual bool IsColliding(Collider* collider) override;
 
 	virtual void RenderNarrowCollider();

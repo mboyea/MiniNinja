@@ -1,4 +1,5 @@
 #include "Entity.h"
+#include "Entities.h"
 #include "FileParameters.h"
 #include "Scene.h"
 #include "Log.h"
@@ -22,22 +23,12 @@ void Entity::ResetDidCollisionFlags() {
 	entitiesCollided.clear();
 }
 
-bool Entity::IsType(uint16_t typeID) {
-	return this->typeID == typeID;
-}
-template<typename T> bool Entity::IsType() {
-	return dynamic_cast<T*>(this) != nullptr;
-}
-template <typename T> T* Entity::GetAsType() {
-	return dynamic_cast<T*>(this);
-}
-
 std::set<Resource>& Entity::GetRequiredResources(std::set<Resource>& resourcesOut) {
 	return resourcesOut;
 }
 
 std::ostream& Entity::Serialize(std::ostream& os) {
-	os << typeID << ' ' << pos.x << ' ' << pos.y << ' ' << std::to_string(renderLayer) << ' ';
+	os << GetEntityTypeID(this) << ' ' << pos.x << ' ' << pos.y << ' ' << std::to_string(renderLayer) << ' ';
 	// Serialize Children
 	os << LIST_START << ' ';
 	// if is module

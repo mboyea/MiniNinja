@@ -71,14 +71,14 @@ void DrawCircle(const SDL_Point& pos, const int& radius) {
 	}
 }
 
-void DrawTexture(SDL_Texture* texture, const SDL_Rect* rect) {
-	if (SDL_RenderCopy(Game::renderer, texture, NULL, rect) < 0) {
+void DrawTexture(SDL_Texture* texture, const SDL_Rect* rect, const SDL_Rect* textureRect) {
+	if (SDL_RenderCopy(Game::renderer, texture, textureRect, rect) < 0) {
 		Log("Failed to draw texture: " + (std::string)SDL_GetError(), FAULT);
 	}
 }
 
-void DrawTexture(SDL_Texture* texture, const SDL_RendererFlip& flip, const SDL_Rect* rect, const SDL_Point* pivot, const double& angle) {
-	if (SDL_RenderCopyEx(Game::renderer, texture, NULL, rect, angle, pivot, flip) < 0) {
+void DrawTexture(SDL_Texture* texture, const SDL_RendererFlip& flip, const SDL_Rect* rect, const SDL_Rect* textureRect, const SDL_Point* pivot, const double& angle) {
+	if (SDL_RenderCopyEx(Game::renderer, texture, textureRect, rect, angle, pivot, flip) < 0) {
 		Log("Failed to draw texture: " + (std::string)SDL_GetError(), FAULT);
 	}
 }

@@ -2,11 +2,12 @@
 #define ENTITIES_H
 #pragma once
 
-#include "Entity.h"
-#include <cstdint>
 #include <string>
+#include "Entity.h"
 
-Entity* GetEntityOfType(uint16_t typeID);
+unsigned int GetEntityTypeID(Entity* entity);
+Entity* GetEntityByTypeID(unsigned int typeID);
+bool IsEntityOfTypeID(Entity* entity, unsigned int typeID);
 Entity* DeserializeLineToEntity(std::string line);
 
 #endif // !ENTITIES_H
