@@ -1,8 +1,14 @@
 #include "Game.h"
 #include "FocusStates.h"
+#include "EventQueue.h"
 #include "Files.h"
 
 void SetGameFunctions();
+
+void PlayTest() {
+	PlayAudio("test");
+	PushEvent(PlayTest, 1000);
+}
 
 void InitGame() {
 	InitWindow("MiniNinja");
@@ -19,6 +25,8 @@ void InitGame() {
 	SetFocus(FOCUS_SCENE);
 	SetGameFunctions();
 	Log("Type \"help()\" for a list of functions.");
+	LoadAudio("Resources/Audio/test.mp3");
+	PlayTest();
 }
 
 void UpdateGame() {

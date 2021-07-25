@@ -1,4 +1,5 @@
 #include "FocusStates.h"
+#include "EventQueue.h"
 #include "Input.h"
 #include "Draw.h"
 #include "Scene.h"
@@ -29,6 +30,7 @@ void OnSwitchScene() {
 }
 
 void UpdateScene() {
+	HandleEventQueue();
 	currentScene->Update();
 }
 

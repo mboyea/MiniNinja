@@ -16,9 +16,6 @@
     <Filter Include="Engine\Input">
       <UniqueIdentifier>{a2afe41c-ac91-46d0-ade2-f39d19ed674f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Experimental">
-      <UniqueIdentifier>{1e9ee318-1114-41fc-bb34-13124e70e3ff}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Scene">
       <UniqueIdentifier>{e9c58268-ee78-4b97-9f44-c43371417db2}</UniqueIdentifier>
     </Filter>
@@ -55,6 +52,12 @@
     <Filter Include="Engine\Input\Camera">
       <UniqueIdentifier>{22e2bba5-f9e9-418f-8f91-8d270b99cca2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Random">
+      <UniqueIdentifier>{dc50a16c-cda4-4762-a6aa-e9f28beb186b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\EventQueue">
+      <UniqueIdentifier>{340f8ccf-2a45-4d79-a66e-ce172090f872}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FocusState.cpp">
@@ -86,9 +89,6 @@
     </ClCompile>
     <ClCompile Include="EditorFocus.cpp">
       <Filter>Game\Focus States</Filter>
-    </ClCompile>
-    <ClCompile Include="Event.cpp">
-      <Filter>Engine\Experimental</Filter>
     </ClCompile>
     <ClCompile Include="Draw.cpp">
       <Filter>Engine\Window</Filter>
@@ -147,6 +147,9 @@
     <ClCompile Include="Audio.cpp">
       <Filter>Engine\Scene\Resources</Filter>
     </ClCompile>
+    <ClCompile Include="EventQueue.cpp">
+      <Filter>Engine\EventQueue</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FocusState.h">
@@ -181,9 +184,6 @@
     </ClInclude>
     <ClInclude Include="FocusStates.h">
       <Filter>Game\Focus States</Filter>
-    </ClInclude>
-    <ClInclude Include="Event.h">
-      <Filter>Engine\Experimental</Filter>
     </ClInclude>
     <ClInclude Include="Draw.h">
       <Filter>Engine\Window</Filter>
@@ -241,6 +241,9 @@
     </ClInclude>
     <ClInclude Include="Audio.h">
       <Filter>Engine\Scene\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="EventQueue.h">
+      <Filter>Engine\EventQueue</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
