@@ -5,11 +5,11 @@
 #include "Collider.h"
 
 static uint8_t pageSize = 10;
-static std::unordered_map<std::string, std::function<bool(std::vector<std::string>)>> voidFuncs;
+static std::unordered_map<std::string, std::function<bool(std::vector<std::string>)>> boolFuncs;
 static std::unordered_map<std::string, std::function<std::string(std::vector<std::string>)>> strFuncs;
 
 int GetFunctionCount() {
-	return voidFuncs.size() + strFuncs.size();
+	return boolFuncs.size() + strFuncs.size();
 }
 
 void InitConsole() {
@@ -53,7 +53,7 @@ void InitConsole() {
 }
 
 bool IsFunction(std::string call) {
-	return voidFuncs.find(call) != voidFuncs.end() || strFuncs.find(call) != strFuncs.end();
+	return boolFuncs.find(call) != boolFuncs.end() || strFuncs.find(call) != strFuncs.end();
 }
 
 void LogFunction(std::string call) {
@@ -67,7 +67,7 @@ void LogFunctions(int pageIndex) {
 	}
 
 	int i = 0;
-	for (auto voidFunc : voidFuncs) {
+	for (auto voidFunc : boolFuncs) {
 		if (i < (pageIndex - 1) * pageSize) {
 			i++;
 			continue;
@@ -94,7 +94,7 @@ void LogFunctions(int pageIndex) {
 
 void SetFunction(std::function<bool(std::vector<std::string>)> func, std::string call) {
 	std::transform(call.begin(), call.end(), call.begin(), std::tolower);
-	voidFuncs[call] = func;
+	boolFuncs[call] = func;
 }
 
 void SetFunction(std::function<std::string(std::vector<std::string>)> func, std::string call) {
@@ -168,9 +168,9 @@ std::vector<std::string> GetArgList(std::string& args) {
 void InterpretFunction(const std::string& call, std::string& args) {
 	std::vector<std::string> argList = GetArgList(args);
 
-	if (voidFuncs.find(call) != voidFuncs.end()) {
+	if (boolFuncs.find(call) != boolFuncs.end()) {
 		Log("> " + call + '(' + args + ')', SUCCESS);
-		if (!voidFuncs[call](argList)) {
+		if (!boolFuncs[call](argList)) {
 			Log("Function failed.", WARNING);
 			return;
 		}
@@ -222,5 +222,5 @@ void InterpretConsoleCommand(std::string* text) {
 		Log("Unsupported cmd \"" + *text + "\"", WARNING);
 	}
 
-	Game::consoleInput->clear();
+	text->clear();
 }

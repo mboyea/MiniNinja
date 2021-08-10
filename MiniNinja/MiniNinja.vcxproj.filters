@@ -49,14 +49,11 @@
     <Filter Include="Engine\Scene\Resources">
       <UniqueIdentifier>{1da99fb5-eb24-4195-a3f7-21b2b23f65ab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Input\Camera">
-      <UniqueIdentifier>{22e2bba5-f9e9-418f-8f91-8d270b99cca2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Random">
-      <UniqueIdentifier>{dc50a16c-cda4-4762-a6aa-e9f28beb186b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\EventQueue">
       <UniqueIdentifier>{340f8ccf-2a45-4d79-a66e-ce172090f872}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Scene\Camera">
+      <UniqueIdentifier>{22e2bba5-f9e9-418f-8f91-8d270b99cca2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -115,7 +112,7 @@
       <Filter>Engine\Scene\Entity</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>Engine\Input\Camera</Filter>
+      <Filter>Engine\Scene\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Console.cpp">
       <Filter>Engine\Debug</Filter>
@@ -210,7 +207,7 @@
       <Filter>Engine\Scene\Entity\Collider</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>Engine\Input\Camera</Filter>
+      <Filter>Engine\Scene\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Console.h">
       <Filter>Engine\Debug</Filter>

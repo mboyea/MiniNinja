@@ -27,7 +27,6 @@ struct GameLog {
 namespace Game {
 	inline std::vector<GameLog> logs;
 	inline bool doLogConsoleToFile = false;
-	inline std::string inputText = "";
 }
 
 void Log(std::string text, LogType logType = LogType::LOG);

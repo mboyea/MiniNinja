@@ -26,7 +26,7 @@ void InitGame() {
 	SetGameFunctions();
 	Log("Type \"help()\" for a list of functions.");
 	LoadAudio("Resources/Audio/test.mp3");
-	PlayTest();
+	// PlayTest();
 }
 
 void UpdateGame() {

@@ -5,8 +5,6 @@
 #include <string>
 #include <vector>
 #include <functional>
-#include <cstdint>
-#include <SDL.h>
 
 namespace Game {
 	inline std::string* consoleInput = new std::string;
