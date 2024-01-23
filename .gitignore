@@ -1,23 +1,22 @@
-# Editor Files
-.vscode/
-
-# Library Dependencies
+# dependencies & output directories
 lib/
-
-# Compiled Output
 bin/
 build/
 
-# Compiled Object files
+# object files
 *.slo
 *.lo
 *.o
 
-# Compiled Dynamic libraries
+# dynamic libraries
 *.so
 *.dylib
 
-# Compiled Static libraries
+# static libraries
 *.lai
 *.la
 *.a
+
+# editors and OS files
+.vscode/
+.DS_Store
