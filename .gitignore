@@ -1,5 +1,12 @@
-# Compiled Executables
-bin/*
+# Editor Files
+.vscode/
+
+# Library Dependencies
+lib/
+
+# Compiled Output
+bin/
+build/
 
 # Compiled Object files
 *.slo

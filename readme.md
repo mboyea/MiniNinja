@@ -14,9 +14,9 @@ I never got around to actually making the game, but building this low-quality ga
 
 ### Install Dependencies
 * Fork & Clone This Repository.
-* Install gcc. [Windows](https://sourceforge.net/projects/mingw/) [Arch](https://wiki.archlinux.org/title/GNU_Compiler_Collection)
-* Install make. [Windows](https://gnuwin32.sourceforge.net/packages/make.htm) [Arch](https://man.archlinux.org/man/make.1)
-* Ensure each of the above command line tools are accessible by PATH. [Windows](https://www.computerhope.com/issues/ch000549.htm) [Arch]()
+* Install gcc. [Windows](https://sourceforge.net/projects/mingw/) [Mac](https://stackoverflow.com/questions/10265742/how-to-install-make-and-gcc-on-a-mac) [Arch](https://wiki.archlinux.org/title/GNU_Compiler_Collection)
+* Install make. [Windows](https://gnuwin32.sourceforge.net/packages/make.htm) [Mac](https://stackoverflow.com/questions/10265742/how-to-install-make-and-gcc-on-a-mac) [Arch](https://man.archlinux.org/man/make.1)
+* Ensure each of the above command line tools are accessible by PATH. [Windows](https://www.computerhope.com/issues/ch000549.htm)
 * TODO: install dll to `root/lib`
 
 From here, everything should be installed to compile this software.
