@@ -21,13 +21,12 @@ STATIC_DIR := static
 # # file extensions
 SRC_EXT := cpp
 INC_EXT := h
-LIB_EXT := dll
 OBJ_EXT := o
 
 # files
 SRCS := $(shell find $(SRC_DIR) -type f -name *.$(SRC_EXT))
 INCS := $(shell find $(INC_DIR) -type f -name *.$(INC_EXT))
-LIBS := $(shell find $(LIB_DIR) -type f -name *.$(LIB_EXT))
+LIBS := #TODO: find all library directories under LIB_DIR
 OBJS := $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRCS:.$(SRC_EXT)=.$(OBJ_EXT)))
 
 all: link
@@ -43,7 +42,7 @@ link: $(OBJS)
 
 $(OBJ_DIR)/%.$(OBJ_EXT) : $(SRC_DIR)/%.$(SRC_EXT)
 	@mkdir -p $(OBJ_DIR)
-	@echo "Compiling $<..."; $(CXX) $(CXXFLAGS) -c -o $@ $< # TODO: pass LIB libraries
+	@echo "Compiling $<..."; $(CXX) $(CXXFLAGS) -I $(LIB_DIR) -c -o $@ $<
 
 clean:
 	@echo "Cleaning...";
