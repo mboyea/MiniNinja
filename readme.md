@@ -4,7 +4,7 @@ A small C++ SDL2 game project.
 ---
 This is a 2D game built using C++ and SDL2. It is an unfinished project from highschool.
 
-I wrote this game engine, which contains a homemade game console, homemade scene serialization & deserialization, a homemade collision system (with broad phase and narrow phase collision), a homemade entity management system, audio support, texture support, and font support.
+The game engine contains a console, a layered scene management system, scene serialization & deserialization, and a collision system (with broad phase and narrow phase collision). The game renders entities in a window, plays audio, manages textures, and supports fonts via SDL2.
 
 I never got around to actually making the game, but building this low-quality game engine was fun and taught me a lot!
 

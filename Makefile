@@ -1,6 +1,43 @@
 # Created by Matthew Boyea on 2024-01-23
 
+# targets
+EXE := MiniNinja
+TARGET := $(TARGET_DIR)/$(EXE)
 
+# compilers & flags
+CXX := g++
+CXXFLAGS := -g # -Wall
+
+# directories
+TARGET_DIR := bin     # executable output
+SRC_DIR := src        # c++ source files
+INC_DIR := src        # c++ header files
+BUILD_DIR := build    # c++ object files
+LIB_DIR := lib        # c++ library files
+STATIC_DIR := static  # static files
+
+# # file extensions
+SRC_EXT := cpp        # c++ source files
+INC_EXT := h          # c++ header files
+
+# files
+SRCS := 
+
+all: run
+
+run: link
+	@echo " Running..."
+
+link: compile
+	@echo " Linking..."
+
+compile:
+	@echo " Compiling..."
+
+clean:
+	@echo " Cleaning...";
+
+.PHONY: clean
 
 # # compilers & flags
 # CXX := g++
