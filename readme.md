@@ -8,18 +8,26 @@ The game engine contains a console, a layered scene management system, scene ser
 
 I never got around to actually making the game, but building this low-quality game engine was fun and taught me a lot!
 
-### Install Dependencies
-* Install GCC. [Win](https://sourceforge.net/projects/mingw/) [Mac](https://stackoverflow.com/questions/10265742/how-to-install-make-and-gcc-on-a-mac) [Arch](https://wiki.archlinux.org/title/GNU_Compiler_Collection)
-* Install make. [Win](https://gnuwin32.sourceforge.net/packages/make.htm) [Mac](https://stackoverflow.com/questions/10265742/how-to-install-make-and-gcc-on-a-mac)
-* Install Bash (or use an equivalent linux shell). [Win](https://www.howtogeek.com/249966/how-to-install-and-use-the-linux-bash-shell-on-windows-10/)
-* Ensure each of the above command line tools are accessible by PATH. [Win](https://www.computerhope.com/issues/ch000549.htm)
+### Install On Windows
+* [Install 7-Zip](https://7-zip.org/download.html).
+* [Install Git Bash](https://git-scm.com/download/win); make sure to choose "Run Git from the Windows Command Prompt" during installation. This should result in a MINGW64 Bash installation that can access your Windows PATH while having access to Linux commands (ie. the `find` command).
+* Install GCC. In the directory `C:\`, download and unzip [MinGW x86_64-XX.X.X-release-win32-seh-msvcrt-rt_vXX-revX.7z](https://github.com/niXman/mingw-builds-binaries/releases); the location of `g++.exe` should be `C:\mingw64\bin\g++.exe`.
+* Add `C:\mingw64\bin` to the Windows Environment Variable [PATH](https://www.computerhope.com/issues/ch000549.htm).
+* Install [Make for Windows](https://gnuwin32.sourceforge.net/packages/make.htm).
+* Add `C:\Program Files (x86)\GnuWin32\bin\` to the Windows Environment Variable [PATH](https://www.computerhope.com/issues/ch000549.htm).
 * [Clone this repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository#cloning-a-repository) to a directory on your computer. That directory will be referred to as `root`.
-* In a new directory `root/lib`, install unzipped directories from [SDL2](https://github.com/libsdl-org/SDL/releases), [SDL2_image](https://github.com/libsdl-org/SDL_image/releases), [SDL2_mixer](https://github.com/libsdl-org/SDL_mixer/releases), & [SDL2_ttf](https://github.com/libsdl-org/SDL_ttf/releases).
+* Create directory `root/lib`.
+* Install SDL2. In the directory `root/lib`, download and unzip the latest stable buxfix release from the following dependencies: [SDL2-devel-X.XX.X-mingw.zip](https://github.com/libsdl-org/SDL/releases), [SDL2_image-devel-X.XX.X-mingw.zip](https://github.com/libsdl-org/SDL_image/releases), [SDL2_mixer-devel-X.XX.X-mingw.zip](https://github.com/libsdl-org/SDL_mixer/releases), & [SDL2_ttf-devel-X.XX.X-mingw.zip](https://github.com/libsdl-org/SDL_ttf/releases).
 
-From here, everything should be installed to compile this software.
+From here, everything should be installed to compile & run this software.
 
-### Run Scripts
-To run a script, open a Bash terminal within `root` and type the command.
+### Install on Arch Linux
+* [Clone this repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository#cloning-a-repository) to a directory on your computer. That directory will be referred to as `root`.
+* [Install sdl2, sdl2_image, sdl2_mixer, & sdl2_ttf](https://wiki.archlinux.org/title/SDL).
+* TODO: test & finish this
+
+### Compile & Run Scripts
+To run a script, open a Bash (or equivalent) terminal within `root` and type the command.
 
 | command | description |
 |:----------- |:----------- |

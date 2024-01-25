@@ -2,6 +2,7 @@
 #include "Log.h"
 #include <unordered_map>
 #include <algorithm>
+#include <cmath>
 #include "Collider.h"
 
 static uint8_t pageSize = 10;
@@ -93,12 +94,12 @@ void LogFunctions(int pageIndex) {
 }
 
 void SetFunction(std::function<bool(std::vector<std::string>)> func, std::string call) {
-	std::transform(call.begin(), call.end(), call.begin(), std::tolower);
+	std::transform(call.begin(), call.end(), call.begin(), static_cast<int(*)(int)>(std::tolower));
 	boolFuncs[call] = func;
 }
 
 void SetFunction(std::function<std::string(std::vector<std::string>)> func, std::string call) {
-	std::transform(call.begin(), call.end(), call.begin(), std::tolower);
+	std::transform(call.begin(), call.end(), call.begin(), static_cast<int(*)(int)>(std::tolower));
 	strFuncs[call] = func;
 }
 
@@ -210,8 +211,8 @@ void InterpretConsoleCommand(std::string* text) {
 				std::string name = std::string(text->begin(), i);
 				std::string args = std::string(i + 1, text->end() - 1);
 				name.erase(remove(name.begin(), name.end(), ' '), name.end());
-				std::transform(name.begin(), name.end(), name.begin(), std::tolower);
-				std::transform(args.begin(), args.end(), args.begin(), std::tolower);
+				std::transform(name.begin(), name.end(), name.begin(), static_cast<int(*)(int)>(std::tolower));
+				std::transform(args.begin(), args.end(), args.begin(), static_cast<int(*)(int)>(std::tolower));
 
 				InterpretFunction(name, args);
 				break;

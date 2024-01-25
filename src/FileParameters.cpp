@@ -1,9 +1,10 @@
 #include "FileParameters.h"
 #include "Log.h"
+#include <algorithm>
 
 std::string MakeSerializable(std::string str) {
-	str.erase(remove(str.begin(), str.end(), TEXT_START), str.end());
-	str.erase(remove(str.begin(), str.end(), TEXT_END), str.end());
+	str.erase(std::remove(str.begin(), str.end(), TEXT_START), str.end());
+	str.erase(std::remove(str.begin(), str.end(), TEXT_END), str.end());
 	return TEXT_START + str + TEXT_END;
 }
 

@@ -6,7 +6,7 @@ TARGET := $(TARGET_DIR)/$(EXE)
 
 # compilers & flags
 CXX := g++
-CXXFLAGS := -g# -Wall
+CXXFLAGS := -std=c++17 -g# -Wall
 LDFLAGS := -L# flags or names given to compilers whenever they invoke the linker
 LDLIBS :=# -lfoo # names (flags) given to compilers to invoke the linker to support loading libs
 
@@ -26,8 +26,10 @@ OBJ_EXT := o
 # files
 SRCS := $(shell find $(SRC_DIR) -type f -name *.$(SRC_EXT))
 INCS := $(shell find $(INC_DIR) -type f -name *.$(INC_EXT))
-LIBS := #TODO: find all library directories under LIB_DIR
+LIB_INC_DIRS := $(shell find $(LIB_DIR) -type d -path "*/include/*")
 OBJS := $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRCS:.$(SRC_EXT)=.$(OBJ_EXT)))
+#LIB_LIBS
+#LIB_DLLS
 
 all: link
 
@@ -42,7 +44,7 @@ link: $(OBJS)
 
 $(OBJ_DIR)/%.$(OBJ_EXT) : $(SRC_DIR)/%.$(SRC_EXT)
 	@mkdir -p $(OBJ_DIR)
-	@echo "Compiling $<..."; $(CXX) $(CXXFLAGS) -I $(LIB_DIR) -c -o $@ $<
+	@echo "Compiling $<..."; $(CXX) $(CXXFLAGS) $(addprefix -I,$(LIB_INC_DIRS)) -c -o $@ $<
 
 clean:
 	@echo "Cleaning...";
