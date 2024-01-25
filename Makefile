@@ -5,86 +5,66 @@
 SRC_EXT := cpp
 INC_EXT := h
 OBJ_EXT := o
+DLL_EXT := dll
 
 # project directories
-TARGET_DIR := bin
 SRC_DIR := src
-INC_DIR := src
-LIB_DIR := lib
 OBJ_DIR := build
+LIB_DIR := lib
+TARGET_DIR := bin
 STATIC_DIR := static
 
 # targets
-EXE := MiniNinja
-TARGET := $(TARGET_DIR)/$(EXE)
+EXE_NAME := MiniNinja
+EXE_PATH := $(TARGET_DIR)/$(EXE_NAME)
 
 # files
-SRCS := $(shell find $(SRC_DIR) -type f -name *.$(SRC_EXT))
-INCS := $(shell find $(INC_DIR) -type f -name *.$(INC_EXT))
+SRCS := $(shell find $(SRC_DIR) -type f -name "*.$(SRC_EXT)")
 LIB_INC_DIRS := $(shell find $(LIB_DIR) -type d -path "*x86_64*/include/SDL2")
 OBJS := $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRCS:.$(SRC_EXT)=.$(OBJ_EXT)))
 LIB_LIB_DIRS := $(shell find $(LIB_DIR) -type d -path "*x86_64*/lib")
-#LIB_DLL_DIRS
-#LIB_DLLS
+LIB_DLL_DIRS := $(shell find $(LIB_DIR) -type d -path "*x86_64*/bin")
+LIB_DLLS := $(shell find $(LIB_DLL_DIRS) -type f -name "*.$(DLL_EXT)")
+DLLS := $(addprefix $(TARGET_DIR)/,$(notdir $(LIB_DLLS)))
+#STATICS := $(shell find $(STATIC_DIR) -type f)
+# /%.dll
 
 # compilers & flags
 CXX := g++
 CXXFLAGS := -std=c++17 -g# -Wall
 LDFLAGS := $(addprefix -L,$(LIB_LIB_DIRS))
-LDLIBS := $(addprefix -l,SDL2 SDL2main SDL2_image SDL2_ttf SDL2_mixer)
+LDLIBS := $(addprefix -l,mingw32 SDL2main SDL2 SDL2_image SDL2_ttf SDL2_mixer)
 
-all: link
+all : run
 
-run: $(TARGET)
-	@echo "Running..."
-	# TODO: launch executable
+run : $(EXE_PATH).exe $(DLLS)
+	$(shell exec "$(EXE_PATH).exe")
 
-link: $(OBJS)
+$(TARGET_DIR)/%: $(STATIC_DIR)/%
 	@mkdir -p $(TARGET_DIR)
-	@echo "Linking..."; $(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $(TARGET)
+	@echo "Copying $<..."; cp -r $< $@
+
+define COPY_DLL_template
+$(TARGET_DIR)/%.$(DLL_EXT) : $(1)/%.$(DLL_EXT)
+	@mkdir -p $(TARGET_DIR)
+	@echo "Copying $$(<) into $$(@) ..."; cp $$(<) $$(@)
+endef
+$(foreach LIB_DLL_DIR,$(LIB_DLL_DIRS),$(eval $(call COPY_DLL_template,$(LIB_DLL_DIR))))
+
+$(TARGET_DIR)/%.$(DLL_EXT) : $(LIB_DLL_DIRS)%.$(DLL_EXT)
+	@mkdir -p $(TARGET_DIR)
+	@echo "Copying DLL $^ into $@ ...";
+
+$(EXE_PATH).exe : $(OBJS)
+	@mkdir -p $(TARGET_DIR)
+	@echo "Linking..."; $(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $(EXE_PATH)
 
 $(OBJ_DIR)/%.$(OBJ_EXT) : $(SRC_DIR)/%.$(SRC_EXT)
 	@mkdir -p $(OBJ_DIR)
 	@echo "Compiling $<..."; $(CXX) $(CXXFLAGS) $(addprefix -I,$(LIB_INC_DIRS)) -c -o $@ $<
 
-clean:
+clean :
 	@echo "Cleaning...";
 	$(RM) -r $(OBJ_DIR) $(TARGET_DIR)
 
-.PHONY: clean
-
-# # compilers & flags
-# CXX := g++
-# CXXFLAGS := -g # -Wall
-# LDFLAGS := -L
-# # directories
-# SRC_DIR := src        # .cpp, .h
-# LIB_DIR := lib        # .dll
-# OBJ_DIR := build    # .o
-# STATIC_DIR := static  # static files
-# TARGET_DIR := bin     # .exe, static files
-# # file extensions
-# SRC_EXT := cpp
-# INC_EXT := h
-# # files
-# SRCS := $(shell find $(SRC_DIR) -type f -name *.$(SRC_EXT))
-# INCS := -I include
-# OBJS := $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SOURCES:.$(SRC_EXT)=.o))
-# 
-# LDLIBS :=
-# LIB := -pthread -lmongoclient -L lib -lboost_thread-mt -lboost_filesystem-mt -lboost_system-mt
-# 
-# $(TARGET_DIR): $(OBJECTS)
-# 	@echo " Linking..."
-# 	@echo " $(CPP_C) $^ -o $(TARGET_DIR) $(LIB)"; $(CPP_C) $^ -o $(TARGET_DIR) $(LIB)
-# 
-# $(OBJ_DIR)/%.o: $(SRC_DIR)/%.$(SRC_EXT)
-# 	@echo " Compiling..."
-# 	@mkdir -p $(OBJ_DIR)
-# 	@echo " $(CPP_C) $(CPP_FLAGS) $(INCLUDES) -c -o $@ $<"; $(CPP_C) $(CPP_FLAGS) $(INCLUDES) -c -o $@ $<
-# 
-# clean:
-# 	@echo " Cleaning..."; 
-# 	@echo " $(RM) -r $(OBJ_DIR) $(TARGET_DIR)"; $(RM) -r $(OBJ_DIR) $(TARGET_DIR)
-# 
-# .PHONY: clean
+.PHONY : all clean
