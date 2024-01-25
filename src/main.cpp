@@ -1,6 +1,6 @@
 #include "Game.h"
 
-int main(int argc, char** argv) {
+int WinMain(int argc, char** argv) {
 	InitGame();
 	while (true) {
 		UpdateGame();

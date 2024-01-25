@@ -31,13 +31,10 @@ STATICS := $(patsubst $(STATIC_DIR)/%,$(TARGET_DIR)/%,$(shell find $(STATIC_DIR)
 # compilers & flags
 CXX := g++
 CXXFLAGS := -std=c++17 -g# -Wall
-LDFLAGS := $(addprefix -L,$(LIB_LIB_DIRS))
+LDFLAGS := $(addprefix -L,$(LIB_LIB_DIRS)) -mwindows
 LDLIBS := $(addprefix -l,mingw32 SDL2main SDL2 SDL2_image SDL2_ttf SDL2_mixer)
 
-all : run
-
-run : $(EXE_PATH).exe $(DLLS) $(STATICS)
-	@echo "Running $(EXE_NAME)..."; $(EXE_PATH).exe $(ARGS)
+all : $(EXE_PATH).exe $(DLLS) $(STATICS)
 
 $(TARGET_DIR)/%: $(STATIC_DIR)/%
 	@mkdir -p $(TARGET_DIR)
