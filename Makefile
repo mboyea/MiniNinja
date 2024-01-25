@@ -26,8 +26,7 @@ LIB_LIB_DIRS := $(shell find $(LIB_DIR) -type d -path "*x86_64*/lib")
 LIB_DLL_DIRS := $(shell find $(LIB_DIR) -type d -path "*x86_64*/bin")
 LIB_DLLS := $(shell find $(LIB_DLL_DIRS) -type f -name "*.$(DLL_EXT)")
 DLLS := $(addprefix $(TARGET_DIR)/,$(notdir $(LIB_DLLS)))
-#STATICS := $(shell find $(STATIC_DIR) -type f)
-# /%.dll
+STATICS := $(patsubst $(STATIC_DIR)/%,$(TARGET_DIR)/%,$(shell find $(STATIC_DIR) -type f -name "*"))
 
 # compilers & flags
 CXX := g++
@@ -37,23 +36,19 @@ LDLIBS := $(addprefix -l,mingw32 SDL2main SDL2 SDL2_image SDL2_ttf SDL2_mixer)
 
 all : run
 
-run : $(EXE_PATH).exe $(DLLS)
-	$(shell exec "$(EXE_PATH).exe")
+run : $(EXE_PATH).exe $(DLLS) $(STATICS)
+	@echo "Running $(EXE_NAME)..."; $(EXE_PATH).exe $(ARGS)
 
 $(TARGET_DIR)/%: $(STATIC_DIR)/%
 	@mkdir -p $(TARGET_DIR)
-	@echo "Copying $<..."; cp -r $< $@
+	@echo "Copying $< into $@..."; install -D "$<" "$@"
 
 define COPY_DLL_template
 $(TARGET_DIR)/%.$(DLL_EXT) : $(1)/%.$(DLL_EXT)
 	@mkdir -p $(TARGET_DIR)
-	@echo "Copying $$(<) into $$(@) ..."; cp $$(<) $$(@)
+	@echo "Copying $$(<) into $$(@) ..."; cp "$$(<)" "$$(@)"
 endef
 $(foreach LIB_DLL_DIR,$(LIB_DLL_DIRS),$(eval $(call COPY_DLL_template,$(LIB_DLL_DIR))))
-
-$(TARGET_DIR)/%.$(DLL_EXT) : $(LIB_DLL_DIRS)%.$(DLL_EXT)
-	@mkdir -p $(TARGET_DIR)
-	@echo "Copying DLL $^ into $@ ...";
 
 $(EXE_PATH).exe : $(OBJS)
 	@mkdir -p $(TARGET_DIR)
@@ -64,7 +59,6 @@ $(OBJ_DIR)/%.$(OBJ_EXT) : $(SRC_DIR)/%.$(SRC_EXT)
 	@echo "Compiling $<..."; $(CXX) $(CXXFLAGS) $(addprefix -I,$(LIB_INC_DIRS)) -c -o $@ $<
 
 clean :
-	@echo "Cleaning...";
-	$(RM) -r $(OBJ_DIR) $(TARGET_DIR)
+	@echo "Cleaning..."; $(RM) -r $(OBJ_DIR) $(TARGET_DIR)
 
-.PHONY : all clean
+.PHONY : all run clean
