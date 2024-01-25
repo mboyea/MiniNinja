@@ -1,16 +1,12 @@
 # Created by Matthew Boyea on 2024-01-23
+# Last Edited by Matthew Boyea on 2024-01-25
 
-# targets
-EXE := MiniNinja
-TARGET := $(TARGET_DIR)/$(EXE)
+# file extensions
+SRC_EXT := cpp
+INC_EXT := h
+OBJ_EXT := o
 
-# compilers & flags
-CXX := g++
-CXXFLAGS := -std=c++17 -g# -Wall
-LDFLAGS := -L# flags or names given to compilers whenever they invoke the linker
-LDLIBS :=# -lfoo # names (flags) given to compilers to invoke the linker to support loading libs
-
-# directories
+# project directories
 TARGET_DIR := bin
 SRC_DIR := src
 INC_DIR := src
@@ -18,18 +14,24 @@ LIB_DIR := lib
 OBJ_DIR := build
 STATIC_DIR := static
 
-# # file extensions
-SRC_EXT := cpp
-INC_EXT := h
-OBJ_EXT := o
+# targets
+EXE := MiniNinja
+TARGET := $(TARGET_DIR)/$(EXE)
 
 # files
 SRCS := $(shell find $(SRC_DIR) -type f -name *.$(SRC_EXT))
 INCS := $(shell find $(INC_DIR) -type f -name *.$(INC_EXT))
-LIB_INC_DIRS := $(shell find $(LIB_DIR) -type d -path "*/include/*")
+LIB_INC_DIRS := $(shell find $(LIB_DIR) -type d -path "*x86_64*/include/SDL2")
 OBJS := $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRCS:.$(SRC_EXT)=.$(OBJ_EXT)))
-#LIB_LIBS
+LIB_LIB_DIRS := $(shell find $(LIB_DIR) -type d -path "*x86_64*/lib")
+#LIB_DLL_DIRS
 #LIB_DLLS
+
+# compilers & flags
+CXX := g++
+CXXFLAGS := -std=c++17 -g# -Wall
+LDFLAGS := $(addprefix -L,$(LIB_LIB_DIRS))
+LDLIBS := $(addprefix -l,SDL2 SDL2main SDL2_image SDL2_ttf SDL2_mixer)
 
 all: link
 
@@ -38,9 +40,8 @@ run: $(TARGET)
 	# TODO: launch executable
 
 link: $(OBJS)
-	@echo "Linking..."
 	@mkdir -p $(TARGET_DIR)
-	# TODO: link objects into executable
+	@echo "Linking..."; $(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $(TARGET)
 
 $(OBJ_DIR)/%.$(OBJ_EXT) : $(SRC_DIR)/%.$(SRC_EXT)
 	@mkdir -p $(OBJ_DIR)
