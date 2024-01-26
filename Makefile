@@ -2,10 +2,11 @@
 # Last Edited by Matthew Boyea on 2024-01-25
 
 # file extensions
-SRC_EXT := cpp
+SRC_EXT := cc
 INC_EXT := h
 OBJ_EXT := o
 DLL_EXT := dll
+EXE_EXT := exe
 
 # project directories
 SRC_DIR := src
@@ -14,25 +15,24 @@ TARGET_DIR := bin
 STATIC_DIR := static
 
 # linux lib
-LIB_DIR := /usr/lib
-LIB_INC_DIRS := $(LIB_DIR)
-LIB_LIB_DIRS := /usr/include
+LIB_DIR := /usr
+LIB_INC_DIRS := $(LIB_DIR)/include/SDL2
+LIB_LIB_DIRS := $(LIB_DIR)/lib
 LIB_DLL_DIRS :=
+
 # windows lib
 LIB_DIR := lib
 ifeq ($(wildcard $(LIB_DIR)/.),)
-  SOURCE_DIR := src/default
+	SOURCE_DIR := src/default
 else
 	LIB_INC_DIRS := $(shell find $(LIB_DIR) -type d -path "*x86_64*/include/SDL2")
 	LIB_LIB_DIRS := $(shell find $(LIB_DIR) -type d -path "*x86_64*/lib")
 	LIB_DLL_DIRS := $(shell find $(LIB_DIR) -type d -path "*x86_64*/bin")
 endif
 
-# targets
+# target files
 EXE_NAME := MiniNinja
 EXE_PATH := $(TARGET_DIR)/$(EXE_NAME)
-
-# target files
 SRCS := $(shell find $(SRC_DIR) -type f -name "*.$(SRC_EXT)")
 OBJS := $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRCS:.$(SRC_EXT)=.$(OBJ_EXT)))
 LIB_DLLS := $(shell find $(LIB_DLL_DIRS) -type f -name "*.$(DLL_EXT)")
@@ -42,10 +42,10 @@ STATICS := $(patsubst $(STATIC_DIR)/%,$(TARGET_DIR)/%,$(shell find $(STATIC_DIR)
 # compilers & flags
 CXX := g++
 CXXFLAGS := -std=c++17 -g# -Wall
-LDFLAGS := $(addprefix -L,$(LIB_LIB_DIRS)) -mwindows
-LDLIBS := $(addprefix -l,mingw32 SDL2main SDL2 SDL2_image SDL2_ttf SDL2_mixer)
+LDFLAGS := $(addprefix -L,$(LIB_LIB_DIRS))
+LDLIBS := $(addprefix -l,SDL2main SDL2 SDL2_image SDL2_ttf SDL2_mixer)
 
-all : $(EXE_PATH).exe $(DLLS) $(STATICS)
+all : $(EXE_PATH).$(EXE_EXT) $(DLLS) $(STATICS)
 
 $(TARGET_DIR)/%: $(STATIC_DIR)/%
 	@mkdir -p $(TARGET_DIR)
@@ -58,7 +58,7 @@ $(TARGET_DIR)/%.$(DLL_EXT) : $(1)/%.$(DLL_EXT)
 endef
 $(foreach LIB_DLL_DIR,$(LIB_DLL_DIRS),$(eval $(call COPY_DLL_template,$(LIB_DLL_DIR))))
 
-$(EXE_PATH).exe : $(OBJS)
+$(EXE_PATH).$(EXE_EXT) : $(OBJS)
 	@mkdir -p $(TARGET_DIR)
 	@echo "Linking..."; $(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $(EXE_PATH)
 
