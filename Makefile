@@ -2,7 +2,7 @@
 # Last Edited by Matthew Boyea on 2024-01-25
 
 # file extensions
-SRC_EXT := cc
+SRC_EXT := cpp
 INC_EXT := h
 OBJ_EXT := o
 DLL_EXT := dll
