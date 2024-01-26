@@ -10,7 +10,8 @@ DLL_EXT := dll
 # project directories
 SRC_DIR := src
 OBJ_DIR := build
-LIB_DIR := lib
+# LIB_DIR := lib
+LIB_DIR := /usr/include/
 TARGET_DIR := bin
 STATIC_DIR := static
 
@@ -22,8 +23,8 @@ EXE_PATH := $(TARGET_DIR)/$(EXE_NAME)
 SRCS := $(shell find $(SRC_DIR) -type f -name "*.$(SRC_EXT)")
 LIB_INC_DIRS := $(shell find $(LIB_DIR) -type d -path "*x86_64*/include/SDL2")
 OBJS := $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRCS:.$(SRC_EXT)=.$(OBJ_EXT)))
-LIB_LIB_DIRS := $(shell find $(LIB_DIR) -type d -path "*x86_64*/lib")
-LIB_DLL_DIRS := $(shell find $(LIB_DIR) -type d -path "*x86_64*/bin")
+LIB_LIB_DIRS := $(shell find $(LIB_DIR) -type d -path "*/lib")
+LIB_DLL_DIRS := $(shell find $(LIB_DIR) -type d -path "*/bin")
 LIB_DLLS := $(shell find $(LIB_DLL_DIRS) -type f -name "*.$(DLL_EXT)")
 DLLS := $(addprefix $(TARGET_DIR)/,$(notdir $(LIB_DLLS)))
 STATICS := $(patsubst $(STATIC_DIR)/%,$(TARGET_DIR)/%,$(shell find $(STATIC_DIR) -type f -name "*"))

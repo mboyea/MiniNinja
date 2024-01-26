@@ -23,7 +23,7 @@ From here, everything should be installed to compile & run this software. Note t
 
 ### Install on Arch Linux
 * [Clone this repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository#cloning-a-repository) to a directory on your computer. That directory will be referred to as `root`.
-* [Install sdl2, sdl2_image, sdl2_mixer, & sdl2_ttf](https://wiki.archlinux.org/title/SDL).
+* [Install sdl2 sdl2_image sdl2_mixer sdl2_ttf](https://wiki.archlinux.org/title/SDL).
 * TODO: test & finish this
 
 ### Compile & Run Scripts
