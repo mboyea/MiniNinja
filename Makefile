@@ -14,21 +14,27 @@ OBJ_DIR := build
 TARGET_DIR := bin
 STATIC_DIR := static
 
-# linux lib
+# linux libs & flags
 LIB_DIR := /usr
 LIB_INC_DIRS := $(LIB_DIR)/include/SDL2
 LIB_LIB_DIRS := $(LIB_DIR)/lib
 LIB_DLL_DIRS :=
 
-# windows lib
+# windows libs & flags
 LIB_DIR := lib
-ifeq ($(wildcard $(LIB_DIR)/.),)
-	SOURCE_DIR := src/default
-else
+ifneq ($(wildcard $(LIB_DIR)/.),)
 	LIB_INC_DIRS := $(shell find $(LIB_DIR) -type d -path "*x86_64*/include/SDL2")
 	LIB_LIB_DIRS := $(shell find $(LIB_DIR) -type d -path "*x86_64*/lib")
 	LIB_DLL_DIRS := $(shell find $(LIB_DIR) -type d -path "*x86_64*/bin")
+	LDFLAGS := $(addprefix -L,-mwindows)
+	LDLIBS := $(addprefix -l,mingw32)
 endif
+
+# cross-platform compilers & flags
+CXX := g++
+CXXFLAGS := -std=c++17 -g# -Wall
+LDFLAGS := $(LDFLAGS) $(addprefix -L,$(LIB_LIB_DIRS))
+LDLIBS := $(LDLIBS) $(addprefix -l,SDL2main SDL2 SDL2_image SDL2_ttf SDL2_mixer)
 
 # target files
 EXE_NAME := MiniNinja
@@ -38,12 +44,6 @@ OBJS := $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRCS:.$(SRC_EXT)=.$(OBJ_EXT)))
 LIB_DLLS := $(shell find $(LIB_DLL_DIRS) -type f -name "*.$(DLL_EXT)")
 DLLS := $(addprefix $(TARGET_DIR)/,$(notdir $(LIB_DLLS)))
 STATICS := $(patsubst $(STATIC_DIR)/%,$(TARGET_DIR)/%,$(shell find $(STATIC_DIR) -type f -name "*"))
-
-# compilers & flags
-CXX := g++
-CXXFLAGS := -std=c++17 -g# -Wall
-LDFLAGS := $(addprefix -L,$(LIB_LIB_DIRS))
-LDLIBS := $(addprefix -l,SDL2main SDL2 SDL2_image SDL2_ttf SDL2_mixer)
 
 all : $(EXE_PATH).$(EXE_EXT) $(DLLS) $(STATICS)
 
