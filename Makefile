@@ -6,35 +6,46 @@ SRC_EXT := cpp
 INC_EXT := h
 OBJ_EXT := o
 DLL_EXT := dll
+EXE_EXT := exe
 
 # project directories
 SRC_DIR := src
 OBJ_DIR := build
-LIB_DIR := lib
 TARGET_DIR := bin
 STATIC_DIR := static
 
-# targets
+# linux libs & flags
+LIB_DIR := /usr
+LIB_INC_DIRS := $(LIB_DIR)/include/SDL2
+LIB_LIB_DIRS := $(LIB_DIR)/lib
+LIB_DLL_DIRS :=
+
+# windows libs & flags
+LIB_DIR := lib
+ifneq ($(wildcard $(LIB_DIR)/.),)
+	LIB_INC_DIRS := $(shell find $(LIB_DIR) -type d -path "*x86_64*/include/SDL2")
+	LIB_LIB_DIRS := $(shell find $(LIB_DIR) -type d -path "*x86_64*/lib")
+	LIB_DLL_DIRS := $(shell find $(LIB_DIR) -type d -path "*x86_64*/bin")
+	LDFLAGS := $(addprefix -L,-mwindows)
+	LDLIBS := $(addprefix -l,mingw32)
+endif
+
+# cross-platform compilers & flags
+CXX := g++
+CXXFLAGS := -std=c++17 -g# -Wall
+LDFLAGS := $(LDFLAGS) $(addprefix -L,$(LIB_LIB_DIRS))
+LDLIBS := $(LDLIBS) $(addprefix -l,SDL2main SDL2 SDL2_image SDL2_ttf SDL2_mixer)
+
+# target files
 EXE_NAME := MiniNinja
 EXE_PATH := $(TARGET_DIR)/$(EXE_NAME)
-
-# files
 SRCS := $(shell find $(SRC_DIR) -type f -name "*.$(SRC_EXT)")
-LIB_INC_DIRS := $(shell find $(LIB_DIR) -type d -path "*x86_64*/include/SDL2")
 OBJS := $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRCS:.$(SRC_EXT)=.$(OBJ_EXT)))
-LIB_LIB_DIRS := $(shell find $(LIB_DIR) -type d -path "*x86_64*/lib")
-LIB_DLL_DIRS := $(shell find $(LIB_DIR) -type d -path "*x86_64*/bin")
 LIB_DLLS := $(shell find $(LIB_DLL_DIRS) -type f -name "*.$(DLL_EXT)")
 DLLS := $(addprefix $(TARGET_DIR)/,$(notdir $(LIB_DLLS)))
 STATICS := $(patsubst $(STATIC_DIR)/%,$(TARGET_DIR)/%,$(shell find $(STATIC_DIR) -type f -name "*"))
 
-# compilers & flags
-CXX := g++
-CXXFLAGS := -std=c++17 -g# -Wall
-LDFLAGS := $(addprefix -L,$(LIB_LIB_DIRS)) -mwindows
-LDLIBS := $(addprefix -l,mingw32 SDL2main SDL2 SDL2_image SDL2_ttf SDL2_mixer)
-
-all : $(EXE_PATH).exe $(DLLS) $(STATICS)
+all : $(EXE_PATH).$(EXE_EXT) $(DLLS) $(STATICS)
 
 $(TARGET_DIR)/%: $(STATIC_DIR)/%
 	@mkdir -p $(TARGET_DIR)
@@ -47,7 +58,7 @@ $(TARGET_DIR)/%.$(DLL_EXT) : $(1)/%.$(DLL_EXT)
 endef
 $(foreach LIB_DLL_DIR,$(LIB_DLL_DIRS),$(eval $(call COPY_DLL_template,$(LIB_DLL_DIR))))
 
-$(EXE_PATH).exe : $(OBJS)
+$(EXE_PATH).$(EXE_EXT) : $(OBJS)
 	@mkdir -p $(TARGET_DIR)
 	@echo "Linking..."; $(CXX) $^ $(LDFLAGS) $(LDLIBS) -o $(EXE_PATH)
 
