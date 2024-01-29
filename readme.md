@@ -7,6 +7,7 @@ This is a 2D game built using C++ and SDL2. It is an unfinished project from hig
 The game engine contains a console, a layered scene management system, scene serialization & deserialization, and a collision system (with broad phase and narrow phase collision). The game renders entities in a window, responds to keyboard input, plays audio, manages textures, and supports fonts via SDL2.
 
 I never got around to actually making the game, but building this low-quality game engine was fun and taught me a lot!
+After abandoning this game, I started working on [YZE](https://github.com/mboyea/YZE), which implements collision resolution and a proper ECS (entity-component system).
 
 ### Install On Windows
 * [Install 7-Zip](https://7-zip.org/download.html).
